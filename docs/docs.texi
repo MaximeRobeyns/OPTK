@@ -1,0 +1,75 @@
+\input texinfo
+
+@settitle Parameter Optimisation Library
+
+@include version.texi
+
+@copying
+This manual is for version @value{VERSION}, @value{UPDATED} of the parameter
+optimisation library.
+
+Copyright @copyright{} 2020 Maxime Robeyns. All rights reserved.
+
+@quotation
+Licensed under the Educational Community License, Version 2.0
+(the "License"); you may not use this file except in compliance
+with the License.
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "as is" basis,
+without warranties or conditions of any kind, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+A copy of the license is included in the root directory of this
+repository entitled ``@acronym{LICENSE}.txt''. You may obtain a copy of
+the License at @url{http://www.osedu.org/licenses/ECL-2.0}.
+@end quotation
+@end copying
+
+@titlepage
+@title Parameter Optimisation
+@subtitle For version @value{VERSION}, @value{UPDATED}
+@author Maxime Robeyns @ @ @email{ez18285@@bristol.ac.uk}
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@contents
+
+@ifnottex
+@node Top
+@top Parameter Optimisation
+
+This manual is for version @value{VERSION}, @value{UPDATED}.
+@end ifnottex
+
+@node Introduction
+@chapter Introduction
+
+@section About this project
+
+@cindex Parameter Optimisation
+Explain what Parameter Optimisation is.
+
+@node User Documentation
+@chapter User Documentation
+
+@section Introduction
+
+In this chapter, talk about how to use the library as a user.
+
+@node Developer Documentation
+@chapter Developer Documentation
+
+@section Introduction
+
+This chapter is aimed at potential future developers of this project, to
+help both maintain the project and develop it further.
+
+@unnumbered Index
+
+@printindex cp
+
+@bye
