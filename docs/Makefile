@@ -7,7 +7,7 @@
 
 PDF_ARTIFACTS = $(shell find . -maxdepth 1 -name 'docs.*' ! -name 'docs.texi' -type f)
 
-pdf: clean
+pdf:
 	@makeinfo --pdf -o build/pdf/docs.pdf docs.texi
 
 html:

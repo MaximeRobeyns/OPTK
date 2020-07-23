@@ -1,36 +1,38 @@
 \input texinfo
 
-@settitle Parameter Optimisation Library
+@settitle Parameter Optimisation Benchmarks
 
 @include version.texi
 
 @copying
-This manual is for version @value{VERSION}, @value{UPDATED} of the parameter
+This manual is for version @value{VERSION}, @value{UPDATED} of the global
 optimisation library.
+@*
 
 Copyright @copyright{} 2020 Maxime Robeyns. All rights reserved.
 
-@quotation
+@*
+@c @quotation
 Licensed under the Educational Community License, Version 2.0
-(the "License"); you may not use this file except in compliance
+(the ``License''); you may not use this file except in compliance
 with the License.
-
+@*
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "as is" basis,
 without warranties or conditions of any kind, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-
+@*
 A copy of the license is included in the root directory of this
 repository entitled ``@acronym{LICENSE}.txt''. You may obtain a copy of
 the License at @url{http://www.osedu.org/licenses/ECL-2.0}.
-@end quotation
+@c @end quotation
 @end copying
 
 @titlepage
-@title Parameter Optimisation
+@title Parameter Optimisation Benchmarks
 @subtitle For version @value{VERSION}, @value{UPDATED}
-@author Maxime Robeyns @ @ @email{ez18285@@bristol.ac.uk}
+@author Maxime Robeyns
 @page
 @vskip 0pt plus 1filll
 @insertcopying
@@ -40,7 +42,7 @@ the License at @url{http://www.osedu.org/licenses/ECL-2.0}.
 
 @ifnottex
 @node Top
-@top Parameter Optimisation
+@top Parameter Optimisation Benchmarks
 
 This manual is for version @value{VERSION}, @value{UPDATED}.
 @end ifnottex
@@ -50,23 +52,134 @@ This manual is for version @value{VERSION}, @value{UPDATED}.
 
 @section About this project
 
-@cindex Parameter Optimisation
-Explain what Parameter Optimisation is.
+@cindex Global Optimisation
 
-@node User Documentation
-@chapter User Documentation
+This is a project to assist the design and development of new global
+optimisation (@acronym{GO}) algorithms.
 
-@section Introduction
+To help evaluate the performance new algorithms, a comprehensive suite
+of `synthetic' test functions are provided, which have a variety of
+challenging properties, and are intended to represent the diverse range
+of functions which may need to be optimised in real world applications.
 
-In this chapter, talk about how to use the library as a user.
+Performing benchmarks on these types of test functions is desirable
+since they are
+@enumerate
+@item fast to compute---traditionally objective functions in real
+applications are expensive;
+@item deterministic---they have stable, known optima.
+@end enumerate
+
+All the benchmarks are minimisation tasks, to represent the task of
+selecting inputs @math{x \in X} so as to minimise an objective or cost
+function:
+@tex
+$$
+x^* = \arg\max_{x\in X} f(x).
+$$
+@end tex
+
+Optimisation algorithms are ranked by placing the most emphais on the
+quality of the solution found; that is, how close the best answer was to
+the known global minimum.
+
+Where we cannot discern the ranking of two algorithms on the quality of
+the solution alone, we also take into account the time taken to reach
+the solution. By plotting the objective function value against the trial
+number, we can calculate the area under the curve (@acronym{AOC}) which
+serves as our second metric---for algorithms giving the same solution, a
+lower @acronym{AOC} indicates a faster convergence to the solution.
+
+Letting @math{f_{best}[i]} denote the best found function value at
+iteration @math{i}, and @math{f_{opt}} denote the known optimum, the
+@acronym{AUC} is given by:
+@tex
+$$
+{1\over T} \sum^T_{i=1} (f_{best}[i] - f_{opt}).
+$$
+@end tex
 
 @node Developer Documentation
 @chapter Developer Documentation
 
-@section Introduction
+POBench acts as an intermediary between the functions that need to be
+optimised (either synthetic benchmarks or real-world problems), and the
+optimisation algorithms.
 
-This chapter is aimed at potential future developers of this project, to
-help both maintain the project and develop it further.
+For a cleaner conceptual model, and later compatability with NNI,
+POBench must be the caller of methods defined in the optimisation
+algorithms---it would be unwise, say, to import a header in the
+optimisation algorithms, and use them as the entrypoint for either
+benchmarking or real use.
+
+This is the reason for which optimisation algorithms are treated by
+POBench as shared libraries which are linked separately. It has the
+additional convenience of allowing different optimisation algorithms to
+be interchanged easily by linking them at run time.
+
+@section Overview of Program Organisation
+
+We may logically separate the functionality of POBench and associated
+optimisers into @emph{benchmarking mode} and @emph{production mode}. We
+may further separate these two instances by considering the cases when
+the optimisation algorithm is provided manually for POBench, or when it
+is part of NNI's default @code{Tuners}.
+
+@table @option
+@item Benchmark with NNI Tuner
+A `psdueo-tuner' is used to initialise the Python
+Tuner and bind C function calls to the Python class methods and vice
+versa.
+@item Benchmark with native optimiser
+The appropriate library is linked, and the optimiser is run directly.
+@item Production with NNI Tuner
+In this instance, NNI is run normally.
+@item Production with native optimiser
+A python class inheriting the base NNI Tuner class accepts method calls
+and runs the corresponding C functions in the native optimisation algorithm.
+@end table
+
+@section Using shared libraries
+
+Here we review the steps necessary to link an optimiser implemented as
+an external program.
+
+Consider an optimiser written in @code{my_opt.c}. To compile this
+program as a shared library, we would run the following
+
+@example
+cc -c -Wall -Werror -fpic my_opt.c
+cc -shared -o libmy_opt.so my_opt.o
+@end example
+
+It is conventional to previx shared library names with `@code{lib}' and
+to given them an `@code{.so}' extension. Now GPBench could be compiled
+as follows; statically linking it with @code{libmy_opt.so} by using
+@code{-rpath}. An alternative is to set the @code{LD_LIBRARY_PATH}
+environment variable which would allow for dynamic linking.
+@example
+cc -L. -Wl,-rpath=/path/to/so_dir -Wall -o gpbench bpbench.c -lmy_opt
+@end example
+
+@section Design Decisions
+
+This section outlines some of the design decisions made, in the hope
+that future developers will be able to continue with the same
+`philosophy', and so that anybody wondering why things were done a
+certain way can have some answers.
+
+@subsection Why C?
+
+I believe that Python is somewhat overused in Machine Learning. It's
+understandable @emph{why} it is so popular; the rich collection of
+libraries and packages it integrates with, the strong existing
+community, its simple syntax and `forgiving' nature, the tooling that
+exists for it such as Jupyter etc., however I question whether it
+@emph{should} remain the de-facto language in the field.
+
+For a language that acts as nothing more than a convenient programmer's
+interface for more powerful packages written in faster languages, it
+seems that unless there's
 
 @unnumbered Index
 
