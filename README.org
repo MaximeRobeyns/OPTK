@@ -1,9 +1,70 @@
-#+TITLE: Parameter Optimisation
+#+TITLE: Optimisation Toolkit
 
-* What is this?
+* What is OPTK
 
-This is a library to develop and benchmark black-box parameter optimisation
-algorithms.
+OPTK (read /optic/) is a library for developing, benchmarking and comparing
+*derivative-free* (`black box') optimisation algorithms, with an emphasis on
+both developing novel algorithms and using them in real applications.
+
+It is written in C/C++ to encourage and facilitate high-performance
+implementations of optimisation algorithms, while at the same time allowing for
+bindings to other languages such as Python, MATLAB or Octave to be easily
+written. This means that existing implementations of algorithms in other
+languages may be included in rankings, while allowing users to write new
+algorithms in a language that they are comfortable with.
+
+OPTK enforces a specification for new optimisation algorithms which is
+designed to be compatible with the 'Tuner' interface from [[https://github.com/microsoft/nni][Microsoft's NNI
+library]]. This means that algorithms developed for OPTK may be re-used directly
+(i.e. without modification) with NNI's feature-rich web dashboard, CLI tools and
+Kubernetes configuration for use in production.
+
+** Concepts
+
+*** What is an optimisation algorithm or 'tuner'?
+
+These both refer to a piece of software which implements certain functions which
+are called by either OPTK during benchmarks, or NNI during production runs. At
+the simplest level, these functions allow it to accept a parameter search space,
+and then generate new parameters for function evaluation, as well as accepting
+the corresponding result.
+
+*** What are the benchmarks?
+
+OPTK provides C implementations of common derivative-free global optimisation
+benchmarks, notably the test functions in [[https://arxiv.org/abs/1308.4008][this literature survey]] (Jamil et
+al. 2013), as well as the [[https://github.com/google-research/nasbench][neural architecture search benchmarks]] (Ying et al. 2019).
+
+Optimisation algorithms are ranked using the same methodology as set out in [[https://arxiv.org/abs/1603.09441][A
+stratified Analysis of Bayesian Optimization Methods]] (Dewancker et al. 2016).
+Due to the stochasticity of many optimisation strategies, we handle results
+statistically. To that end algorithms are compared pairwise using a Mann-Whitney
+U test on the best obtained value of the objective function. Where we cannot
+statistically significantly discriminate between two methods using this metric,
+we also consider the /Area Under Curve/ (AUC) metric which takes into account
+the number of evaluations required for an algorithm to reach its best value.
+
+** Usage Guide
+
+Here is the command line interface which is acting as a specification for what
+the program does:
+
+#+BEGIN_SRC bash
+Usage: optk [options] algorithm...
+
+Options:
+  -b <benchmark>...   Only run the specified <benchmark>
+  -o <dir>            Place the outputs into <dir>
+
+Examples:
+./optk gp_tuner
+./optk -b nas climate -o /results/test1 smac
+#+END_SRC
+
+At the simplest level, =optk= works as a benchmarking program, which takes in an
+optimisation algorithm, and will produce a set of traces (iteration, objective
+value) pairs for each benchmark, which it will save in a csv file in the
+=/results= directory in a file with the same name as the provided algorithm:
 
 * Licence
 
