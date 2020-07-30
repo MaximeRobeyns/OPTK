@@ -1,0 +1,31 @@
+[
+ {
+  "directory": "/home/maximerobeyns/Dropbox/CurrentProjects/OPTK",
+  "arguments": [
+   "g++",
+   "-o",
+   "optk",
+   "-I",
+   "./src/includes",
+   "./src/optk/optk.cpp",
+   "./src/optk/types.cpp"
+  ],
+  "file": "./src/optk/types.cpp"
+ },
+ {
+  "directory": "/home/maximerobeyns/Dropbox/CurrentProjects/OPTK",
+  "arguments": [
+   "g++",
+   "-o",
+   "optk",
+   "-I",
+   "./src/includes",
+   "-L",
+   "./src/includes",
+   "./src/optk/optk.cpp",
+   "./src/optk/types.cpp",
+   "./src/benchmarks/synthetic.cpp"
+  ],
+  "file": "./src/benchmarks/synthetic.cpp"
+ }
+]

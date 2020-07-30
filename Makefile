@@ -18,8 +18,13 @@
 
 # Targets ----------------------------------------------------------------------
 
+PROJECT_PATHS   = ./src/optk ./src/benchmarks
+PROJECT_SOURCES = $(shell find ${PROJECT_PATHS} -name *.cpp)
+
+INCLUDES = -I ./src/includes -L ./src/includes
+
 build:
-	g++ -o optk src/optk/optk.cpp
+	g++ -o optk ${INCLUDES} ${PROJECT_SOURCES}
 
 cmds:
 	compiledb make
