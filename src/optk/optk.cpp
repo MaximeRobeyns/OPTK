@@ -53,8 +53,9 @@ class optimisers {
         void register_opt(optimiser *o) {
             m_arr.push_back(o);
         }
+
     private:
-        intiterator;
+        int iterator;
         std::vector<optimiser *>m_arr;
 };
 

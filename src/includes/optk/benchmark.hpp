@@ -32,24 +32,30 @@ class benchmark {
         std::string m_name;
         u_int       m_dim = 1;
         vecd_t      m_fmin = vecd_t(m_dim);
+        std::vector<param_t> search_space;
 
         // function prototypes
         std::string get_name();
-        vecd_t get_search_space();
+        search_space get_search_space();
+        vecd_t evaluate(vecd_t x);
+
+};
+
+// example test benchmark -----------------------------------------------------
+// TODO move to its own file when implementing properly
+
+class ackley: public benchmark {
+    public:
+        ackley();
+        search_space get_search_space();
         vecd_t evaluate(vecd_t x);
 };
+
+#endif // __SYNTHETIC_H_
+
 
 /* // good idea, but unworkable
 #define OPTK_BENCHMARK append()
 
 OPTK_BENCHMARK class benchmark;
 */
-
-class ackley: public benchmark {
-    public:
-        ackley();
-        vecd_t get_search_space();
-        vecd_t evaluate(vecd_t x);
-};
-
-#endif // __SYNTHETIC_H_

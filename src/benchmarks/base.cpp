@@ -16,14 +16,14 @@
  * limitations under the License.
  */
 
-#include <benchmarks/base.hpp>
+#include <optk/benchmark.hpp>
 
 std::string benchmark::get_name() {
     return m_name;
 }
 
-vecd_t benchmark::get_search_space() {
-    vecd_t base(0);
+search_space benchmark::get_search_space() {
+    std::vector<param_t> base(0);
     return base;
 }
 
@@ -32,6 +32,7 @@ vecd_t benchmark::evaluate (vecd_t x) {
 }
 
 // Test benchmark function: ackley ----------------------------------------------
+// TODO move this to its own file when implementing properly.
 
 ackley::ackley() {
     m_name = "ackley";
