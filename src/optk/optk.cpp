@@ -18,7 +18,8 @@
 
 #include "iostream"
 #include <optk/types.hpp>
-#include <benchmarks/base.hpp>
+#include <optk/benchmark.hpp>
+#include <optk/optimiser.hpp>
 
 /* Benchmark list ----------------------------------------------------------- */
 

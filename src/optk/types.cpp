@@ -18,39 +18,6 @@
 
 #include <optk/types.hpp>
 
-std::string Param::get_name() {
-    return name;
-}
+// TODO implement the parameter methods (e.g. constructors, iterators etc) here.
 
-class uniform: Param {
-    double lb, ub;
-
-    uniform(std::string n, double lower = 0, double upper = 1) {
-        name = n;
-        lb = lower; ub = upper;
-    }
-
-    double getLb() {
-        return lb;
-    }
-
-    double getUb() {
-        return ub;
-    }
-};
-
-class randint: Param {
-    double lb, ub;
-
-    public:
-        randint (std::string n, double lower = 0, double upper = 0) {
-            name = n;
-            lb = lower; ub = upper;
-        }
-
-    double sample() {
-        double f = (double)rand() / RAND_MAX;
-        return lb + f * (ub - lb);
-    }
-};
 

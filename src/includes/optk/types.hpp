@@ -80,11 +80,6 @@ class qnormal: param_t {
         qnormal(std::string n, double mu, double sigma, double q);
 };
 
-class qnormal: param_t {
-    public:
-        qnormal(std::string n, double mu, double sigma, double q);
-}
-
 class lognormal: param_t {
     public:
         lognormal(std::string n, double mu, double sigma);

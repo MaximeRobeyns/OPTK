@@ -32,7 +32,7 @@ class benchmark {
         std::string m_name;
         u_int       m_dim = 1;
         vecd_t      m_fmin = vecd_t(m_dim);
-        std::vector<param_t> search_space;
+        std::vector<param_t> param_space;
 
         // function prototypes
         std::string get_name();
@@ -52,10 +52,3 @@ class ackley: public benchmark {
 };
 
 #endif // __SYNTHETIC_H_
-
-
-/* // good idea, but unworkable
-#define OPTK_BENCHMARK append()
-
-OPTK_BENCHMARK class benchmark;
-*/

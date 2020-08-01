@@ -49,36 +49,8 @@ vecd_t ackley::evaluate(vecd_t x) {
     return result;
 }
 
-vecd_t ackley::get_search_space () {
-    vecd_t result;
-    return result;
+search_space ackley::get_search_space () {
+    std::vector<param_t> tmp(0);
+    return tmp;
 }
 
-
-/*
-
-class Benchmark {
-
-    // fields
-    u_int dim = 1;
-    std::string m_name = "";
-    vecd_t fmin = std::vector<double>(0.0);
-
-    // virtual methods
-    virtual vecd_t evaluate (const vecd_t &a) = 0;
-    virtual vecd_t get_search_space () = 0;
-};
-
-class ackley : protected Benchmark {
-
-    std::string name = "";
-    int dim = 0;
-    vecd_t min_loc = std::vector<double>(0.0);
-
-    public:
-        vecd_t evaluate (const vecd_t &x) const;
-        std::string get_name () const;
-
-};
-
-*/
