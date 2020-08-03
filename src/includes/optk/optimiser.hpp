@@ -22,18 +22,22 @@
 #include <cstdio>
 #include <optk/types.hpp>
 
-// base class that every optimisation algorithm inherits
+// abstract base class that every optimisation algorithm inherits
 // TODO document me!
 class optimiser {
     public:
         optimiser();
-        std::string m_name;
-        search_space m_space;
+        std::string get_name () { return m_name; }
+        search_space get_search_space () { return m_space; }
 
         virtual void update_search_space (search_space space);
         // TODO potentially return another type allowing for categorical variables...
         virtual vecd_t generate_parameters(int param_id);
         virtual void receive_trial_results(int param_id, vecd_t parameters, double value);
+
+    private:
+        std::string m_name;
+        search_space m_space;
 };
 
 // class to hold the list of optimisation algorithms

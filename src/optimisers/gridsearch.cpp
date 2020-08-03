@@ -28,27 +28,30 @@ gridsearch::gridsearch() {
  *
  * Valid parameter types include: choice, quniform and randint.
  */
-void gridsearch::update_search_space(search_space space) {
-
-}
-
-void gridsearch::update_search_space(search_space space) {
-    // validate that the parameter types are permissible for use with the
-    // gridsearch algorithm:
-
-    // Accepted parameter types: choice, quniform, and randint
-
-    // 1. iterate over all the search space parameters:
+void
+gridsearch::update_search_space(search_space space)
+{
+    // verify that parameters are valid
     for (search_space::iterator i = space.begin(); i != space.end(); i++) {
-        if (i->m_name == "gridsearch" || i->m_name == "") {
-
-        }
+        optk::param_type tmp_type = i->get_type();
+        switch (tmp_type) {
+            case optk::choice:
+            case optk::quniform:
+            case optk::randint:
+                break;
+            default:
+                printf ("Could not use %s (type %s) as parameter to gridsearch optimiser\n",
+                        i->get_name().c_str(),
+                        param_to_string(tmp_type).c_str());
+                exit (1);
+        };
     }
 
-    m_space = space;
 }
 
-vecd_t gridsearch::generate_parameters(int param) {
+vecd_t
+gridsearch::generate_parameters(int param)
+{
 
     // for each parameter; iterate over the range of possible values:
     for (search_space::iterator i = m_space.begin(); i != m_space.end(); i++) {

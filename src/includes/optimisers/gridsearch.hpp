@@ -19,16 +19,20 @@
 #ifndef __GRIDSEARCH_
 #define __GRIDSEARCH_
 
+#include <cstdio>
+
 #include <optk/optimiser.hpp>
 #include <optk/types.hpp>
+#include <optk/utils.hpp>
 
 class gridsearch: public optimiser {
-
     public:
         gridsearch();
         void update_search_space (search_space space);
         vecd_t generate_parameters(int param_id);
         void receive_trial_results(int param_id, vecd_t parameters, double value);
+        search_space get_search_space() { return m_space; }
+    private:
         search_space m_space;
 };
 
