@@ -8,7 +8,7 @@
  * with the License. You may obtain a copy of the License at
  *
  * http://www.osedu.org/licenses/ECL-2.0
- *
+ *_
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,27 +22,30 @@
 #include <cstdio>
 #include <optk/types.hpp>
 
+// base class that every optimisation algorithm inherits
+// TODO document me!
 class optimiser {
     public:
+        optimiser();
         std::string m_name;
         search_space m_space;
-        virtual void update_search_space (search_space space);
 
-        // TODO document all these function prototypes
+        virtual void update_search_space (search_space space);
         // TODO potentially return another type allowing for categorical variables...
         virtual vecd_t generate_parameters(int param_id);
         virtual void receive_trial_results(int param_id, vecd_t parameters, double value);
 };
 
-// temporary gridsearch optimiser class definition -----------------------------
-// TODO move to its own file when implementing properly
-
-class gridsearch: public optimiser {
+// class to hold the list of optimisation algorithms
+// TODO document me!
+class optimisers {
     public:
-        gridsearch();
-        void update_search_space (search_space space);
-        vecd_t generate_parameters(int param_id);
-        search_space m_space;
+        optimisers();
+        void register_opt(optimiser *o);
+        optimiser *get_next();
+    private:
+        int iterator;
+        std::vector<optimiser *>m_arr;
 };
 
 #endif // __OPTIMISER_H_

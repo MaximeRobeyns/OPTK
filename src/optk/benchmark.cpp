@@ -16,10 +16,20 @@
  * limitations under the License.
  */
 
-#include <optk/types.hpp>
+#include <optk/benchmark.hpp>
 
-using namespace optk;
+benchmarks::benchmarks() {
+    iterator = 0;
+}
 
-// TODO implement the parameter methods (e.g. constructors, iterators etc) here.
+void benchmarks::register_bench(benchmark *b) {
+    m_arr.push_back(b);
+}
 
+benchmark *benchmarks::get_next() {
+    if (iterator < m_arr.size())
+        return m_arr[iterator++];
+    else
+        return NULL;
+}
 

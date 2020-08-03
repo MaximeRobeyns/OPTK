@@ -21,46 +21,6 @@
 #include <optk/benchmark.hpp>
 #include <optk/optimiser.hpp>
 
-/* Benchmark list ----------------------------------------------------------- */
-
-class benchmarks {
-    public:
-        benchmarks() {
-            iterator = 0;
-        }
-
-        void register_bench(benchmark *b) {
-            m_arr.push_back(b);
-        }
-
-        benchmark *get_next() {
-            if (iterator < m_arr.size())
-                return m_arr[iterator++];
-            else
-                return NULL;
-        }
-
-    private:
-        int iterator;
-        std::vector<benchmark *> m_arr;
-};
-
-class optimisers {
-    public:
-        optimisers() {
-            iterator = 0;
-        }
-
-        void register_opt(optimiser *o) {
-            m_arr.push_back(o);
-        }
-
-    private:
-        int iterator;
-        std::vector<optimiser *>m_arr;
-};
-
-
 /* Main function ------------------------------------------------------------ */
 
 int
@@ -74,18 +34,23 @@ main (int argc, char **argv)
     bs.register_bench(&ack);
     bs.register_bench(&ack);
 
-    // example iterator
-    benchmark *b = bs.get_next();
-    for ( ; b != NULL; b = bs.get_next()) {
-        std::cout << (b)->get_name() << std::endl;
-    }
-    std::cout << '\n';
-        
     // 2. initialise the list of optimisation algorithms
-
     optimisers opts;
 
+    gridsearch gs;
+    opts.register_opt(&gs);
+
     // 3. iterate through each of the algorithms, and each of the benchmarks in turn
+
+    // example iterator
+    benchmark *b = bs.get_next();
+    for (optimiser *o = opts.get_next(); o != NULL; o = opts.get_next()) {
+        for (benchmark *b = bs.get_next(); b != NULL; b = bs.get_next()) {
+            std::cout << "running optimiser " << o->m_name;
+            std::cout << " on benchmark " << b->get_name() << std::endl;
+        }
+    }
+
     // 4. initialise the optimisation algorithm
     // 5. query the benchmark for its search space; and send to opt
     // 6. request parameters from opt
@@ -111,13 +76,6 @@ main (int argc, char **argv)
         std::cout << ' ' << *i;
     std::cout << '\n';
     */
-
-    /* need a way of encoding the search space as an integer vector, which is
-     * expressive enough to convey the NNI interface.
-     * 
-     * Implicitly, the pamgo program treats
-     * */
-
 
     /*
     for (std::vector<int>::iterator i = ints.begin(); i != ints.end(); i++)

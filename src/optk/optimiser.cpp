@@ -21,35 +21,17 @@
 
 #include <optk/optimiser.hpp>
 
-// temporary gridsearch class definition; TODO move to own file when implememting
-
-gridsearch::gridsearch() {
-    m_name = "gridsearch";
+optimisers::optimisers() {
+    iterator = 0;
 }
 
-void gridsearch::update_search_space(search_space space) {
-    // validate that the parameter types are permissible for use with the
-    // gridsearch algorithm:
-
-    // Accepted parameter types: choice, quniform, and randint
-
-    // 1. iterate over all the search space parameters:
-    for (search_space::iterator i = space.begin(); i != space.end(); i++) {
-        if (i->m_name == "gridsearch" || i->m_name == "") {
-
-        }
-    }
-
-    m_space = space;
+void optimisers::register_opt(optimiser *o) {
+    m_arr.push_back(o);
 }
 
-vecd_t gridsearch::generate_parameters(int param) {
-
-    // for each parameter; iterate over the range of possible values:
-    for (search_space::iterator i = m_space.begin(); i != m_space.end(); i++) {
-        
-    }
+optimiser *optimisers::get_next() {
+    if (iterator < m_arr.size())
+        return m_arr[iterator++];
+    else
+        return NULL;
 }
-
-
-

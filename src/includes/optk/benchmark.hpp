@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-#ifndef __SYNTHETIC_H_
-#define __SYNTHETIC_H_
+#ifndef __BENCHMARK_H_
+#define __BENCHMARK_H_
 
 #include <string>
 #include <sys/types.h>
@@ -27,6 +27,8 @@
 
 #include <optk/types.hpp>
 
+// This is the class that individual benchmarks will inherit
+// TODO document me!
 class benchmark {
     public:
         std::string m_name;
@@ -41,6 +43,18 @@ class benchmark {
 
 };
 
+// This is the class that wraps the list of benchmarks
+// TODO document me!
+class benchmarks {
+    public:
+        benchmarks();
+        void register_bench(benchmark *b);
+        benchmark *get_next();
+    private:
+        int iterator;
+        std::vector<benchmark *> m_arr;
+};
+
 // example test benchmark -----------------------------------------------------
 // TODO move to its own file when implementing properly
 
@@ -51,4 +65,4 @@ class ackley: public benchmark {
         vecd_t evaluate(vecd_t x);
 };
 
-#endif // __SYNTHETIC_H_
+#endif // __BENCHMARK_H_

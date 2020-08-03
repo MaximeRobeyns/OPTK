@@ -16,10 +16,20 @@
  * limitations under the License.
  */
 
+#ifndef __GRIDSEARCH_
+#define __GRIDSEARCH_
+
+#include <optk/optimiser.hpp>
 #include <optk/types.hpp>
 
-using namespace optk;
+class gridsearch: public optimiser {
 
-// TODO implement the parameter methods (e.g. constructors, iterators etc) here.
+    public:
+        gridsearch();
+        void update_search_space (search_space space);
+        vecd_t generate_parameters(int param_id);
+        void receive_trial_results(int param_id, vecd_t parameters, double value);
+        search_space m_space;
+};
 
-
+#endif // __GRIDSEARCH_
