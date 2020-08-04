@@ -16,17 +16,73 @@
 # @file
 # @version 0.1
 
+# GNU Make Configuration -------------------------------------------------------
+
+SHELL := bash
+.ONESHELL:
+.SHELLFLAGS := -eu -o pipefail -c
+.DELETE_ON_ERROR:
+MAKEFLAGS += --warn-undefined-variables
+MAKEFLAGS += --no-builtin-rules
+
+# Constants --------------------------------------------------------------------
+
+PROG			= optk
+
+SOURCES			= src
+INCDIR			= includes
+BUILDDIR		= build
+TARGETDIR		= bin
+#RESDIR			= resources
+
+PROJECT_SOURCES = $(shell find ${SOURCES} -type f -name *.cpp)
+PROJECT_OBJECTS = $(patsubst ${SOURCES}/%,${BUILDDIR}/%,${PROJECT_SOURCES:.cpp=.o})
+
+INCLUDES		= -I${INCDIR} -I/usr/local/include
+LIBS            =
+INCDEP			= -I${INCDIR}
+CFLAGS			= -O2 -Wall -std=c++17
+CC				= g++
+
 # Targets ----------------------------------------------------------------------
 
-PROJECT_PATHS   = ./src/optk ./src/benchmarks
-PROJECT_SOURCES = $(shell find ${PROJECT_PATHS} -name *.cpp)
+all: directories ${PROG}
 
-INCLUDES = -I ./src/includes -L ./src/includes
+remake: cleaner all
 
-build:
-	g++ -o optk ${INCLUDES} ${PROJECT_SOURCES}
+# resources: directories
+#	 @cp ${RESDIR}/* ${TARGETDIR}/
+
+directories:
+	@mkdir -p ${TARGETDIR}
+	@mkdir -p ${BUILDDIR}
+
+clean:
+	${RM} -rf ${BUILDDIR}
+
+cleaner: clean
+	${RM} -rf ${TARGETDIR}
+
+# gets dependencies for existing object files
+-include ${PROJECT_OBJECTS:.o=.d}
+
+# linking
+${PROG}: ${PROJECT_OBJECTS}
+	${CC} -o ${TARGETDIR}/${PROG} $^ ${LIBS}
+
+# compilation
+${BUILDDIR}/%.o: ${SOURCES}/%.cpp
+	mkdir -p $(dir $@)
+	${CC} ${CFLAGS} ${INCLUDES} -c -o $@ $<
+	${CC} ${CFLAGS} ${INCDEP} -MM ${SOURCES}/$*.cpp > ${BUILDDIR}/$*.d
+	@cp -f ${BUILDDIR}/$*.d ${BUILDDIR}/$*.d.tmp
+	sed -e 's|.*:|${BUILDDIR}/$*.o:|' < ${BUILDDIR}/$*.d.tmp > ${BUILDDIR}/$*.d
+	sed -e 's/.*://' -e 's/\\$$//' < ${BUILDDIR}/$*.d.tmp | fmt -1 | sed -e 's/^ *//' -e 's/$$/:/' >> ${BUILDDIR}/$*.d
+	rm -f ${BUILDDIR}/$*.d.tmp
 
 cmds:
 	compiledb make
+
+.PHONY: all remake clean cleaner resources cmds
 
 # end
