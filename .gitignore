@@ -1,7 +1,10 @@
-docs/build/*
+docs/latex
+docs/html
 notes.org
 */*.clangd
 .clangd
 archives
 optk
 compile_commands.json
+build
+testbuild

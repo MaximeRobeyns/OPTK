@@ -16,15 +16,22 @@
  * limitations under the License.
  * 
  * @file
+ * @brief The main entrypoint for the unit tests.
  */
 
-#include <tests/tests.hpp>
+#ifndef __TESTS_H_
+#define __TESTS_H_
 
-void
-OPTK_tests::testmain ()
-{
-    assert (1 == 1);
-    std::cout << "All tests pass." << std::endl;
+#include <iostream>
+#include <assert.h>
+
+/**
+ * optk_t is the namespace under which the test functions are written.
+ */
+namespace OPTK_tests {
+    /**
+     * testmain is the entrypoint for the unit tests for this program.
+     */
+    void testmain();
 }
-
-
+#endif // __TESTS_H_
