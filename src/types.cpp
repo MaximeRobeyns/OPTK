@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (C) 2020 Maxime Robeyns <maximerobeyns@gmail.com>
  *
  * Written for the ACRC, University of Bristol
@@ -14,22 +14,19 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the LIcense For The Specific Language Governing permissions and
  * limitations under the License.
+ * 
+ * @file
+ * @brief Implements the main types used in the program.
  */
 
-#include <optk/benchmark.hpp>
+#include <optk/types.hpp>
 
-benchmarks::benchmarks() {
-    iterator = 0;
+using namespace optk;
+
+choice::choice (std::string n, std::vector<param_t> options) {
+    m_name = n;
+    m_options = options;
 }
 
-void benchmarks::register_bench(benchmark *b) {
-    m_arr.push_back(b);
-}
-
-benchmark *benchmarks::get_next() {
-    if (iterator < m_arr.size())
-        return m_arr[iterator++];
-    else
-        return NULL;
-}
+// TODO implement the choice sampler here.
 

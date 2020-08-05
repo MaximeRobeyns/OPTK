@@ -82,7 +82,7 @@ clean:
 
 cleaner: clean
 	@${RM} -rf ${TARGETDIR}
-	@${RM} -rf docs/html docs/latex
+	@${RM} -rf docs/html
 
 # gets dependencies for existing object files
 # -include ${PROJECT_OBJECTS:.o=.d}
@@ -127,9 +127,10 @@ ${TESTBUILDDIR}/test/%.o: ${TESTSRC}/%.cpp
 cmds: ${PROJECT_SOURCES} ${PROJECT_HEADERS}
 	@compiledb make
 
-docs: ${PROJECT_SOURCES} ${PROJECT_HEADERS}
+docs: docs/html
+
+docs/html: ${PROJECT_SOURCES} ${PROJECT_HEADERS}
 	@doxygen docs/Doxyfile
 
-.PHONY: all remake clean cleaner
-
+.PHONY: all remake clean cleaner docs
 # end

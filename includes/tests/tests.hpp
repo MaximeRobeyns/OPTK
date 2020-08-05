@@ -26,9 +26,10 @@
 #include <assert.h>
 
 /**
- * optk_t is the namespace under which the test functions are written.
+ * OPTKtest is the namespace under which the test functions are written.
  */
-namespace OPTK_tests {
+namespace OPTKtest {
+
     /**
      * testmain is the entrypoint for the unit tests for this program.
      */

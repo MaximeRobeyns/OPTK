@@ -21,7 +21,7 @@
 #include <tests/tests.hpp>
 
 void
-OPTK_tests::testmain ()
+OPTKtest::testmain ()
 {
     assert (1 == 1);
     std::cout << "All tests pass." << std::endl;
