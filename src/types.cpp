@@ -20,13 +20,68 @@
  */
 
 #include <optk/types.hpp>
+#include <random>
 
-using namespace optk;
+// choice ----------------------------------------------------------------------
 
-choice::choice (std::string n, std::vector<param_t> options) {
+optk::choice::choice (std::string n, std::vector<optk::param_t *> *options)
+{
     m_name = n;
-    m_options = options;
+    std::vector<optk::param_t *> m_options(*options);
+    m_type = param::choice;
 }
 
-// TODO implement the choice sampler here.
+std::vector<optk::param_t *> *
+optk::choice::options()
+{
+    return &m_options;
+}
+
+int
+optk::choice::count ()
+{
+    return m_options.size();
+}
+
+optk::param_t *
+optk::choice::get (long unsigned int i)
+{
+    if (i < 0 || i > m_options.size())
+        throw "i out of range";
+    return m_options[i];
+}
+
+// randint ---------------------------------------------------------------------
+
+optk::randint::randint (std::string n, int l, int u)
+{
+    m_name = n;
+    m_type = param::randint;
+    // initialise mersenne twister prng using the random device.
+    std::mt19937 generator(rd());
+    std::uniform_int_distribution<int> dist (l, u);
+}
+
+int
+optk::randint::sample()
+{
+    return dist(generator);
+}
+
+// uniform ---------------------------------------------------------------------
+
+optk::uniform::uniform (std::string n, double l, double u)
+{
+    m_name = n;
+    m_type = param::uniform;
+    std::mt19937 generator(rd());
+    std::uniform_real_distribution<double> dist (l, u);
+}
+
+double
+optk::uniform::sample()
+{
+    return dist (generator);
+}
+
 
