@@ -165,8 +165,8 @@ test_normal ()
     for (int i = 0; i < N; i++) {
         tmp_em_var += pow((values[i] - em_mean),2);
     }
-    double em_var = sqrt(tmp_em_var / (N-1));
-    assert (2.2 < em_var && em_var < 2.8);
+    double em_stddev = sqrt(tmp_em_var / (N-1));
+    assert (2.2 < em_stddev && em_stddev < 2.8);
 }
 
 static void
@@ -180,7 +180,6 @@ test_qnormal ()
     for (int i = 0; i < 100; i++) {
         assert ((int)testqnorm.sample() % 2 == 0);
     }
-
 }
 
 static void
@@ -195,6 +194,20 @@ test_lognormal ()
     // e.g. Kolmogorov–Smirnov test
 }
 
+static void
+test_qlognormal ()
+{
+    optk::qlognormal testqln ("testqln", 10, 1.5, 3);
+
+    assert (testqln.get_name () == std::string ("testqln"));
+    assert (testqln.get_type () == param::qlognormal);
+
+    for (int i = 0; i < 100; i++) {
+        assert ((int) testqln.sample() % 3 == 0);
+    }
+}
+
+
 void
 run_type_tests()
 {
@@ -208,6 +221,7 @@ run_type_tests()
     test_normal ();
     test_qnormal ();
     test_lognormal ();
+    test_qlognormal ();
     std::cout << "All type tests pass" << std::endl;
 }
 

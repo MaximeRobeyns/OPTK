@@ -204,4 +204,24 @@ optk::lognormal::sample ()
     return exp(normal::sample());
 }
 
+// qlognormal ------------------------------------------------------------------
+
+optk::qlognormal::qlognormal (
+    std::string n,
+    double mu,
+    double sigma,
+    double q
+) :
+    lognormal (n, mu, sigma)
+{
+    m_type = param::qlognormal;
+    m_q = q;
+}
+
+double
+optk::qlognormal::sample ()
+{
+    // return round(lognormal::sample() / m_q) * m_q;
+    return round(lognormal::sample() / m_q) * m_q;
+}
 
