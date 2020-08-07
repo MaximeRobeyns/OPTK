@@ -17,9 +17,6 @@
 #
 # @file
 # @version 0.1
-#
-# Much of the structure of this Makefile is due to Scott McPeak:
-# http://scottmcpeak.com/autodepend/autodepend.html
 
 # GNU Make Configuration -------------------------------------------------------
 
@@ -44,9 +41,9 @@ TESTBUILDDIR	= testbuild
 INCDIR			= includes
 TARGETDIR		= bin
 
-PROJECT_SOURCES = $(shell find ${SOURCES} -type f -name *.cpp)
-PROJECT_HEADERS = $(shell find ${INCDIR} -type f -name *.hpp)
-PROJECT_OBJECTS = $(patsubst ${SOURCES}/%,${BUILDDIR}/%,${PROJECT_SOURCES:.cpp=.o})
+PROJECT_SOURCES	= $(shell find ${SOURCES} -type f -name *.cpp)
+PROJECT_HEADERS	= $(shell find ${INCDIR} -type f -name *.hpp)
+PROJECT_OBJECTS	= $(patsubst ${SOURCES}/%,${BUILDDIR}/%,${PROJECT_SOURCES:.cpp=.o})
 
 TEST_SOURCES	= $(shell find ${TESTSRC} -type f -name *.cpp)
 TEST_OBJECTS_i	= $(patsubst ${TESTSRC}/%,${TESTBUILDDIR}/test/%,${TEST_SOURCES:.cpp=.o})
@@ -54,7 +51,7 @@ TEST_OBJECTS_ii	= $(patsubst ${SOURCES}/%,${TESTBUILDDIR}/src/%,${PROJECT_SOURCE
 TEST_OBJECTS	= ${TEST_OBJECTS_i} ${TEST_OBJECTS_ii}
 
 INCLUDES		= -I${INCDIR} -I/usr/local/include
-LIBS            =
+LIBS			=
 INCDEP			= -I${INCDIR}
 CFLAGS			= -O2 -Wall -std=c++17
 TESTFLAGS		= -D__OPTK_TESTING -g -Wall -std=c++17
@@ -85,7 +82,6 @@ cleaner: clean
 	@${RM} -rf docs/html
 
 # gets dependencies for existing object files
-# -include ${PROJECT_OBJECTS:.o=.d}
 -include ${TEST_OBJECTS:.o=.d}
 
 # linking
@@ -94,6 +90,9 @@ ${PROG}: ${PROJECT_OBJECTS}
 
 ${TESTPROG}: ${TEST_OBJECTS}
 	@${CC} -o ${TARGETDIR}/${TESTPROG} $^ ${LIBS}
+
+# The following pattern is due in large part to the work of Scott McPeak:
+# http://scottmcpeak.com/autodepend/autodepend.html
 
 # compilation
 ${BUILDDIR}/%.o: ${SOURCES}/%.cpp
