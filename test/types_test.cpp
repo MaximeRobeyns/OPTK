@@ -19,6 +19,8 @@
  * @brief Implements tests for optk types.
  */
 
+#include <iostream>
+#include <memory>
 #include <tests/types_test.hpp>
 #include <optk/types.hpp>
 
@@ -44,31 +46,92 @@ test_categorical()
     }
 }
 
-// TODO test the choice parameter type once others have been implemented
-/*
 static void test_choice_type() {
-    optk::choice_opts options(5);
+    std::vector<optk::param_t *> options;
+
+    optk::randint ri("randint", 0, 10);
+    std::vector<int> opts = {0,1,2,3,4};
+    optk::categorical<int> cat("categorical", &opts);
+    optk::normal norm("normal", 0, 1);
+    optk::qloguniform qlogu ("qloguniform", 1, 10, 2);
+    optk::uniform uni ("uniform", 10, 20);
+
+    options.push_back(&ri);
+    options.push_back(&cat);
+    options.push_back(&norm);
+    options.push_back(&qlogu);
+    options.push_back(&uni);
+
+    optk::choice test("testchoice", &options);
+
+    assert (test.get_name() == "testchoice");
+    assert (test.get_type() == param::choice);
+    assert (test.count() == options.size());
 
     for (int i = 0; i < 5; i++) {
-        optk::value<int> tmp(i);
-        // implicitly upcasts to optk::param_t
-        options.push_back(&tmp);
+        optk::param_t *param = test.get(i);
+        param::param_type t = param->get_type();
+        switch (t) {
+            case param::randint:
+            {
+                optk::randint *rparam = static_cast<optk::randint *>(param);
+                assert (rparam->get_type() == param::randint);
+                assert (rparam->get_name() == std::string ("randint"));
+                for (int j = 0; j < 100; j++) {
+                    int smp = rparam->sample ();
+                    assert (0 <= smp && smp <= 10);
+                }
+                break;
+            }
+            case param::categorical:
+            {
+                optk::categorical<int> *cparam =
+                    static_cast<optk::categorical<int> *>(param);
+                assert (cparam->get_name () == std::string ("categorical"));
+                assert (cparam->get_type () == param::categorical);
+                for (int j = 0; j < 5; j++)
+                    assert (cparam->get(i) == i);
+                break;
+            }
+            case param::normal:
+            {
+                optk::normal *nparam = static_cast<optk::normal *>(param);
+                assert (nparam->get_name () == std::string("normal"));
+                assert (nparam->get_type () == param::normal);
+                break;
+            }
+            case param::qloguniform:
+            {
+                optk::qloguniform *qparam =
+                    static_cast<optk::qloguniform *>(param);
+                assert (qparam->get_name () == std::string("qloguniform"));
+                assert (qparam->get_type () == param::qloguniform);
+                for (int j = 0; j < 100; j++) {
+                    double tmp = qparam->sample ();
+                    assert (1.0 <= tmp && tmp <= 10.0);
+                    assert ((int) tmp % 2 == 0);
+                }
+                break;
+            }
+            case param::uniform:
+            {
+                optk::uniform *uparam = static_cast<optk::uniform *>(param);
+                assert (uparam->get_name () == std::string ("uniform"));
+                assert (uparam->get_type () == param::uniform);
+                for (int j = 0; j < 100; j++) {
+                    double tmp = uparam->sample ();
+                    assert (10.0 <= tmp);
+                    assert (tmp <= 20.0);
+                }
+                break;
+            }
+            default:
+                // uh oh! we shuoldn't end up here.
+                assert (0 == 1); // hacky stop
+                break;
+        }
     }
-
-    optk::choice test("testchoice", options);
-
-    assert (test.get_type() == param::choice);
-    assert (test.get_name() == std::string("testchoice"));
-
-    // for (int i = 0; i < 5; i++) {
-    //     // make the assumption that the value is an integer
-    //     std::unique_ptr<optk::param_t> base = test.get(i);
-    //     // optk::param_t *base = test.get(i);
-    //     // optk::value<int> *val = dynamic_cast<optk::value<int> *> (base);
-    //     // assert (val->val == i);
-    // }
 }
-*/
 
 static void
 test_randint ()
@@ -222,6 +285,7 @@ run_type_tests()
     test_qnormal ();
     test_lognormal ();
     test_qlognormal ();
+    test_choice_type ();
     std::cout << "All type tests pass" << std::endl;
 }
 

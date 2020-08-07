@@ -22,43 +22,45 @@
 #include <optk/types.hpp>
 #include <random>
 
-/// TODO get rid of this
-#include <iostream>
+optk::param_t::param_t (std::string n)
+{
+    m_name = n;
+    m_type = param::undefined;
+}
 
 // choice ----------------------------------------------------------------------
 
-optk::choice::choice (std::string n, std::vector<optk::param_t *> *options)
+optk::choice::choice (std::string n, std::vector<optk::param_t *> *options) :
+    param_t (n)
 {
-    m_name = n;
-    std::vector<optk::param_t *> m_options(*options);
+    m_options = options;
     m_type = param::choice;
 }
 
 std::vector<optk::param_t *> *
 optk::choice::options()
 {
-    return &m_options;
+    return m_options;
 }
 
-int
+long unsigned int
 optk::choice::count ()
 {
-    return m_options.size();
+    return m_options->size();
 }
 
 optk::param_t *
 optk::choice::get (long unsigned int i)
 {
-    if (i < 0 || i > m_options.size())
+    if (i < 0 || i > m_options->size())
         throw "i out of range";
-    return m_options[i];
+    return (*m_options)[i];
 }
 
 // randint ---------------------------------------------------------------------
 
-optk::randint::randint (std::string n, int l, int u)
+optk::randint::randint (std::string n, int l, int u): param_t (n)
 {
-    m_name = n;
     m_type = param::randint;
     // initialise Mersenne twister prng using the random device.
     generator = std::mt19937 (rd());
@@ -73,9 +75,8 @@ optk::randint::sample()
 
 // uniform ---------------------------------------------------------------------
 
-optk::uniform::uniform (std::string n, double l, double u)
+optk::uniform::uniform (std::string n, double l, double u): param_t (n)
 {
-    m_name = n;
     m_lower = l;
     m_upper = u;
     m_type = param::uniform;
@@ -161,7 +162,7 @@ optk::qloguniform::sample ()
 
 // normal ----------------------------------------------------------------------
 
-optk::normal::normal (std::string n, double mu, double sigma)
+optk::normal::normal (std::string n, double mu, double sigma): param_t (n)
 {
     m_type = param::normal;
     m_name = n;
@@ -221,7 +222,6 @@ optk::qlognormal::qlognormal (
 double
 optk::qlognormal::sample ()
 {
-    // return round(lognormal::sample() / m_q) * m_q;
     return round(lognormal::sample() / m_q) * m_q;
 }
 

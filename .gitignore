@@ -8,3 +8,4 @@ optk
 compile_commands.json
 build
 testbuild
+.gdb_history
