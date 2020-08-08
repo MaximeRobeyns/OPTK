@@ -47,7 +47,7 @@ test_categorical()
 }
 
 static void test_choice_type() {
-    std::vector<optk::param_t *> options;
+    optk::sspace_t options;
 
     optk::randint ri("randint", 0, 10);
     std::vector<int> opts = {0,1,2,3,4};

@@ -30,14 +30,14 @@ optk::param_t::param_t (std::string n)
 
 // choice ----------------------------------------------------------------------
 
-optk::choice::choice (std::string n, std::vector<optk::param_t *> *options) :
+optk::choice::choice (std::string n, optk::sspace_t *options) :
     param_t (n)
 {
     m_options = options;
     m_type = param::choice;
 }
 
-std::vector<optk::param_t *> *
+optk::sspace_t *
 optk::choice::options()
 {
     return m_options;
