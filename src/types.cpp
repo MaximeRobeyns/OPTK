@@ -63,6 +63,8 @@ optk::randint::randint (std::string n, int l, int u): param_t (n)
 {
     m_type = param::randint;
     // initialise Mersenne twister prng using the random device.
+    m_lower = l;
+    m_upper = u;
     generator = std::mt19937 (rd());
     dist = std::uniform_int_distribution<int> (l, u);
 }
@@ -164,6 +166,8 @@ optk::qloguniform::sample ()
 
 optk::normal::normal (std::string n, double mu, double sigma): param_t (n)
 {
+    m_mu = mu;
+    m_sigma = sigma;
     m_type = param::normal;
     m_name = n;
     generator = std::mt19937 (rd());

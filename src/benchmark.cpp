@@ -39,8 +39,8 @@ optk::benchmark::get_search_space ()
     return &m_params;
 }
 
-optk::vecd_t
-optk::benchmark::evaluate (optk::vecd_t x)
+optk::plist
+optk::benchmark::evaluate (optk::plist x)
 {
     return x;
 }

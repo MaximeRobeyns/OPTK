@@ -77,6 +77,8 @@ static void test_choice_type() {
                 optk::randint *rparam = static_cast<optk::randint *>(param);
                 assert (rparam->get_type() == param::randint);
                 assert (rparam->get_name() == std::string ("randint"));
+                assert (rparam->m_lower == 0);
+                assert (rparam->m_upper == 10);
                 for (int j = 0; j < 100; j++) {
                     int smp = rparam->sample ();
                     assert (0 <= smp && smp <= 10);
@@ -98,6 +100,8 @@ static void test_choice_type() {
                 optk::normal *nparam = static_cast<optk::normal *>(param);
                 assert (nparam->get_name () == std::string("normal"));
                 assert (nparam->get_type () == param::normal);
+                assert (nparam->m_mu == 0);
+                assert (nparam->m_sigma == 1);
                 break;
             }
             case param::qloguniform:
@@ -106,6 +110,9 @@ static void test_choice_type() {
                     static_cast<optk::qloguniform *>(param);
                 assert (qparam->get_name () == std::string("qloguniform"));
                 assert (qparam->get_type () == param::qloguniform);
+                assert (qparam->m_lower == 1);
+                assert (qparam->m_upper == 10);
+                assert (qparam->m_q == 2);
                 for (int j = 0; j < 100; j++) {
                     double tmp = qparam->sample ();
                     assert (1.0 <= tmp && tmp <= 10.0);
@@ -118,6 +125,8 @@ static void test_choice_type() {
                 optk::uniform *uparam = static_cast<optk::uniform *>(param);
                 assert (uparam->get_name () == std::string ("uniform"));
                 assert (uparam->get_type () == param::uniform);
+                assert (uparam->m_lower == 10);
+                assert (uparam->m_upper == 20);
                 for (int j = 0; j < 100; j++) {
                     double tmp = uparam->sample ();
                     assert (10.0 <= tmp);
@@ -141,6 +150,8 @@ test_randint ()
 
     assert (testrandint.get_name () == std::string ("test"));
     assert (testrandint.get_type () == param::randint);
+    assert (testrandint.m_lower == 0);
+    assert (testrandint.m_upper == 10);
 
     for (int i = 0; i < 100; i++) {
         int tmp = testrandint.sample ();
@@ -155,6 +166,8 @@ test_uniform ()
 
     assert (testuniform.get_name () == std::string ("testing"));
     assert (testuniform.get_type () == param::uniform);
+    assert (testuniform.m_lower == 0);
+    assert (testuniform.m_upper == 10);
 
     for (int i = 0; i < 100; i++) {
         double tmp = testuniform.sample ();
@@ -169,6 +182,7 @@ test_quniform ()
 
     assert (testquniform.get_name () == std::string ("testing"));
     assert (testquniform.get_type () == param::quniform);
+    assert (testquniform.m_q == 2);
 
     for (int i = 0; i < 100; i++) {
         double tmp = testquniform.sample ();
@@ -198,6 +212,7 @@ test_qloguniform ()
 
     assert (testqlu.get_name () == std::string ("test_qlu"));
     assert (testqlu.get_type () == param::qloguniform);
+    assert (testqlu.m_q == 2);
 
     for (int i = 0; i < 100; i++) {
         double tmp = testqlu.sample ();
@@ -213,6 +228,8 @@ test_normal ()
 
     assert (testnorm.get_name () == std::string ("testnormal"));
     assert (testnorm.get_type () == param::normal);
+    assert (testnorm.m_mu == 5);
+    assert (testnorm.m_sigma == 2.5);
 
     int N = 500;
 
@@ -239,6 +256,7 @@ test_qnormal ()
 
     assert (testqnorm.get_name () == std::string ("testqnorm"));
     assert (testqnorm.get_type () == param::qnormal);
+    assert (testqnorm.m_q == 2);
 
     for (int i = 0; i < 100; i++) {
         assert ((int)testqnorm.sample() % 2 == 0);
@@ -264,12 +282,12 @@ test_qlognormal ()
 
     assert (testqln.get_name () == std::string ("testqln"));
     assert (testqln.get_type () == param::qlognormal);
+    assert (testqln.m_q == 3);
 
     for (int i = 0; i < 100; i++) {
         assert ((int) testqln.sample() % 3 == 0);
     }
 }
-
 
 void
 run_type_tests()
