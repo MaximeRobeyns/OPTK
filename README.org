@@ -1,6 +1,6 @@
-#+TITLE: Optimisation Toolkit
+#+TITLE: Optimisation Toolkit (OPTK)
 
-* What is OPTK
+** What is OPTK?
 
 OPTK (read /optic/) is a library for developing, benchmarking and comparing
 *derivative-free* (`black box') optimisation algorithms, with an emphasis on
@@ -68,7 +68,9 @@ value) pairs for each benchmark, which it will save in a csv file in the
 
 * Licence
 
-Copyright 2020 Maxime Robeyns
+Copyright (C) 2020 Maxime Robeyns
+
+Written for the Advanced Computing Research Centre, University of Bristol.
 
 Licensed under the Educational Community License, Version 2.0
 (the "License"); you may not use this file except in compliance

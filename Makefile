@@ -44,11 +44,13 @@ TARGETDIR		= bin
 PROJECT_SOURCES	= $(shell find ${SOURCES} -type f -name *.cpp)
 PROJECT_HEADERS	= $(shell find ${INCDIR} -type f -name *.hpp)
 PROJECT_OBJECTS	= $(patsubst ${SOURCES}/%,${BUILDDIR}/%,${PROJECT_SOURCES:.cpp=.o})
+PROJECT_SUBDIRS = $(shell find ${SOURCES} -type d | cut -d'/' -f2-)
 
 TEST_SOURCES	= $(shell find ${TESTSRC} -type f -name *.cpp)
 TEST_OBJECTS_i	= $(patsubst ${TESTSRC}/%,${TESTBUILDDIR}/test/%,${TEST_SOURCES:.cpp=.o})
 TEST_OBJECTS_ii	= $(patsubst ${SOURCES}/%,${TESTBUILDDIR}/src/%,${PROJECT_SOURCES:.cpp=.o})
 TEST_OBJECTS	= ${TEST_OBJECTS_i} ${TEST_OBJECTS_ii}
+TEST_SUBDIRS    = $(shell find ${TESTSRC} -type d | cut -d'/' -f2-)
 
 INCLUDES		= -I${INCDIR} -I/usr/local/include
 LIBS			=
@@ -71,15 +73,16 @@ directories:
 
 testdirs:
 	@mkdir -p ${TARGETDIR}
-	@mkdir -p ${TESTBUILDDIR}/src
-	@mkdir -p ${TESTBUILDDIR}/test
+	@mkdir -p $(addprefix ${TESTBUILDDIR}/, ${PROJECT_SUBDIRS})
+	@mkdir -p $(addprefix ${TESTBUILDDIR}/, ${TEST_SUBDIRS})
 
 clean:
 	@${RM} -rf ${BUILDDIR} ${TESTBUILDDIR}
 
 cleaner: clean
-	@${RM} -rf ${TARGETDIR}
+	@${RM} -rf ${TARGETDIR}/*
 	@${RM} -rf docs/html
+	@${RM} -rf docs/latex
 
 # gets dependencies for existing object files
 -include ${TEST_OBJECTS:.o=.d}
