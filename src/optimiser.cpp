@@ -21,9 +21,15 @@
 
 #include <optk/optimiser.hpp>
 
-optk::optimiser::optimiser (std::string n)
+optk::optimiser::optimiser (std::string name)
 {
-    m_name = n;
+    m_name = name;
+}
+
+void
+optk::optimiser::accept (optimisers *o)
+{
+    o->register_optimiser (this);
 }
 
 optk::optimisers::optimisers ()
