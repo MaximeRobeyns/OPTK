@@ -2,7 +2,7 @@
  * Copyright (C) 2020 Maxime Robeyns <maximerobeyns@gmail.com>
  *
  * Written for the ACRC, University of Bristol
- * 
+ *
  * Licensed under the Educational Community License, Version 2.0
  * (the "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
@@ -16,18 +16,20 @@
  * limitations under the License.
  * 
  * @file
+ * @brief Defines some tests for built-in optimisers.
  */
 
-#include <tests/tests.hpp>
-#include <tests/types_test.hpp>
-#include <tests/optimiser_test.hpp>
+#ifndef __OPTIMISER_TEST_H_
+#define __OPTIMISER_TEST_H_
 
-void
-OPTKtest::testmain ()
-{
-    run_type_tests ();
-    run_gridsearch_tests ();
-    std::cout << "All tests pass." << std::endl;
-}
+#include <assert.h>
+#include <iostream>
 
+#include <optk/types.hpp>
 
+/**
+ * Runs tests for the gridsearch optimisation algorithm.
+ */
+void run_gridsearch_tests();
+
+#endif // __OPTIMISER_TEST_H_

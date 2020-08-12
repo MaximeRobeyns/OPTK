@@ -35,15 +35,15 @@
 #endif
 
 /**
-* The main function.
-*
-* For now we don't use the parameters, however in the future we shall have to
-* parse arguments specifying the optimisation algorithms to benchmark, as well
-* as the benchmark tasks to run.
-* 
-* @param argc The number of arguments
-* @param argv The argument vector
-*/
+ * The main function.
+ *
+ * For now we don't use the parameters, however in the future we shall have to
+ * parse arguments specifying the optimisation algorithms to benchmark, as well
+ * as the benchmark tasks to run.
+ * 
+ * @param argc The number of arguments
+ * @param argv The argument vector
+ */
 int
 main (int argc, char **argv)
 {
@@ -58,7 +58,4 @@ main (int argc, char **argv)
     return 0;
 #endif
 }
-
-
-
 
