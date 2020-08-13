@@ -56,7 +56,8 @@ INCLUDES		= -I${INCDIR} -I/usr/local/include
 LIBS			=
 INCDEP			= -I${INCDIR}
 CFLAGS			= -O2 -Wall -std=c++17
-TESTFLAGS		= -D__OPTK_TESTING -g -Wall -std=c++17
+TESTFLAGS		= -D__OPTK_TESTING -g -Wall -std=c++17 -fsanitize=address
+TESTLDFLAGS		= -fsanitize=address
 CC				= g++
 
 # Targets ----------------------------------------------------------------------
@@ -92,7 +93,7 @@ ${PROG}: ${PROJECT_OBJECTS}
 	@${CC} -o ${TARGETDIR}/${PROG} $^ ${LIBS}
 
 ${TESTPROG}: ${TEST_OBJECTS}
-	@${CC} -o ${TARGETDIR}/${TESTPROG} $^ ${LIBS}
+	@${CC} -o ${TARGETDIR}/${TESTPROG} ${TESTLDFLAGS} $^ ${LIBS}
 
 # The following pattern is due in large part to the work of Scott McPeak:
 # http://scottmcpeak.com/autodepend/autodepend.html

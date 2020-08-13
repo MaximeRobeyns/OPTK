@@ -20,20 +20,39 @@
  */
 
 #include <optimisers/gridsearch.hpp>
-#include <nlohmann/json.hpp>
 
-gridsearch::gridsearch (): optimiser ("gridsearch")
+#include <nlohmann/json.hpp>
+#include <tuple>
+
+// parameter space class implementation ----------------------------------------
+
+pspace::pspace (std::string name)
 {
-    m_params = optk::plist();
-    // store this vector on the stack
-    pvals = std::vector<std::tuple<std::string, std::vector<double>>>();
+    m_name = name;
+    // instatiate the vector of parameters
+    paramlist = params();
 }
 
 void
-gridsearch::unpack_param (optk::param_t *param)
+pspace::register_param (param *p)
+{
+    paramlist.push_back(*p);
+}
+
+// gridsearch implementation ---------------------------------------------------
+
+// gridsearch::gridsearch (): optimiser ("gridsearch")
+gridsearch::gridsearch (): optk::optimiser ("gridsearch")
+{
+    // m_root = pspace ("");
+    m_spaces = std::vector<pspace *>();
+}
+
+void
+gridsearch::unpack_param (optk::param_t *param, pspace *space)
 {
     // 1. Assert that the parameter is of the correct type for gridsearch
-    param::param_type t = param->get_type();
+    param::param_type t = param->get_type ();
     assert (
         t == param::randint ||
         t == param::quniform ||
@@ -41,104 +60,96 @@ gridsearch::unpack_param (optk::param_t *param)
         t == param::choice
     );
 
-    // 2. If it's a choice type, recursively call unpack_param on each choice
-    if (t == param::choice) {
-        optk::choice *cparam = static_cast<optk::choice *>(param);
-        optk::sspace_t *opts = cparam->options();
-        optk::sspace_t::iterator it;
-        for (it = opts->begin(); it != opts->end(); it++) {
-            gridsearch::unpack_param(*it);
-        }
-        return;
-    }
-
-    // for values in param1:
-    //     for values in param2:
-    //         for values in param3:
-    //             evaluate(param1, param2, param3);
-    //             
-    // if param 2 is not relevant at this point, then many useless evaluations
-    // will be calculated. Therefore it should take on a single
-    // (null/irrelevant) value when it is not applicable.
-    //
-    // We need a method of determining when a parameter is and is not relevant.
-    // 
-    // Observation1: The values specified in a choice may only become relevant
-    // when the appropriate parent choice is selected (takes on a single value).
-    //
-    // At the very least, we must enumerate all the possible values that an
-    // individual parameter may take on, irrespective of its dependencies to
-    // others.
-        
-    // 3. Count the cardinality of the sets of values that each parameter may take on.
-    // enumerate the possible values of the parameter in all other cases
-    // append the name of the parameter and the cardinality of the space to the
-    // m_params vector.
-
     switch (t) {
         case param::randint:
         {
             optk::randint *ri = static_cast<optk::randint *>(param);
+            std::string name = ri->get_name ();
+            std::vector<double> values;
+
             for (int i = ri->m_lower; i < ri->m_upper; ri++) {
-                values.push_back((double) i);
+                values.push_back ((double) i);
             }
-            // in this case, simply arange integers between the two bounds.
-            // TODO modify the types to retain the bound information that they
-            // are passed.
+            pspace::param p = std::make_tuple (name, values);
+            space->register_param (&p);
             break;
         }
         case param::quniform:
         {
-            // just sample uniformly from low to high; not too dissimilar to the
-            // above
+            optk::quniform *qu = static_cast<optk::quniform *>(param);
+            std::string name = qu->get_name ();
+            std::vector <double> values;
+
+            for (int i = qu->m_lower; i < qu->m_upper; i++) {
+                values.push_back ((double) i);
+            }
+
+            pspace::param p = std::make_tuple (name, values);
+            space->register_param (&p);
             break;
         }
         case param::categorical:
         {
-            // the work has already been done for you for the most part;
-            // If the type cannot be directly cast to a double value; then we
-            // have to enumerate it (e.g. a string).
+            // NOTE: categorical must be double values
+            // anything else will segfault
+            optk::categorical<double> *cat =
+                static_cast<optk::categorical<double> *>(param);
+            std::string name = cat->get_name ();
+            std::vector <double> values = *cat->values();
+            pspace::param p = std::make_tuple (name, values);
+            space->register_param (&p);
             break;
         }
-        default:
-            // I can't see how it is possible to get to this point, so it is not
-            // handled.
+        case param::choice:
+        {
+            optk::choice *c = static_cast<optk::choice *>(param);
+
+            // create a new nested search space.
+            // delegates mm to reference counting
+            pspace nspace (c->get_name());
+            m_spaces.push_back (&nspace);
+
+            optk::sspace_t *subspace = c->options();
+            optk::sspace_t::iterator it;
+            for (it = subspace->begin(); it != subspace->end(); it++) {
+                gridsearch::unpack_param(*it, &nspace);
+            }
             break;
-    };
+        }
+
+        default:
+            // we should never arrive at this case due to the assert
+            // hence it is left unhandled
+            break;
+    }
 }
 
 void
 gridsearch::update_search_space (optk::sspace_t *space)
 {
+    // clear any old search spaces
+    m_spaces.clear();
 
-    // first validate the search space:
-
-    optk::sspace_t::iterator it;
-    for (it = space->begin(); it != space->end(); it++) {
-        gridsearch::unpack_param(*it);
-    }
-
+    m_root = pspace("root");
+    m_spaces.push_back(&m_root);
 
     optk::sspace_t::iterator it;
     for (it = space->begin(); it != space->end(); it++) {
-        // gridsearch::unpack_param(*it);
+        gridsearch::unpack_param(*it, &m_root);
     }
-    // initially create a list of lists containing the enumerated values of
 
-    // save a copy of the search space (sspace_t is just a list of pointers).
+    // save the original for reference
+    /// @todo verify that this is necessary; if not, remove this member.
     m_space = *space;
 }
 
-optk::plist
-gridsearch::generate_parameters (int param_id)
-{
-    return optk::plist();
+// dummy functions for compilation ---------------------------------------------
+
+param::list generate_parameters (int param_d) {
+    return param::list();
 }
 
-
-void
-gridsearch::receive_trial_results (
-    int param_id, optk::plist params, double value
-){
+void receive_trial_results (int pid, param::list params, double value) {
     return;
-};
+}
+

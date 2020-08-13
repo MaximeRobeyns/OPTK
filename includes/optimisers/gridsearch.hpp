@@ -32,7 +32,56 @@
 #include <optk/types.hpp>
 #include <optk/optimiser.hpp>
 
+class pspace {
+
+    public:
+
+        /**
+         * The constructor
+         */
+        pspace (std::string name);
+
+        /**
+         * Param is a name-values tuple.
+         */
+        typedef std::tuple<std::string, std::vector<double>> param;
+
+        /**
+         * Somewhat similar to optk::plist, params is a list of (name, values)
+         * tuples, which represents all parameters, their names and
+         * corresponding values.
+         */
+        typedef std::vector<param> params;
+
+        /**
+         * The step function is used to step through a search space.
+         * @todo make the requirements for this function more concrete before
+         * going further
+         */
+        // bool step ();
+
+        /**
+         * registers the enumerated values for a parameter.
+         * @param p pointer to the parameter whose values have been enumerated
+         */
+        void register_param (param *p);
+
+    private:
+        
+        /**
+         * The list of concrete parameters for this 'level' of the search space
+         */
+        params paramlist;
+
+        /**
+         * The name corresponding to the (nested) search space. The top-level
+         * search space has name "root".
+         */
+        std::string m_name;
+};
+
 class gridsearch: public optk::optimiser {
+
     public:
 
         /**
@@ -41,13 +90,9 @@ class gridsearch: public optk::optimiser {
          */
         gridsearch ();
 
-        typedef std::vector<std::vector<std::vector<double>>> pvals;
-
         /**
-         * In this function, gridsearch expands all the parameters so as to
-         * enumerate all the possible combinations. These are matched to
-         * parameter ids from individual trials, allowing results to be assigned
-         * back to parameter combinations.
+         * Expands the lists of parameters into a format from whcih it is easier
+         * to generate all possible configurations sequentially.
          * 
          * @param space The search space to unpack. The gridsearch optimiser
          * only accepts parameters of type param::choice, param::categorical,
@@ -56,16 +101,14 @@ class gridsearch: public optk::optimiser {
         void update_search_space (optk::sspace_t *space);
 
         /**
-         * Selects the next un-evaluated parameter combination and returns that.
+         * Returns the next unique parameter configuration.
          * @param param_id The identifier which will be matched with the
          * selected parameter combination.
          */
-        optk::plist generate_parameters (int param_id);
+        param::list generate_parameters (int param_id);
 
         /**
-         * Since gridsearch is not an 'active learning' approach, this function
-         * simply does nothing but store the parameter combination if the value
-         * is greater than the current maximum.
+         * Stores \c params if \c value is greater than previous best.
          * 
          * @param param_id The identifier of the parameter combination which
          * generated the result.
@@ -73,53 +116,30 @@ class gridsearch: public optk::optimiser {
          * @param params The result from the objective function
          */
         void receive_trial_results (
-            int param_id, optk::plist params, double value
+            int param_id, param::list params, double value
         );
 
     private:
 
         /**
-         * This recursively enumerates the possibilities for each parameter in
-         * the search space.
+         * Recursively expands the parameters into a connected acyclic graph
+         * which is a representation that gridsearch can more easily iterate
+         * over.
          * 
-         * Recursion only occurs for parameters of type param::choice, whose
-         * values are themselves parameters; this implements nested or
-         * conditional search spaces.
-         * 
-         * We consider the parameter space as a connected graph with no cycles
-         * (i.e. a tree), where param::choice elements represent nodes, and all
-         * other compatible types represent leaves. This function begins by
-         * enumerating all the choices of the leaves, and storing these results
-         * in a vector of vectors of doubles.
+         * @param param The parameter to expand.
+         * @param space The parameter space (level) in which param belongs
          */
-        void unpack_param (optk::param_t *param);
+        void unpack_param (optk::param_t *param, pspace *space);
 
         /**
-         * This matches the names of the paameters with the cardinality of their
-         * search sets. The index into this array corresponding to a given
-         * parameter becomes that parameter's numeric id.
-         *
-         * Note that the optk::plist type is not used in this instance as it is
-         * used elsewhere.
-         * TODO get rid of this
+         * stores all the nested search spaces.
          */
-        optk::plist m_params;
+        std::vector<pspace *> m_spaces;
 
         /**
-         * pvals is used to store a list of (parameter, values) pairs, which
-         * gives the parameter name, as well as an array of doubles to hold the
-         * enumerated values which that parameter can take on. This only applies
-         * to non-choice parameters.
+         * reference to the 'root' search space; the first node in the graph
          */
-        std::vector<std::tuple<std::string, std::vector<double>>> pvals;
-
-        /**
-         * This lists out all the values that the parameters can take in
-         * the search space in a 2D matrix.
-         * 
-         * TODO get rid of this
-         */
-        std::vector<std::vector<double>> param_list;
+        pspace m_root;
 
         /**
          * This is a copy of the original search space. One reason for keeping
@@ -127,5 +147,6 @@ class gridsearch: public optk::optimiser {
          */
         optk::sspace_t m_space;
 };
+
 
 #endif // __GRIDSEARCH_H_
