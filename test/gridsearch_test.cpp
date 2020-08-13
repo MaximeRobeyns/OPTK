@@ -19,14 +19,15 @@
  * @brief Implements tests for the gridsearch optimisation algorithm.
  */
 
-#include <iostream>
-#include <vector>
-
-#include <optk/types.hpp>
-
 #include <optimisers/gridsearch.hpp>
 
 #include <tests/optimiser_test.hpp>
+
+static bool
+dbleq (double a, double b)
+{
+    return std::fabs(a - b) < std::numeric_limits<double>::epsilon();
+}
 
 static void
 test_update_search_space ()
@@ -37,14 +38,56 @@ test_update_search_space ()
 
     optk::randint tri("testrandint", 0, 10);
     optk::quniform tqu("testquniform", 0, 10, 1);
-    std::vector<int> opts = {0,1,2,3,4};
-    optk::categorical<int> cat("testcat", &opts);
+    std::vector<double> opts = {0,1,2,3,4};
+    optk::categorical<double> cat("testcat", &opts);
+
+    optk::randint c1("choice1", 0,5);
+    optk::randint c2("choice2", 5,10);
+    optk::quniform c3("choice3", 5, 15, 3);
+    optk::sspace_t copts = {&c1, &c2, &c3};
+    optk::choice choice("testchoice", &copts);
 
     testspace.push_back(&tri);
     testspace.push_back(&tqu);
+    testspace.push_back(&choice);
     testspace.push_back(&cat);
 
     test.update_search_space(&testspace);
+    pspace *root = test.get_root();
+
+    // iterate through the concrete parameters at this level
+    gs::params *fst_params = root->get_paramlist ();
+    gs::params::iterator it;
+    int ctr = 0;
+    for (it = fst_params->begin (); it != fst_params->end (); it++) {
+
+        std::vector<double> tmpvals = std::get<1>(*it);
+
+        // these tests are entirely specific to the values used at the beginning
+        // of this function.
+        if (ctr == 0) {
+            assert (std::get<0>(*it) == std::string ("testrandint"));
+            for (int i = 0; i < 10; i++)
+                assert (dbleq (tmpvals[i], (double) i));
+        } else if (ctr == 1) {
+            assert (std::get<0>(*it) == std::string ("testquniform"));
+            for (int i = 0; i < 10; i++)
+                assert (dbleq (tmpvals[i], (double) i));
+        } else if (ctr == 2) {
+            assert (std::get<0>(*it) == std::string ("testcat"));
+            for (int i = 0; i < 5; i++) {
+                assert (dbleq (tmpvals[i], (double) i));
+            }
+        }
+        ctr++;
+    }
+
+    // iterate through the nested search space(s)
+    gs::subspaces *fst_subsp = root->get_subspaces ();
+    gs::subspaces::iterator i;
+    for (i = fst_subsp->begin (); i != fst_subsp->end (); i++) {
+        std::cout << (*i)->get_name() << std::endl;
+    }
 }
 
 void

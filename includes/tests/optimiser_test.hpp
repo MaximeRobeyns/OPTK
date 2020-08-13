@@ -24,6 +24,8 @@
 
 #include <assert.h>
 #include <iostream>
+#include <cmath>
+#include <limits>
 
 #include <optk/types.hpp>
 

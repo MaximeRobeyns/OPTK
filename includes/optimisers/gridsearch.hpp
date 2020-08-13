@@ -32,6 +32,8 @@
 #include <optk/types.hpp>
 #include <optk/optimiser.hpp>
 
+class pspace;
+
 namespace gs {
 /**
  * Param is a name-values tuple.
@@ -44,6 +46,11 @@ typedef std::tuple<std::string, std::vector<double>> param;
  * corresponding values.
  */
 typedef std::vector<param> params;
+
+/**
+ * Used to represent a subspce in a pspace.
+ */
+typedef std::vector<pspace *> subspaces;
 
 } // end namespace gs
 
@@ -70,12 +77,38 @@ class pspace {
          */
         void register_param (gs::param *p);
 
+        /**
+         * registers a nested search space to add to the \c subspaces member
+         * @param subspace Pointer to the nested subspace
+         */
+        void register_subspace (pspace *subspace);
+
+        /**
+         * Get the parameter list; used during testing
+         */
+        gs::params *get_paramlist ();
+
+        /**
+         * Get the subspaces; used during testing
+         */
+        gs::subspaces *get_subspaces ();
+
+        /**
+         * Access this parameter space's name
+         */
+        std::string get_name ();
+
     private:
         
         /**
          * The list of concrete parameters for this 'level' of the search space
          */
         gs::params paramlist;
+
+        /**
+         * The list of nested search spaces on this 'level'
+         */
+        gs::subspaces subspaces;
 
         /**
          * The name corresponding to the (nested) search space. The top-level
@@ -123,8 +156,13 @@ class gridsearch: public optk::optimiser {
             int param_id, param::list params, double value
         );
 
-    private:
+# ifdef __OPTK_TESTING
+        pspace * get_root () {
+            return &m_root;
+        }
+#endif
 
+    private:
         /**
          * Recursively expands the parameters into a connected acyclic graph
          * which is a representation that gridsearch can more easily iterate
@@ -136,20 +174,9 @@ class gridsearch: public optk::optimiser {
         void unpack_param (optk::param_t *param, pspace *space);
 
         /**
-         * stores all the nested search spaces.
-         */
-        std::vector<pspace *> m_spaces;
-
-        /**
          * reference to the 'root' search space; the first node in the graph
          */
         pspace m_root;
-
-        /**
-         * This is a copy of the original search space. One reason for keeping
-         * it is to have a reference to strings which may form a categorical type.
-         */
-        optk::sspace_t m_space;
 };
 
 #endif // __GRIDSEARCH_H_

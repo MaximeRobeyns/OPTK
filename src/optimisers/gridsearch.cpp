@@ -45,12 +45,36 @@ pspace::register_param (gs::param *p)
     paramlist.push_back(*p);
 }
 
+void
+pspace::register_subspace(pspace *s)
+{
+    subspaces.push_back(s);
+}
+
+gs::params *
+pspace::get_paramlist ()
+{
+    return &paramlist;
+}
+
+gs::subspaces *
+pspace::get_subspaces ()
+{
+    return &subspaces;
+}
+
+std::string
+pspace::get_name ()
+{
+    return m_name;
+}
+
 // gridsearch implementation ---------------------------------------------------
 
 gridsearch::gridsearch (): optimiser ("gridsearch")
 {
+    // initialise the root parameter space class
     m_root = pspace("root");
-    m_spaces = std::vector<pspace *>();
 }
 
 void
@@ -72,9 +96,10 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
             std::string name = ri->get_name ();
             std::vector<double> values;
 
-            for (int i = ri->m_lower; i < ri->m_upper; ri++) {
+            for (int i = ri->m_lower; i < ri->m_upper; i++) {
                 values.push_back ((double) i);
             }
+
             gs::param p = std::make_tuple (name, values);
             space->register_param (&p);
             break;
@@ -112,7 +137,7 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
             // create a new nested search space.
             // delegates mm to reference counting
             pspace nspace (c->get_name());
-            m_spaces.push_back (&nspace);
+            space->register_subspace(&nspace);
 
             optk::sspace_t *subspace = c->options();
             optk::sspace_t::iterator it;
@@ -132,24 +157,12 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
 void
 gridsearch::update_search_space (optk::sspace_t *space)
 {
-    // clear any old search spaces
-    m_spaces.clear();
-
     m_root = pspace("root");
-    m_spaces.push_back(&m_root);
 
-    std::cout << "in this section" << std::endl;
-
-    /*
     optk::sspace_t::iterator it;
     for (it = space->begin(); it != space->end(); it++) {
         gridsearch::unpack_param(*it, &m_root);
     }
-    */
-
-    // save the original for reference
-    /// @todo verify that this is necessary; if not, remove this member.
-    m_space = *space;
 }
 
 // dummy functions for compilation ---------------------------------------------
