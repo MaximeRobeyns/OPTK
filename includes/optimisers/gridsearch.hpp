@@ -32,26 +32,30 @@
 #include <optk/types.hpp>
 #include <optk/optimiser.hpp>
 
-class pspace {
+namespace gs {
+/**
+ * Param is a name-values tuple.
+ */
+typedef std::tuple<std::string, std::vector<double>> param;
 
+/**
+ * Somewhat similar to optk::plist, params is a list of (name, values)
+ * tuples, which represents all parameters, their names and
+ * corresponding values.
+ */
+typedef std::vector<param> params;
+
+} // end namespace gs
+
+class pspace {
     public:
+
+        pspace ();
 
         /**
          * The constructor
          */
         pspace (std::string name);
-
-        /**
-         * Param is a name-values tuple.
-         */
-        typedef std::tuple<std::string, std::vector<double>> param;
-
-        /**
-         * Somewhat similar to optk::plist, params is a list of (name, values)
-         * tuples, which represents all parameters, their names and
-         * corresponding values.
-         */
-        typedef std::vector<param> params;
 
         /**
          * The step function is used to step through a search space.
@@ -64,14 +68,14 @@ class pspace {
          * registers the enumerated values for a parameter.
          * @param p pointer to the parameter whose values have been enumerated
          */
-        void register_param (param *p);
+        void register_param (gs::param *p);
 
     private:
         
         /**
          * The list of concrete parameters for this 'level' of the search space
          */
-        params paramlist;
+        gs::params paramlist;
 
         /**
          * The name corresponding to the (nested) search space. The top-level
@@ -147,6 +151,5 @@ class gridsearch: public optk::optimiser {
          */
         optk::sspace_t m_space;
 };
-
 
 #endif // __GRIDSEARCH_H_

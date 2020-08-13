@@ -26,25 +26,30 @@
 
 // parameter space class implementation ----------------------------------------
 
+pspace::pspace ()
+{
+    m_name = "";
+    paramlist = gs::params();
+}
+
 pspace::pspace (std::string name)
 {
     m_name = name;
     // instatiate the vector of parameters
-    paramlist = params();
+    paramlist = gs::params();
 }
 
 void
-pspace::register_param (param *p)
+pspace::register_param (gs::param *p)
 {
     paramlist.push_back(*p);
 }
 
 // gridsearch implementation ---------------------------------------------------
 
-// gridsearch::gridsearch (): optimiser ("gridsearch")
-gridsearch::gridsearch (): optk::optimiser ("gridsearch")
+gridsearch::gridsearch (): optimiser ("gridsearch")
 {
-    // m_root = pspace ("");
+    m_root = pspace("root");
     m_spaces = std::vector<pspace *>();
 }
 
@@ -70,7 +75,7 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
             for (int i = ri->m_lower; i < ri->m_upper; ri++) {
                 values.push_back ((double) i);
             }
-            pspace::param p = std::make_tuple (name, values);
+            gs::param p = std::make_tuple (name, values);
             space->register_param (&p);
             break;
         }
@@ -84,7 +89,7 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
                 values.push_back ((double) i);
             }
 
-            pspace::param p = std::make_tuple (name, values);
+            gs::param p = std::make_tuple (name, values);
             space->register_param (&p);
             break;
         }
@@ -96,7 +101,7 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
                 static_cast<optk::categorical<double> *>(param);
             std::string name = cat->get_name ();
             std::vector <double> values = *cat->values();
-            pspace::param p = std::make_tuple (name, values);
+            gs::param p = std::make_tuple (name, values);
             space->register_param (&p);
             break;
         }
@@ -133,10 +138,14 @@ gridsearch::update_search_space (optk::sspace_t *space)
     m_root = pspace("root");
     m_spaces.push_back(&m_root);
 
+    std::cout << "in this section" << std::endl;
+
+    /*
     optk::sspace_t::iterator it;
     for (it = space->begin(); it != space->end(); it++) {
         gridsearch::unpack_param(*it, &m_root);
     }
+    */
 
     // save the original for reference
     /// @todo verify that this is necessary; if not, remove this member.
@@ -145,11 +154,11 @@ gridsearch::update_search_space (optk::sspace_t *space)
 
 // dummy functions for compilation ---------------------------------------------
 
-param::list generate_parameters (int param_d) {
+param::list gridsearch::generate_parameters (int param_d) {
     return param::list();
 }
 
-void receive_trial_results (int pid, param::list params, double value) {
+void gridsearch::receive_trial_results (int pid, param::list params, double value) {
     return;
 }
 
