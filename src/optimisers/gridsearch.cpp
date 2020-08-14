@@ -29,38 +29,38 @@
 pspace::pspace ()
 {
     m_name = "";
-    paramlist = gs::params();
+    m_paramlist = params();
 }
 
 pspace::pspace (std::string name)
 {
     m_name = name;
     // instatiate the vector of parameters
-    paramlist = gs::params();
+    m_paramlist = params();
 }
 
 void
-pspace::register_param (gs::param *p)
+pspace::register_param (param *p)
 {
-    paramlist.push_back(*p);
+    m_paramlist.push_back(*p);
 }
 
 void
 pspace::register_subspace(pspace *s)
 {
-    subspaces.push_back(s);
+    m_subspaces.push_back(s);
 }
 
-gs::params *
+pspace::params *
 pspace::get_paramlist ()
 {
-    return &paramlist;
+    return &m_paramlist;
 }
 
-gs::subspaces *
+pspace::subspaces *
 pspace::get_subspaces ()
 {
-    return &subspaces;
+    return &m_subspaces;
 }
 
 std::string
@@ -73,8 +73,26 @@ pspace::get_name ()
 
 gridsearch::gridsearch (): optimiser ("gridsearch")
 {
-    // initialise the root parameter space class
-    m_root = pspace("root");
+    // initialise a default root space;
+    // @todo verify that this is necessary.
+    m_root = new pspace("root");
+}
+
+static void
+free_spaces (pspace *root)
+{
+    pspace::subspaces *ss = root->get_subspaces();
+    pspace::subspaces::iterator it;
+    for (it = ss->begin (); it != ss->end (); it++) {
+        free_spaces (*it);
+    }
+    delete root;
+}
+
+gridsearch::~gridsearch ()
+{
+    // recurse through nested search spaces, freeing them
+    free_spaces (m_root);
 }
 
 void
@@ -100,7 +118,7 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
                 values.push_back ((double) i);
             }
 
-            gs::param p = std::make_tuple (name, values);
+            pspace::param p = std::make_tuple (name, values);
             space->register_param (&p);
             break;
         }
@@ -114,7 +132,7 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
                 values.push_back ((double) i);
             }
 
-            gs::param p = std::make_tuple (name, values);
+            pspace::param p = std::make_tuple (name, values);
             space->register_param (&p);
             break;
         }
@@ -126,7 +144,7 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
                 static_cast<optk::categorical<double> *>(param);
             std::string name = cat->get_name ();
             std::vector <double> values = *cat->values();
-            gs::param p = std::make_tuple (name, values);
+            pspace::param p = std::make_tuple (name, values);
             space->register_param (&p);
             break;
         }
@@ -134,15 +152,14 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
         {
             optk::choice *c = static_cast<optk::choice *>(param);
 
-            // create a new nested search space.
-            // delegates mm to reference counting
-            pspace nspace (c->get_name());
-            space->register_subspace(&nspace);
+            // creates a new pspace on the heap
+            pspace *nspace = new pspace (c->get_name ());
+            space->register_subspace (nspace);
 
-            optk::sspace_t *subspace = c->options();
+            optk::sspace_t *subspace = c->options ();
             optk::sspace_t::iterator it;
-            for (it = subspace->begin(); it != subspace->end(); it++) {
-                gridsearch::unpack_param(*it, &nspace);
+            for (it = subspace->begin (); it != subspace->end (); it++) {
+                gridsearch::unpack_param (*it, nspace);
             }
             break;
         }
@@ -157,18 +174,20 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
 void
 gridsearch::update_search_space (optk::sspace_t *space)
 {
-    m_root = pspace("root");
+    // free previous search spaces
+    free_spaces (m_root);
 
+    m_root = new pspace ("root");
     optk::sspace_t::iterator it;
-    for (it = space->begin(); it != space->end(); it++) {
-        gridsearch::unpack_param(*it, &m_root);
+    for (it = space->begin (); it != space->end (); it++) {
+        gridsearch::unpack_param (*it, m_root);
     }
 }
 
 // dummy functions for compilation ---------------------------------------------
 
 param::list gridsearch::generate_parameters (int param_d) {
-    return param::list();
+    return param::list ();
 }
 
 void gridsearch::receive_trial_results (int pid, param::list params, double value) {

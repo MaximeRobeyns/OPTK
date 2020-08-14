@@ -34,30 +34,41 @@
 
 class pspace;
 
+/*
 namespace gs {
-/**
- * Param is a name-values tuple.
- */
 typedef std::tuple<std::string, std::vector<double>> param;
 
-/**
- * Somewhat similar to optk::plist, params is a list of (name, values)
- * tuples, which represents all parameters, their names and
- * corresponding values.
- */
 typedef std::vector<param> params;
 
-/**
- * Used to represent a subspce in a pspace.
- */
 typedef std::vector<pspace *> subspaces;
 
 } // end namespace gs
+*/
 
 class pspace {
     public:
 
         pspace ();
+
+        // types ---------------------------------------------------------------
+        /**
+         * Param is a name-values tuple.
+         */
+        typedef std::tuple<std::string, std::vector<double>> param;
+
+        /**
+         * Somewhat similar to optk::plist, params is a list of (name, values)
+         * tuples, which represents all parameters, their names and
+         * corresponding values.
+         */
+        typedef std::vector<param> params;
+
+        /**
+         * Used to represent a subspce in a pspace.
+         */
+        typedef std::vector<pspace *> subspaces;
+        
+        // methods -------------------------------------------------------------
 
         /**
          * The constructor
@@ -75,7 +86,7 @@ class pspace {
          * registers the enumerated values for a parameter.
          * @param p pointer to the parameter whose values have been enumerated
          */
-        void register_param (gs::param *p);
+        void register_param (param *p);
 
         /**
          * registers a nested search space to add to the \c subspaces member
@@ -86,12 +97,12 @@ class pspace {
         /**
          * Get the parameter list; used during testing
          */
-        gs::params *get_paramlist ();
+        params *get_paramlist ();
 
         /**
          * Get the subspaces; used during testing
          */
-        gs::subspaces *get_subspaces ();
+        subspaces *get_subspaces ();
 
         /**
          * Access this parameter space's name
@@ -103,12 +114,12 @@ class pspace {
         /**
          * The list of concrete parameters for this 'level' of the search space
          */
-        gs::params paramlist;
+        params m_paramlist;
 
         /**
          * The list of nested search spaces on this 'level'
          */
-        gs::subspaces subspaces;
+        subspaces m_subspaces;
 
         /**
          * The name corresponding to the (nested) search space. The top-level
@@ -126,6 +137,12 @@ class gridsearch: public optk::optimiser {
          * \ref optimiser class which this class inherits.
          */
         gridsearch ();
+
+        /**
+         * The destructor; used to recursively free nested search spaces stored
+         * on the heap.
+         */
+        ~gridsearch ();
 
         /**
          * Expands the lists of parameters into a format from whcih it is easier
@@ -158,7 +175,7 @@ class gridsearch: public optk::optimiser {
 
 # ifdef __OPTK_TESTING
         pspace * get_root () {
-            return &m_root;
+            return m_root;
         }
 #endif
 
@@ -176,7 +193,7 @@ class gridsearch: public optk::optimiser {
         /**
          * reference to the 'root' search space; the first node in the graph
          */
-        pspace m_root;
+        pspace *m_root;
 };
 
 #endif // __GRIDSEARCH_H_
