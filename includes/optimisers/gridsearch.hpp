@@ -14,7 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the LIcense For The Specific Language Governing permissions and
  * limitations under the License.
- * 
+ *
  * @file
  * @brief Header file for the gridsearch built-in optimiser.
  */
@@ -31,19 +31,6 @@
 
 #include <optk/types.hpp>
 #include <optk/optimiser.hpp>
-
-class pspace;
-
-/*
-namespace gs {
-typedef std::tuple<std::string, std::vector<double>> param;
-
-typedef std::vector<param> params;
-
-typedef std::vector<pspace *> subspaces;
-
-} // end namespace gs
-*/
 
 class pspace {
     public:
@@ -67,7 +54,7 @@ class pspace {
          * Used to represent a subspce in a pspace.
          */
         typedef std::vector<pspace *> subspaces;
-        
+
         // methods -------------------------------------------------------------
 
         /**
@@ -80,6 +67,7 @@ class pspace {
          * @todo make the requirements for this function more concrete before
          * going further
          */
+        void step ();
         // bool step ();
 
         /**
@@ -109,29 +97,33 @@ class pspace {
          */
         std::string get_name ();
 
+#ifdef __OPTK_TESTING
+        std::vector<int> get_ctrs() { return m_ctrs; }
+        std::vector<int> get_sizes() { return m_sizes; }
+#endif
+
     private:
-        
-        /**
-         * The list of concrete parameters for this 'level' of the search space
-         */
+
+        /** This is an array of counters used when generating new permutations */
+        std::vector<int> m_ctrs;
+
+        /** Stores the number of candidate values per parameter*/
+        std::vector<int> m_sizes;
+
+        /** The list of concrete parameters for this 'level' */
         params m_paramlist;
 
-        /**
-         * The list of nested search spaces on this 'level'
-         */
+        /** The list of nested search spaces on this 'level' */
         subspaces m_subspaces;
 
-        /**
-         * The name corresponding to the (nested) search space. The top-level
-         * search space has name "root".
-         */
+        /** The name corresponding to the (nested) search space. The top-level
+            search space has name "root". */
         std::string m_name;
 };
 
 class gridsearch: public optk::optimiser {
 
     public:
-
         /**
          * The constructor; simply calls the constructor specified for the
          * \ref optimiser class which this class inherits.
@@ -147,7 +139,7 @@ class gridsearch: public optk::optimiser {
         /**
          * Expands the lists of parameters into a format from whcih it is easier
          * to generate all possible configurations sequentially.
-         * 
+         *
          * @param space The search space to unpack. The gridsearch optimiser
          * only accepts parameters of type param::choice, param::categorical,
          * param::randint as well as param::quniform.
@@ -163,7 +155,7 @@ class gridsearch: public optk::optimiser {
 
         /**
          * Stores \c params if \c value is greater than previous best.
-         * 
+         *
          * @param param_id The identifier of the parameter combination which
          * generated the result.
          * @param params The parameters themselves
@@ -173,7 +165,7 @@ class gridsearch: public optk::optimiser {
             int param_id, param::list params, double value
         );
 
-# ifdef __OPTK_TESTING
+#ifdef __OPTK_TESTING
         pspace * get_root () {
             return m_root;
         }
@@ -184,7 +176,7 @@ class gridsearch: public optk::optimiser {
          * Recursively expands the parameters into a connected acyclic graph
          * which is a representation that gridsearch can more easily iterate
          * over.
-         * 
+         *
          * @param param The parameter to expand.
          * @param space The parameter space (level) in which param belongs
          */

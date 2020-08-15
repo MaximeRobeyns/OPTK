@@ -14,7 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the LIcense For The Specific Language Governing permissions and
  * limitations under the License.
- * 
+ *
  * @file
  * @brief This file implements a simple gridsearch algorithm.
  */
@@ -30,6 +30,8 @@ pspace::pspace ()
 {
     m_name = "";
     m_paramlist = params();
+    m_sizes = std::vector<int>();
+    m_ctrs = std::vector<int>();
 }
 
 pspace::pspace (std::string name)
@@ -42,6 +44,9 @@ pspace::pspace (std::string name)
 void
 pspace::register_param (param *p)
 {
+    int size = (int) std::get<1>(*p).size();
+    m_sizes.push_back(size);
+    m_ctrs.push_back(0);
     m_paramlist.push_back(*p);
 }
 
@@ -99,16 +104,16 @@ void
 gridsearch::unpack_param (optk::param_t *param, pspace *space)
 {
     // 1. Assert that the parameter is of the correct type for gridsearch
-    param::param_type t = param->get_type ();
+    pt t = param->get_type ();
     assert (
-        t == param::randint ||
-        t == param::quniform ||
-        t == param::categorical ||
-        t == param::choice
+        t == pt::randint ||
+        t == pt::quniform ||
+        t == pt::categorical ||
+        t == pt::choice
     );
 
     switch (t) {
-        case param::randint:
+        case pt::randint:
         {
             optk::randint *ri = static_cast<optk::randint *>(param);
             std::string name = ri->get_name ();
@@ -122,7 +127,7 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
             space->register_param (&p);
             break;
         }
-        case param::quniform:
+        case pt::quniform:
         {
             optk::quniform *qu = static_cast<optk::quniform *>(param);
             std::string name = qu->get_name ();
@@ -136,7 +141,7 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
             space->register_param (&p);
             break;
         }
-        case param::categorical:
+        case pt::categorical:
         {
             // NOTE: categorical must be double values
             // anything else will segfault
@@ -148,7 +153,7 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
             space->register_param (&p);
             break;
         }
-        case param::choice:
+        case pt::choice:
         {
             optk::choice *c = static_cast<optk::choice *>(param);
 
@@ -184,11 +189,18 @@ gridsearch::update_search_space (optk::sspace_t *space)
     }
 }
 
-// dummy functions for compilation ---------------------------------------------
-
 param::list gridsearch::generate_parameters (int param_d) {
+
+    param::list params;
+
+    // 1. do gridsearch for the first layer (root pspace)
+    // pspace::params *pms = m_root->get_paramlist();
+
     return param::list ();
 }
+
+// dummy functions for compilation ---------------------------------------------
+
 
 void gridsearch::receive_trial_results (int pid, param::list params, double value) {
     return;

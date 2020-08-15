@@ -70,6 +70,12 @@ test_update_search_space ()
     // this is defined only when __OPTK_TESTING is set
     pspace *root = test.get_root();
 
+    // verify that variable cardinalities are correctly recorded
+    std::vector<int> sizes = root->get_sizes();
+    assert (sizes[0] == 10);
+    assert (sizes[1] == 10);
+    assert (sizes[2] == 5);
+
     // iterate through the concrete parameters at this level
     pspace::params *fst_params = root->get_paramlist ();
     pspace::params::iterator it;

@@ -14,7 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the LIcense For The Specific Language Governing permissions and
  * limitations under the License.
- * 
+ *
  * @file
  * @brief Implements the main types used in the program.
  */
@@ -25,16 +25,15 @@
 optk::param_t::param_t (std::string n)
 {
     m_name = n;
-    m_type = param::undefined;
 }
 
 // choice ----------------------------------------------------------------------
 
-optk::choice::choice (std::string n, optk::sspace_t *options) :
-    param_t (n)
+optk::choice::choice (std::string n, optk::sspace_t *options) : param_t (n)
 {
+    m_type = pt::choice;
     m_options = options;
-    m_type = param::choice;
+    m_type = pt::choice;
 }
 
 optk::sspace_t *
@@ -61,7 +60,7 @@ optk::choice::get (long unsigned int i)
 
 optk::randint::randint (std::string n, int l, int u): param_t (n)
 {
-    m_type = param::randint;
+    m_type = pt::randint;
     // initialise Mersenne twister prng using the random device.
     m_lower = l;
     m_upper = u;
@@ -81,7 +80,7 @@ optk::uniform::uniform (std::string n, double l, double u): param_t (n)
 {
     m_lower = l;
     m_upper = u;
-    m_type = param::uniform;
+    m_type = pt::uniform;
     generator = std::mt19937 (rd());
     dist = std::uniform_real_distribution<double> (l, u);
 }
@@ -98,7 +97,7 @@ optk::quniform::quniform (std::string n, double l, double u, double q):
     uniform (n, l, u)
 {
     m_q = q;
-    m_type = param::quniform;
+    m_type = pt::quniform;
 }
 
 double
@@ -119,7 +118,7 @@ optk::quniform::sample ()
 optk::loguniform::loguniform (std::string n, double l, double u):
     uniform (n, l, u)
 {
-    m_type = param::loguniform;
+    m_type = pt::loguniform;
 
    if (l <= 0 || u <= 0) {
         throw std::invalid_argument ("bounds cannot be negative or zero");
@@ -144,7 +143,7 @@ optk::qloguniform::qloguniform (
 ) :
     loguniform (n, lower, upper)
 {
-    m_type = param::qloguniform;
+    m_type = pt::qloguniform;
     m_q = q;
 }
 
@@ -168,7 +167,7 @@ optk::normal::normal (std::string n, double mu, double sigma): param_t (n)
 {
     m_mu = mu;
     m_sigma = sigma;
-    m_type = param::normal;
+    m_type = pt::normal;
     m_name = n;
     generator = std::mt19937 (rd());
     dist = std::normal_distribution<double> (mu, sigma);
@@ -185,7 +184,7 @@ optk::normal::sample ()
 optk::qnormal::qnormal (std::string n, double mu, double sigma, double q) :
     normal (n, mu, sigma)
 {
-    m_type = param::qnormal;
+    m_type = pt::qnormal;
     m_q = q;
 }
 
@@ -200,7 +199,7 @@ optk::qnormal::sample ()
 optk::lognormal::lognormal (std::string n, double mu, double sigma) :
     normal (n, mu, sigma)
 {
-    m_type = param::lognormal;
+    m_type = pt::lognormal;
 }
 
 double
@@ -219,7 +218,7 @@ optk::qlognormal::qlognormal (
 ) :
     lognormal (n, mu, sigma)
 {
-    m_type = param::qlognormal;
+    m_type = pt::qlognormal;
     m_q = q;
 }
 
