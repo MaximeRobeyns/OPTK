@@ -32,28 +32,32 @@ inst::param::param
 inst::node::node (const std::string &k):
     inst::param (k, inst::inst_t::node)
 {
-    values = std::unordered_map<std::string, param>();
+    values = std::unordered_map<std::string, param *>();
 }
 
 void
-inst::node::add_item (param p)
+inst::node::add_item (param *p)
 {
-    values.insert({p.get_key(), p});
+    values.insert({p->get_key(), p});
 }
 
 void
-inst::node::add_items (std::vector<param> items)
+inst::node::add_items (std::vector<param *> items)
 {
-    std::vector<param>::iterator it;
+    std::vector<param *>::iterator it;
     for (it = items.begin(); it != items.end(); it++)
-        values.insert({(*it).get_key(), *it});
+        values.insert({(*it)->get_key(), *it});
 }
 
 // O(log(n)) lookup
-inst::param
+inst::param *
 inst::node::get_item (const std::string &k)
 {
-    return values.at(k);
+    try {
+        return values.at(k);
+    } catch (const std::out_of_range &e) {
+        return NULL;
+    }
 }
 
 void
@@ -88,7 +92,6 @@ sspace::param_t::param_t (std::string n)
 
 sspace::choice::choice (std::string n, sspace_t *options) : param_t (n)
 {
-    m_type = pt::choice;
     m_options = options;
     m_type = pt::choice;
 }

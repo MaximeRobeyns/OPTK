@@ -24,6 +24,12 @@
 #include <tests/types_test.hpp>
 #include <optk/types.hpp>
 
+static bool
+dbleq (double a, double b)
+{
+    return std::fabs(a - b) < std::numeric_limits<double>::epsilon();
+}
+
 // test types for concrete values ---------------------------------------------
 
 /*
@@ -43,11 +49,14 @@
 static void
 test_concrete_types ()
 {
+    inst::int_val v41("val4.1", 42);
+    inst::dbl_val v42("val4.2", 21.0);
+    inst::str_val v43("val4.3", "string test");
     inst::node val4 ("val4");
-    val4.add_items (std::vector<inst::param>({
-                inst::int_val("val4.1", 42),
-                inst::dbl_val("val4.2", 21.0),
-                inst::str_val("val4.3", "string test")
+    val4.add_items (std::vector<inst::param *>({
+                &v41,
+                &v42,
+                &v43,
                 }));
 
     inst::int_val val1("val1", 42);
@@ -55,13 +64,71 @@ test_concrete_types ()
     inst::str_val val3("val3", "string test");
 
     inst::node root ("root");
-    root.add_item(val1);
-    root.add_item(val2);
-    root.add_item(val3);
+    root.add_item(&val1);
+    root.add_item(&val2);
+    root.add_item(&val3);
+    root.add_item(&val4);
 
     assert (root.get_key() == std::string("root"));
     assert (root.get_type() == inst::inst_t::node );
-    // inst::int_val tmp_int = static_cast<inst::int_val>(root.get_item ("val1"));
+
+    // should silently return a NULL pointer if the key is non-existant.
+    inst::int_val *test_null = inst::get<inst::int_val *>(&root, "nonexistant");
+    assert (test_null == NULL);
+
+    // integer access
+    // direct access:
+    inst::int_val *fst_int = static_cast<inst::int_val *>(root.get_item ("val1"));
+    assert (fst_int->get_val () == 42);
+    // using convenience function:
+    inst::int_val *snd_int = inst::get<inst::int_val *>(&root, "val1");
+    assert (snd_int->get_val () == 42);
+    // using macro:
+    GETINT(trd_int, root, "val1");
+    assert (trd_int->get_val() == 42);
+
+    std::cout << "integer access successful" << std::endl;
+
+    // double access
+    inst::dbl_val *fst_dbl = static_cast<inst::dbl_val *>(root.get_item ("val2"));
+    assert (dbleq (fst_dbl->get_val(), 21.0));
+    inst::dbl_val *snd_dbl = inst::get<inst::dbl_val *>(&root, "val2");
+    assert (dbleq (snd_dbl->get_val(), 21.0));
+    GETDBL(trd_dbl, root, "val2");
+    assert (dbleq (trd_dbl->get_val(), 21.0));
+
+    std::cout << "double access successful" << std::endl;
+
+    // string access
+    inst::str_val *fst_str = static_cast<inst::str_val *>(root.get_item ("val3"));
+    assert (fst_str->get_val() == std::string ("string test"));
+    inst::str_val *snd_str = inst::get<inst::str_val *>(&root, "val3");
+    assert (snd_str->get_val() == std::string ("string test"));
+    GETSTR(trd_str, root, "val3");
+    assert (trd_str->get_val() == std::string ("string test"));
+
+    // node access
+    inst::node *fst_node = static_cast<inst::node *>(root.get_item ("val4"));
+    assert (fst_node->get_key() == std::string("val4"));
+    inst::node *snd_node = inst::get<inst::node *>(&root, "val4");
+    assert (snd_node->get_key() == std::string("val4"));
+    GETNODE(tmpnode, root, "val4");
+    assert (tmpnode->get_key() == std::string("val4"));
+
+    // nested item access
+    GETINT(nint, *tmpnode, "val4.1");
+    assert (nint->get_val() == 42);
+    assert (nint->get_type () == inst::inst_t::int_val);
+    assert (nint->get_key() == std::string ("val4.1"));
+    nint->update_val(100);
+    GETINT(nint_2, *tmpnode, "val4.1");
+    assert (nint_2->get_val() == 100);
+
+    GETDBL(ndbl, *tmpnode, "val4.2");
+    assert (dbleq (ndbl->get_val(), 21.0));
+
+    GETSTR(nstr, *tmpnode, "val4.3");
+    assert (nstr->get_val() == std::string("string test"));
 }
 
 // test search space types ----------------------------------------------------
