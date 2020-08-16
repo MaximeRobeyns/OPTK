@@ -24,6 +24,7 @@
 
 #include <assert.h>
 #include <iostream>
+#include <unordered_map>
 #include <vector>
 
 #include <optk/optimiser.hpp>
@@ -39,8 +40,10 @@ class pspace {
         pspace ();
 
         // types ---------------------------------------------------------------
+
         /**
          * Param is a name-values tuple.
+         * It should allow for either a vector of doubles, or integers, or strings.
          */
         typedef std::tuple<std::string, std::vector<double>> param;
 
@@ -104,7 +107,6 @@ class pspace {
 #endif
 
     private:
-
         /** This is an array of counters used when generating new permutations */
         std::vector<int> m_ctrs;
 
@@ -125,6 +127,7 @@ class pspace {
 class gridsearch: public optk::optimiser {
 
     public:
+
         /**
          * The constructor; simply calls the constructor specified for the
          * \ref optimiser class which this class inherits.
@@ -187,6 +190,11 @@ class gridsearch: public optk::optimiser {
          * reference to the 'root' search space; the first node in the graph
          */
         pspace *m_root;
+
+        /** This keeps track of previously generated instances / settings of
+         * the parameters, identified by the param id given to
+         * generate_parameters. */
+        std::unordered_map<int, inst::set> trials;
 };
 
 #endif // __GRIDSEARCH_H_

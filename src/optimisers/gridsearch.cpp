@@ -189,14 +189,33 @@ gridsearch::update_search_space (sspace::sspace_t *space)
     }
 }
 
-inst::set gridsearch::generate_parameters (int param_d) {
+inst::set
+gridsearch::generate_parameters (int param_id)
+{
+    /*
+    inst::set params = new std::vector<inst::param *>();
 
-    inst::set params;
+    // TODO update gridsearch's destructor to clear this map
+    if (trials.count(param_id))
+        trials.at(param_id) = params;
+    else
+        trials.emplace(param_id, params);
+
+    // range through the search space, providing references to params
+    sspace::sspace_t::iterator it;
+    for(it = space->begin (); it != space->end (); it++) {
+        (*it)->
+    }
+
+
+    // the the parameter id is used to refer to a pointer to a memory location
+    // on the heap where the inst::set element is stored.
 
     // 1. do gridsearch for the first layer (root pspace)
     // pspace::params *pms = m_root->get_paramlist();
     //
     // TODO come back to this
+    */
 
     return inst::set ();
 }

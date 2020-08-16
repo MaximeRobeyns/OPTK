@@ -83,17 +83,14 @@ inst::str_val::str_val (const std::string &k, const std::string &v):
 
 // search space types =========================================================
 
-sspace::param_t::param_t (std::string n)
-{
-    m_name = n;
-}
+sspace::param_t::param_t (std::string n, pt t): m_type(t), m_name(n) {};
 
 // choice ----------------------------------------------------------------------
 
-sspace::choice::choice (std::string n, sspace_t *options) : param_t (n)
+sspace::choice::choice (std::string n, sspace_t *options) :
+    param_t (n, pt::choice)
 {
     m_options = options;
-    m_type = pt::choice;
 }
 
 sspace::sspace_t *
@@ -118,9 +115,9 @@ sspace::choice::get (long unsigned int i)
 
 // randint ---------------------------------------------------------------------
 
-sspace::randint::randint (std::string n, int l, int u): param_t (n)
+sspace::randint::randint (std::string n, int l, int u) :
+    param_t (n, pt::randint)
 {
-    m_type = pt::randint;
     // initialise Mersenne twister prng using the random device.
     m_lower = l;
     m_upper = u;
@@ -136,11 +133,20 @@ sspace::randint::sample()
 
 // uniform ---------------------------------------------------------------------
 
-sspace::uniform::uniform (std::string n, double l, double u): param_t (n)
+sspace::uniform::uniform (std::string n, double l, double u, pt t)
+    : param_t (n, t)
 {
     m_lower = l;
     m_upper = u;
-    m_type = pt::uniform;
+    generator = std::mt19937 (rd());
+    dist = std::uniform_real_distribution<double> (l, u);
+}
+
+sspace::uniform::uniform (std::string n, double l, double u)
+    : param_t (n, pt::uniform)
+{
+    m_lower = l;
+    m_upper = u;
     generator = std::mt19937 (rd());
     dist = std::uniform_real_distribution<double> (l, u);
 }
@@ -154,10 +160,9 @@ sspace::uniform::sample()
 // quniform --------------------------------------------------------------------
 
 sspace::quniform::quniform (std::string n, double l, double u, double q):
-    uniform (n, l, u)
+    uniform (n, l, u, pt::quniform)
 {
     m_q = q;
-    m_type = pt::quniform;
 }
 
 double
@@ -176,14 +181,18 @@ sspace::quniform::sample ()
 // loguniform ------------------------------------------------------------------
 
 sspace::loguniform::loguniform (std::string n, double l, double u):
-    uniform (n, l, u)
+    uniform (n, l, u, pt::loguniform)
 {
-    m_type = pt::loguniform;
-
-   if (l <= 0 || u <= 0) {
+   if (l <= 0 || u <= 0)
         throw std::invalid_argument ("bounds cannot be negative or zero");
-    }
+    dist = std::uniform_real_distribution<double> (log (l), log (u));
+}
 
+sspace::loguniform::loguniform (std::string n, double l, double u, pt t):
+    uniform (n, l, u, t)
+{
+   if (l <= 0 || u <= 0)
+        throw std::invalid_argument ("bounds cannot be negative or zero");
     dist = std::uniform_real_distribution<double> (log (l), log (u));
 }
 
@@ -201,9 +210,8 @@ sspace::qloguniform::qloguniform (
     double upper,
     double q
 ) :
-    loguniform (n, lower, upper)
+    loguniform (n, lower, upper, pt::qloguniform)
 {
-    m_type = pt::qloguniform;
     m_q = q;
 }
 
@@ -223,12 +231,20 @@ sspace::qloguniform::sample ()
 
 // normal ----------------------------------------------------------------------
 
-sspace::normal::normal (std::string n, double mu, double sigma): param_t (n)
+sspace::normal::normal (std::string n, double mu, double sigma) :
+    param_t (n, pt::normal)
 {
     m_mu = mu;
     m_sigma = sigma;
-    m_type = pt::normal;
-    m_name = n;
+    generator = std::mt19937 (rd());
+    dist = std::normal_distribution<double> (mu, sigma);
+}
+
+sspace::normal::normal (std::string n, double mu, double sigma, pt t) :
+    param_t (n, t)
+{
+    m_mu = mu;
+    m_sigma = sigma;
     generator = std::mt19937 (rd());
     dist = std::normal_distribution<double> (mu, sigma);
 }
@@ -242,9 +258,8 @@ sspace::normal::sample ()
 // qnormal ---------------------------------------------------------------------
 
 sspace::qnormal::qnormal (std::string n, double mu, double sigma, double q) :
-    normal (n, mu, sigma)
+    normal (n, mu, sigma, pt::qnormal)
 {
-    m_type = pt::qnormal;
     m_q = q;
 }
 
@@ -257,10 +272,12 @@ sspace::qnormal::sample ()
 // lognormal -------------------------------------------------------------------
 
 sspace::lognormal::lognormal (std::string n, double mu, double sigma) :
-    normal (n, mu, sigma)
-{
-    m_type = pt::lognormal;
-}
+    normal (n, mu, sigma, pt::lognormal)
+{}
+
+sspace::lognormal::lognormal (std::string n, double mu, double sigma, pt t) :
+    normal (n, mu, sigma, t)
+{}
 
 double
 sspace::lognormal::sample ()
@@ -276,9 +293,8 @@ sspace::qlognormal::qlognormal (
     double sigma,
     double q
 ) :
-    lognormal (n, mu, sigma)
+    lognormal (n, mu, sigma, pt::qlognormal)
 {
-    m_type = pt::qlognormal;
     m_q = q;
 }
 
