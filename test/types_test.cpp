@@ -14,7 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the LIcense For The Specific Language Governing permissions and
  * limitations under the License.
- * 
+ *
  * @file
  * @brief Implements tests for optk types.
  */
@@ -32,10 +32,10 @@ test_categorical()
         myopts.push_back (i);
     }
 
-    optk::categorical<int> test ("int categorical", &myopts);
+    sspace::categorical<int> test ("int categorical", &myopts);
 
     assert (test.get_name () == std::string ("int categorical"));
-    assert (test.get_type () == param::categorical);
+    assert (test.get_type () == pt::categorical);
     assert (test.count () == myopts.size ());
 
     std::vector<int> *ret = test.values ();
@@ -47,14 +47,14 @@ test_categorical()
 }
 
 static void test_choice_type() {
-    optk::sspace_t options;
+    sspace::sspace_t options;
 
-    optk::randint ri("randint", 0, 10);
+    sspace::randint ri("randint", 0, 10);
     std::vector<int> opts = {0,1,2,3,4};
-    optk::categorical<int> cat("categorical", &opts);
-    optk::normal norm("normal", 0, 1);
-    optk::qloguniform qlogu ("qloguniform", 1, 10, 2);
-    optk::uniform uni ("uniform", 10, 20);
+    sspace::categorical<int> cat("categorical", &opts);
+    sspace::normal norm("normal", 0, 1);
+    sspace::qloguniform qlogu ("qloguniform", 1, 10, 2);
+    sspace::uniform uni ("uniform", 10, 20);
 
     options.push_back(&ri);
     options.push_back(&cat);
@@ -62,20 +62,20 @@ static void test_choice_type() {
     options.push_back(&qlogu);
     options.push_back(&uni);
 
-    optk::choice test("testchoice", &options);
+    sspace::choice test("testchoice", &options);
 
     assert (test.get_name() == "testchoice");
-    assert (test.get_type() == param::choice);
+    assert (test.get_type() == pt::choice);
     assert (test.count() == options.size());
 
     for (int i = 0; i < 5; i++) {
-        optk::param_t *param = test.get(i);
-        param::param_type t = param->get_type();
+        sspace::param_t *param = test.get(i);
+        pt t = param->get_type();
         switch (t) {
-            case param::randint:
+            case pt::randint:
             {
-                optk::randint *rparam = static_cast<optk::randint *>(param);
-                assert (rparam->get_type() == param::randint);
+                sspace::randint *rparam = static_cast<sspace::randint *>(param);
+                assert (rparam->get_type() == pt::randint);
                 assert (rparam->get_name() == std::string ("randint"));
                 assert (rparam->m_lower == 0);
                 assert (rparam->m_upper == 10);
@@ -85,31 +85,31 @@ static void test_choice_type() {
                 }
                 break;
             }
-            case param::categorical:
+            case pt::categorical:
             {
-                optk::categorical<int> *cparam =
-                    static_cast<optk::categorical<int> *>(param);
+                sspace::categorical<int> *cparam =
+                    static_cast<sspace::categorical<int> *>(param);
                 assert (cparam->get_name () == std::string ("categorical"));
-                assert (cparam->get_type () == param::categorical);
+                assert (cparam->get_type () == pt::categorical);
                 for (int j = 0; j < 5; j++)
                     assert (cparam->get(i) == i);
                 break;
             }
-            case param::normal:
+            case pt::normal:
             {
-                optk::normal *nparam = static_cast<optk::normal *>(param);
+                sspace::normal *nparam = static_cast<sspace::normal *>(param);
                 assert (nparam->get_name () == std::string("normal"));
-                assert (nparam->get_type () == param::normal);
+                assert (nparam->get_type () == pt::normal);
                 assert (nparam->m_mu == 0);
                 assert (nparam->m_sigma == 1);
                 break;
             }
-            case param::qloguniform:
+            case pt::qloguniform:
             {
-                optk::qloguniform *qparam =
-                    static_cast<optk::qloguniform *>(param);
+                sspace::qloguniform *qparam =
+                    static_cast<sspace::qloguniform *>(param);
                 assert (qparam->get_name () == std::string("qloguniform"));
-                assert (qparam->get_type () == param::qloguniform);
+                assert (qparam->get_type () == pt::qloguniform);
                 assert (qparam->m_lower == 1);
                 assert (qparam->m_upper == 10);
                 assert (qparam->m_q == 2);
@@ -120,11 +120,11 @@ static void test_choice_type() {
                 }
                 break;
             }
-            case param::uniform:
+            case pt::uniform:
             {
-                optk::uniform *uparam = static_cast<optk::uniform *>(param);
+                sspace::uniform *uparam = static_cast<sspace::uniform *>(param);
                 assert (uparam->get_name () == std::string ("uniform"));
-                assert (uparam->get_type () == param::uniform);
+                assert (uparam->get_type () == pt::uniform);
                 assert (uparam->m_lower == 10);
                 assert (uparam->m_upper == 20);
                 for (int j = 0; j < 100; j++) {
@@ -145,11 +145,11 @@ static void test_choice_type() {
 static void
 test_randint ()
 {
-    optk::randint testrandint("test", 0, 10);
+    sspace::randint testrandint("test", 0, 10);
 
 
     assert (testrandint.get_name () == std::string ("test"));
-    assert (testrandint.get_type () == param::randint);
+    assert (testrandint.get_type () == pt::randint);
     assert (testrandint.m_lower == 0);
     assert (testrandint.m_upper == 10);
 
@@ -162,10 +162,10 @@ test_randint ()
 static void
 test_uniform ()
 {
-    optk::uniform testuniform ("testing", 0, 10);
+    sspace::uniform testuniform ("testing", 0, 10);
 
     assert (testuniform.get_name () == std::string ("testing"));
-    assert (testuniform.get_type () == param::uniform);
+    assert (testuniform.get_type () == pt::uniform);
     assert (testuniform.m_lower == 0);
     assert (testuniform.m_upper == 10);
 
@@ -178,10 +178,10 @@ test_uniform ()
 static void
 test_quniform ()
 {
-    optk::quniform testquniform ("testing", 0, 10, 2);
+    sspace::quniform testquniform ("testing", 0, 10, 2);
 
     assert (testquniform.get_name () == std::string ("testing"));
-    assert (testquniform.get_type () == param::quniform);
+    assert (testquniform.get_type () == pt::quniform);
     assert (testquniform.m_q == 2);
 
     for (int i = 0; i < 100; i++) {
@@ -194,10 +194,10 @@ test_quniform ()
 static void
 test_loguniform ()
 {
-    optk::loguniform tloguniform ("testing", 1, 10);
+    sspace::loguniform tloguniform ("testing", 1, 10);
 
     assert (tloguniform.get_name () == std::string ("testing"));
-    assert (tloguniform.get_type () == param::loguniform);
+    assert (tloguniform.get_type () == pt::loguniform);
 
     for (int i = 0; i < 100; i++) {
         double tmp = tloguniform.sample ();
@@ -208,10 +208,10 @@ test_loguniform ()
 static void
 test_qloguniform ()
 {
-    optk::qloguniform testqlu ("test_qlu", 10, 20, 2);
+    sspace::qloguniform testqlu ("test_qlu", 10, 20, 2);
 
     assert (testqlu.get_name () == std::string ("test_qlu"));
-    assert (testqlu.get_type () == param::qloguniform);
+    assert (testqlu.get_type () == pt::qloguniform);
     assert (testqlu.m_q == 2);
 
     for (int i = 0; i < 100; i++) {
@@ -224,10 +224,10 @@ test_qloguniform ()
 static void
 test_normal ()
 {
-    optk::normal testnorm ("testnormal", 5, 2.5);
+    sspace::normal testnorm ("testnormal", 5, 2.5);
 
     assert (testnorm.get_name () == std::string ("testnormal"));
-    assert (testnorm.get_type () == param::normal);
+    assert (testnorm.get_type () == pt::normal);
     assert (testnorm.m_mu == 5);
     assert (testnorm.m_sigma == 2.5);
 
@@ -252,10 +252,10 @@ test_normal ()
 static void
 test_qnormal ()
 {
-    optk::qnormal testqnorm ("testqnorm", 10, 5, 2);
+    sspace::qnormal testqnorm ("testqnorm", 10, 5, 2);
 
     assert (testqnorm.get_name () == std::string ("testqnorm"));
-    assert (testqnorm.get_type () == param::qnormal);
+    assert (testqnorm.get_type () == pt::qnormal);
     assert (testqnorm.m_q == 2);
 
     for (int i = 0; i < 100; i++) {
@@ -266,10 +266,10 @@ test_qnormal ()
 static void
 test_lognormal ()
 {
-    optk::lognormal testlognorm ("testlognorm", 10, 5);
+    sspace::lognormal testlognorm ("testlognorm", 10, 5);
 
     assert (testlognorm.get_name () == std::string ("testlognorm"));
-    assert (testlognorm.get_type () == param::lognormal);
+    assert (testlognorm.get_type () == pt::lognormal);
 
     // TODO possibly implement a normality test on the log of sampled values
     // e.g. Kolmogorov–Smirnov test
@@ -278,10 +278,10 @@ test_lognormal ()
 static void
 test_qlognormal ()
 {
-    optk::qlognormal testqln ("testqln", 10, 1.5, 3);
+    sspace::qlognormal testqln ("testqln", 10, 1.5, 3);
 
     assert (testqln.get_name () == std::string ("testqln"));
-    assert (testqln.get_type () == param::qlognormal);
+    assert (testqln.get_type () == pt::qlognormal);
     assert (testqln.m_q == 3);
 
     for (int i = 0; i < 100; i++) {

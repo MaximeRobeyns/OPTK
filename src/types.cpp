@@ -22,34 +22,66 @@
 #include <optk/types.hpp>
 #include <random>
 
-optk::param_t::param_t (std::string n)
+// concrete values tyeps ======================================================
+
+inst::param::param
+(const std::string &k, inst::inst_t t) : key(k), type(t)
+{}
+
+inst::node::node (const std::string &k):
+    inst::param (k, inst::inst_t::node)
+{
+    values = std::vector<param>();
+}
+
+template <>
+inst::value<int>::value (const std::string &k, int v):
+    inst::param (k, inst::inst_t::value),
+    type (inst::val_t::int_val), val(v)
+{}
+
+template <>
+inst::value<double>::value (const std::string &k, double v):
+    inst::param (k, inst::inst_t::value),
+    type (inst::val_t::dbl_val), val(v)
+{}
+
+template <>
+inst::value<std::string>::value (const std::string &k, std::string v):
+    inst::param (k, inst::inst_t::value),
+    type (inst::val_t::str_val), val(v)
+{}
+
+// search space types =========================================================
+
+sspace::param_t::param_t (std::string n)
 {
     m_name = n;
 }
 
 // choice ----------------------------------------------------------------------
 
-optk::choice::choice (std::string n, optk::sspace_t *options) : param_t (n)
+sspace::choice::choice (std::string n, sspace_t *options) : param_t (n)
 {
     m_type = pt::choice;
     m_options = options;
     m_type = pt::choice;
 }
 
-optk::sspace_t *
-optk::choice::options()
+sspace::sspace_t *
+sspace::choice::options()
 {
     return m_options;
 }
 
 long unsigned int
-optk::choice::count ()
+sspace::choice::count ()
 {
     return m_options->size();
 }
 
-optk::param_t *
-optk::choice::get (long unsigned int i)
+sspace::param_t *
+sspace::choice::get (long unsigned int i)
 {
     if (i < 0 || i > m_options->size())
         throw "i out of range";
@@ -58,7 +90,7 @@ optk::choice::get (long unsigned int i)
 
 // randint ---------------------------------------------------------------------
 
-optk::randint::randint (std::string n, int l, int u): param_t (n)
+sspace::randint::randint (std::string n, int l, int u): param_t (n)
 {
     m_type = pt::randint;
     // initialise Mersenne twister prng using the random device.
@@ -69,14 +101,14 @@ optk::randint::randint (std::string n, int l, int u): param_t (n)
 }
 
 int
-optk::randint::sample()
+sspace::randint::sample()
 {
     return dist(generator);
 }
 
 // uniform ---------------------------------------------------------------------
 
-optk::uniform::uniform (std::string n, double l, double u): param_t (n)
+sspace::uniform::uniform (std::string n, double l, double u): param_t (n)
 {
     m_lower = l;
     m_upper = u;
@@ -86,14 +118,14 @@ optk::uniform::uniform (std::string n, double l, double u): param_t (n)
 }
 
 double
-optk::uniform::sample()
+sspace::uniform::sample()
 {
     return dist (generator);
 }
 
 // quniform --------------------------------------------------------------------
 
-optk::quniform::quniform (std::string n, double l, double u, double q):
+sspace::quniform::quniform (std::string n, double l, double u, double q):
     uniform (n, l, u)
 {
     m_q = q;
@@ -101,7 +133,7 @@ optk::quniform::quniform (std::string n, double l, double u, double q):
 }
 
 double
-optk::quniform::sample ()
+sspace::quniform::sample ()
 {
     double value = round(dist (generator) / m_q) * m_q;
     if (value < m_lower) {
@@ -115,7 +147,7 @@ optk::quniform::sample ()
 
 // loguniform ------------------------------------------------------------------
 
-optk::loguniform::loguniform (std::string n, double l, double u):
+sspace::loguniform::loguniform (std::string n, double l, double u):
     uniform (n, l, u)
 {
     m_type = pt::loguniform;
@@ -128,14 +160,14 @@ optk::loguniform::loguniform (std::string n, double l, double u):
 }
 
 double
-optk::loguniform::sample ()
+sspace::loguniform::sample ()
 {
     return exp (dist (generator));
 }
 
 // qloguniform ----------------------------------------------------------------
 
-optk::qloguniform::qloguniform (
+sspace::qloguniform::qloguniform (
     std::string n,
     double lower,
     double upper,
@@ -148,9 +180,9 @@ optk::qloguniform::qloguniform (
 }
 
 double
-optk::qloguniform::sample ()
+sspace::qloguniform::sample ()
 {
-    double value = round(optk::loguniform::sample()/m_q) * m_q;
+    double value = round(loguniform::sample()/m_q) * m_q;
 
     if (value < m_lower) {
         value = m_lower;
@@ -163,7 +195,7 @@ optk::qloguniform::sample ()
 
 // normal ----------------------------------------------------------------------
 
-optk::normal::normal (std::string n, double mu, double sigma): param_t (n)
+sspace::normal::normal (std::string n, double mu, double sigma): param_t (n)
 {
     m_mu = mu;
     m_sigma = sigma;
@@ -174,14 +206,14 @@ optk::normal::normal (std::string n, double mu, double sigma): param_t (n)
 }
 
 double
-optk::normal::sample ()
+sspace::normal::sample ()
 {
     return dist (generator);
 }
 
 // qnormal ---------------------------------------------------------------------
 
-optk::qnormal::qnormal (std::string n, double mu, double sigma, double q) :
+sspace::qnormal::qnormal (std::string n, double mu, double sigma, double q) :
     normal (n, mu, sigma)
 {
     m_type = pt::qnormal;
@@ -189,28 +221,28 @@ optk::qnormal::qnormal (std::string n, double mu, double sigma, double q) :
 }
 
 double
-optk::qnormal::sample ()
+sspace::qnormal::sample ()
 {
     return round(normal::sample () / m_q) * m_q;
 }
 
 // lognormal -------------------------------------------------------------------
 
-optk::lognormal::lognormal (std::string n, double mu, double sigma) :
+sspace::lognormal::lognormal (std::string n, double mu, double sigma) :
     normal (n, mu, sigma)
 {
     m_type = pt::lognormal;
 }
 
 double
-optk::lognormal::sample ()
+sspace::lognormal::sample ()
 {
     return exp(normal::sample());
 }
 
 // qlognormal ------------------------------------------------------------------
 
-optk::qlognormal::qlognormal (
+sspace::qlognormal::qlognormal (
     std::string n,
     double mu,
     double sigma,
@@ -223,7 +255,7 @@ optk::qlognormal::qlognormal (
 }
 
 double
-optk::qlognormal::sample ()
+sspace::qlognormal::sample ()
 {
     return round(lognormal::sample() / m_q) * m_q;
 }

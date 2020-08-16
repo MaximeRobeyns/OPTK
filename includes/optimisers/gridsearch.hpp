@@ -33,6 +33,7 @@
 #include <optk/optimiser.hpp>
 
 class pspace {
+
     public:
 
         pspace ();
@@ -144,14 +145,14 @@ class gridsearch: public optk::optimiser {
          * only accepts parameters of type param::choice, param::categorical,
          * param::randint as well as param::quniform.
          */
-        void update_search_space (optk::sspace_t *space);
+        void update_search_space (sspace::sspace_t *space);
 
         /**
          * Returns the next unique parameter configuration.
          * @param param_id The identifier which will be matched with the
          * selected parameter combination.
          */
-        param::list generate_parameters (int param_id);
+        inst::set generate_parameters (int param_id);
 
         /**
          * Stores \c params if \c value is greater than previous best.
@@ -162,7 +163,7 @@ class gridsearch: public optk::optimiser {
          * @param params The result from the objective function
          */
         void receive_trial_results (
-            int param_id, param::list params, double value
+            int param_id, inst::set params, double value
         );
 
 #ifdef __OPTK_TESTING
@@ -180,7 +181,7 @@ class gridsearch: public optk::optimiser {
          * @param param The parameter to expand.
          * @param space The parameter space (level) in which param belongs
          */
-        void unpack_param (optk::param_t *param, pspace *space);
+        void unpack_param (sspace::param_t *param, pspace *space);
 
         /**
          * reference to the 'root' search space; the first node in the graph

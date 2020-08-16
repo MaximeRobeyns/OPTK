@@ -101,7 +101,7 @@ gridsearch::~gridsearch ()
 }
 
 void
-gridsearch::unpack_param (optk::param_t *param, pspace *space)
+gridsearch::unpack_param (sspace::param_t *param, pspace *space)
 {
     // 1. Assert that the parameter is of the correct type for gridsearch
     pt t = param->get_type ();
@@ -115,7 +115,7 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
     switch (t) {
         case pt::randint:
         {
-            optk::randint *ri = static_cast<optk::randint *>(param);
+            sspace::randint *ri = static_cast<sspace::randint *>(param);
             std::string name = ri->get_name ();
             std::vector<double> values;
 
@@ -129,7 +129,7 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
         }
         case pt::quniform:
         {
-            optk::quniform *qu = static_cast<optk::quniform *>(param);
+            sspace::quniform *qu = static_cast<sspace::quniform *>(param);
             std::string name = qu->get_name ();
             std::vector <double> values;
 
@@ -145,8 +145,8 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
         {
             // NOTE: categorical must be double values
             // anything else will segfault
-            optk::categorical<double> *cat =
-                static_cast<optk::categorical<double> *>(param);
+            sspace::categorical<double> *cat =
+                static_cast<sspace::categorical<double> *>(param);
             std::string name = cat->get_name ();
             std::vector <double> values = *cat->values();
             pspace::param p = std::make_tuple (name, values);
@@ -155,14 +155,14 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
         }
         case pt::choice:
         {
-            optk::choice *c = static_cast<optk::choice *>(param);
+            sspace::choice *c = static_cast<sspace::choice *>(param);
 
             // creates a new pspace on the heap
             pspace *nspace = new pspace (c->get_name ());
             space->register_subspace (nspace);
 
-            optk::sspace_t *subspace = c->options ();
-            optk::sspace_t::iterator it;
+            sspace::sspace_t *subspace = c->options ();
+            sspace::sspace_t::iterator it;
             for (it = subspace->begin (); it != subspace->end (); it++) {
                 gridsearch::unpack_param (*it, nspace);
             }
@@ -177,32 +177,33 @@ gridsearch::unpack_param (optk::param_t *param, pspace *space)
 }
 
 void
-gridsearch::update_search_space (optk::sspace_t *space)
+gridsearch::update_search_space (sspace::sspace_t *space)
 {
     // free previous search spaces
     free_spaces (m_root);
 
     m_root = new pspace ("root");
-    optk::sspace_t::iterator it;
+    sspace::sspace_t::iterator it;
     for (it = space->begin (); it != space->end (); it++) {
         gridsearch::unpack_param (*it, m_root);
     }
 }
 
-param::list gridsearch::generate_parameters (int param_d) {
+inst::set gridsearch::generate_parameters (int param_d) {
 
-    param::list params;
+    inst::set params;
 
     // 1. do gridsearch for the first layer (root pspace)
     // pspace::params *pms = m_root->get_paramlist();
+    //
+    // TODO come back to this
 
-    return param::list ();
+    return inst::set ();
 }
 
 // dummy functions for compilation ---------------------------------------------
 
-
-void gridsearch::receive_trial_results (int pid, param::list params, double value) {
+void gridsearch::receive_trial_results (int pid, inst::set params, double value) {
     return;
 }
 

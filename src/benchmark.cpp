@@ -14,7 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the LIcense For The Specific Language Governing permissions and
  * limitations under the License.
- * 
+ *
  * @file
  * @brief This file implements the base class for benchmarks.
  */
@@ -33,14 +33,14 @@ optk::benchmark::get_name ()
     return m_name;
 }
 
-optk::sspace_t *
+sspace::sspace_t *
 optk::benchmark::get_search_space ()
 {
     return &m_params;
 }
 
-param::list
-optk::benchmark::evaluate (param::list x)
+inst::set
+optk::benchmark::evaluate (inst::set x)
 {
     return x;
 }

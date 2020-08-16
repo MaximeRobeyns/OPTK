@@ -2,7 +2,7 @@
  * Copyright (C) 2020 Maxime Robeyns <maximerobeyns@gmail.com>
  *
  * Written for the ACRC, University of Bristol
- * 
+ *
  * Licensed under the Educational Community License, Version 2.0
  * (the "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
@@ -14,7 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the LIcense For The Specific Language Governing permissions and
  * limitations under the License.
- * 
+ *
  * @file
  * @brief The main entrypoint to the application
  *
@@ -40,7 +40,7 @@
  * For now we don't use the parameters, however in the future we shall have to
  * parse arguments specifying the optimisation algorithms to benchmark, as well
  * as the benchmark tasks to run.
- * 
+ *
  * @param argc The number of arguments
  * @param argv The argument vector
  */

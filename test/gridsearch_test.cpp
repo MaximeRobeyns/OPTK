@@ -14,7 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the LIcense For The Specific Language Governing permissions and
  * limitations under the License.
- * 
+ *
  * @file
  * @brief Implements tests for the gridsearch optimisation algorithm.
  */
@@ -46,19 +46,19 @@ test_update_search_space ()
 {
     gridsearch test = gridsearch();
 
-    optk::sspace_t testspace;
+    sspace::sspace_t testspace;
 
-    optk::randint tri("testrandint", 0, 10);
-    optk::quniform tqu("testquniform", 0, 10, 1);
+    sspace::randint tri("testrandint", 0, 10);
+    sspace::quniform tqu("testquniform", 0, 10, 1);
     std::vector<double> opts = {0,1,2,3,4};
-    optk::categorical<double> cat("testcat", &opts);
+    sspace::categorical<double> cat("testcat", &opts);
 
-    optk::randint c1("choice1", 0,5);
-    optk::quniform c2("choice2", 0, 10, 1);
+    sspace::randint c1("choice1", 0,5);
+    sspace::quniform c2("choice2", 0, 10, 1);
     std::vector<double> c_cat = {0,1,2,3,4,5,6,7,8,9,10};
-    optk::categorical<double> c3("choice3", &c_cat);
-    optk::sspace_t copts = {&c1, &c2, &c3};
-    optk::choice choice("testchoice", &copts);
+    sspace::categorical<double> c3("choice3", &c_cat);
+    sspace::sspace_t copts = {&c1, &c2, &c3};
+    sspace::choice choice("testchoice", &copts);
 
     testspace.push_back(&tri);
     testspace.push_back(&tqu);
