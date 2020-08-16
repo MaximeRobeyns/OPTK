@@ -24,6 +24,48 @@
 #include <tests/types_test.hpp>
 #include <optk/types.hpp>
 
+// test types for concrete values ---------------------------------------------
+
+/*
+ * creates the test values:
+ * [
+ *  "val1": 42,
+ *  "val2": 21.0,
+ *  "val3": "string test",
+ *  "val4": [
+ *      "val4.1": 42,
+ *      "val4.2": 21.0,
+ *      "val4.3": "string test"
+ *  ]
+ * ]
+ */
+
+static void
+test_concrete_types ()
+{
+    inst::node val4 ("val4");
+    val4.add_items (std::vector<inst::param>({
+                inst::int_val("val4.1", 42),
+                inst::dbl_val("val4.2", 21.0),
+                inst::str_val("val4.3", "string test")
+                }));
+
+    inst::int_val val1("val1", 42);
+    inst::dbl_val val2("val2", 21.0);
+    inst::str_val val3("val3", "string test");
+
+    inst::node root ("root");
+    root.add_item(val1);
+    root.add_item(val2);
+    root.add_item(val3);
+
+    assert (root.get_key() == std::string("root"));
+    assert (root.get_type() == inst::inst_t::node );
+    // inst::int_val tmp_int = static_cast<inst::int_val>(root.get_item ("val1"));
+}
+
+// test search space types ----------------------------------------------------
+
 static void
 test_categorical()
 {
@@ -292,7 +334,10 @@ test_qlognormal ()
 void
 run_type_tests()
 {
-    // test_choice_type();
+
+    test_concrete_types ();
+
+    test_choice_type();
     test_categorical ();
     test_randint ();
     test_uniform ();

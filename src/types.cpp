@@ -21,6 +21,7 @@
 
 #include <optk/types.hpp>
 #include <random>
+#include <unordered_map>
 
 // concrete values tyeps ======================================================
 
@@ -31,25 +32,49 @@ inst::param::param
 inst::node::node (const std::string &k):
     inst::param (k, inst::inst_t::node)
 {
-    values = std::vector<param>();
+    values = std::unordered_map<std::string, param>();
 }
 
-template <>
-inst::value<int>::value (const std::string &k, int v):
-    inst::param (k, inst::inst_t::value),
-    type (inst::val_t::int_val), val(v)
+void
+inst::node::add_item (param p)
+{
+    values.insert({p.get_key(), p});
+}
+
+void
+inst::node::add_items (std::vector<param> items)
+{
+    std::vector<param>::iterator it;
+    for (it = items.begin(); it != items.end(); it++)
+        values.insert({(*it).get_key(), *it});
+}
+
+// O(log(n)) lookup
+inst::param
+inst::node::get_item (const std::string &k)
+{
+    return values.at(k);
+}
+
+void
+inst::node::remove_item (const std::string &k)
+{
+    values.erase(k);
+}
+
+inst::int_val::int_val (const std::string &k, int v):
+    inst::param (k, inst::inst_t::int_val),
+    val (v)
 {}
 
-template <>
-inst::value<double>::value (const std::string &k, double v):
-    inst::param (k, inst::inst_t::value),
-    type (inst::val_t::dbl_val), val(v)
+inst::dbl_val::dbl_val (const std::string &k, double v):
+    inst::param (k, inst::inst_t::dbl_val),
+    val (v)
 {}
 
-template <>
-inst::value<std::string>::value (const std::string &k, std::string v):
-    inst::param (k, inst::inst_t::value),
-    type (inst::val_t::str_val), val(v)
+inst::str_val::str_val (const std::string &k, const std::string &v):
+    inst::param (k, inst::inst_t::str_val),
+    val (v)
 {}
 
 // search space types =========================================================
