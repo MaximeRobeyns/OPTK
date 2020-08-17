@@ -26,6 +26,7 @@ SHELL := bash
 .DELETE_ON_ERROR:
 MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
+MAKEFLAGS += -j8
 
 # Constants --------------------------------------------------------------------
 

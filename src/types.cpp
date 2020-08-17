@@ -83,7 +83,7 @@ inst::str_val::str_val (const std::string &k, const std::string &v):
 
 // search space types =========================================================
 
-sspace::param_t::param_t (std::string n, pt t): m_type(t), m_name(n) {};
+sspace::param_t::param_t (std::string n, pt t) : m_name(n), m_type(t) {};
 
 // choice ----------------------------------------------------------------------
 

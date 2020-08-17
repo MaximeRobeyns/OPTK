@@ -26,103 +26,32 @@
 #include <iostream>
 #include <unordered_map>
 #include <vector>
+#include <tuple>
 
 #include <optk/optimiser.hpp>
 #include <optk/types.hpp>
 
-#include <optk/types.hpp>
-#include <optk/optimiser.hpp>
+namespace __gs {
 
-class pspace {
+enum class pspace_t: char {
+    node,
+    value
+};
 
+class param {
     public:
-
-        pspace ();
-
-        // types ---------------------------------------------------------------
-
-        /**
-         * Param is a name-values tuple.
-         * It should allow for either a vector of doubles, or integers, or strings.
-         */
-        typedef std::tuple<std::string, std::vector<double>> param;
-
-        /**
-         * Somewhat similar to optk::plist, params is a list of (name, values)
-         * tuples, which represents all parameters, their names and
-         * corresponding values.
-         */
-        typedef std::vector<param> params;
-
-        /**
-         * Used to represent a subspce in a pspace.
-         */
-        typedef std::vector<pspace *> subspaces;
-
-        // methods -------------------------------------------------------------
-
-        /**
-         * The constructor
-         */
-        pspace (std::string name);
-
-        /**
-         * The step function is used to step through a search space.
-         * @todo make the requirements for this function more concrete before
-         * going further
-         */
-        void step ();
-        // bool step ();
-
-        /**
-         * registers the enumerated values for a parameter.
-         * @param p pointer to the parameter whose values have been enumerated
-         */
-        void register_param (param *p);
-
-        /**
-         * registers a nested search space to add to the \c subspaces member
-         * @param subspace Pointer to the nested subspace
-         */
-        void register_subspace (pspace *subspace);
-
-        /**
-         * Get the parameter list; used during testing
-         */
-        params *get_paramlist ();
-
-        /**
-         * Get the subspaces; used during testing
-         */
-        subspaces *get_subspaces ();
-
-        /**
-         * Access this parameter space's name
-         */
-        std::string get_name ();
-
-#ifdef __OPTK_TESTING
-        std::vector<int> get_ctrs() { return m_ctrs; }
-        std::vector<int> get_sizes() { return m_sizes; }
-#endif
+        param (const std::string &k, pspace_t t);
+        pspace_t get_type () { return m_type; }
+        std::string get_key () { return m_key; }
 
     private:
-        /** This is an array of counters used when generating new permutations */
-        std::vector<int> m_ctrs;
-
-        /** Stores the number of candidate values per parameter*/
-        std::vector<int> m_sizes;
-
-        /** The list of concrete parameters for this 'level' */
-        params m_paramlist;
-
-        /** The list of nested search spaces on this 'level' */
-        subspaces m_subspaces;
-
-        /** The name corresponding to the (nested) search space. The top-level
-            search space has name "root". */
-        std::string m_name;
+        const std::string m_key;
+        const pspace_t m_type;
 };
+
+// classes inheriting __gs::param are declared / defined in the gridsearch.cpp
+
+} // end namespace gs
 
 class gridsearch: public optk::optimiser {
 
@@ -135,8 +64,7 @@ class gridsearch: public optk::optimiser {
         gridsearch ();
 
         /**
-         * The destructor; used to recursively free nested search spaces stored
-         * on the heap.
+         * The destructor; used to recursively free elements stored on the heap.
          */
         ~gridsearch ();
 
@@ -177,24 +105,19 @@ class gridsearch: public optk::optimiser {
 
     private:
         /**
-         * Recursively expands the parameters into a connected acyclic graph
-         * which is a representation that gridsearch can more easily iterate
-         * over.
-         *
-         * @param param The parameter to expand.
-         * @param space The parameter space (level) in which param belongs
+         * This is a reference to the 'root' of the 'unpacked' (internal)
+         * representation of the search space.
          */
-        void unpack_param (sspace::param_t *param, pspace *space);
+        __gs::param *m_root;
 
         /**
-         * reference to the 'root' search space; the first node in the graph
+         * This is used to keep track of previously generated instances or
+         * settings of the parameters, identified by the parameter id passed to
+         * the generate_parameters method.
+         * Contains elements stored on the heap.
          */
-        pspace *m_root;
-
-        /** This keeps track of previously generated instances / settings of
-         * the parameters, identified by the param id given to
-         * generate_parameters. */
         std::unordered_map<int, inst::set> trials;
+
 };
 
 #endif // __GRIDSEARCH_H_

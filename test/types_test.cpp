@@ -87,8 +87,6 @@ test_concrete_types ()
     GETINT(trd_int, root, "val1");
     assert (trd_int->get_val() == 42);
 
-    std::cout << "integer access successful" << std::endl;
-
     // double access
     inst::dbl_val *fst_dbl = static_cast<inst::dbl_val *>(root.get_item ("val2"));
     assert (dbleq (fst_dbl->get_val(), 21.0));
@@ -96,8 +94,6 @@ test_concrete_types ()
     assert (dbleq (snd_dbl->get_val(), 21.0));
     GETDBL(trd_dbl, root, "val2");
     assert (dbleq (trd_dbl->get_val(), 21.0));
-
-    std::cout << "double access successful" << std::endl;
 
     // string access
     inst::str_val *fst_str = static_cast<inst::str_val *>(root.get_item ("val3"));

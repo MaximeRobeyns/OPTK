@@ -21,208 +21,157 @@
 
 #include <optimisers/gridsearch.hpp>
 
-#include <nlohmann/json.hpp>
-#include <tuple>
+namespace __gs {
 
-// parameter space class implementation ----------------------------------------
+enum class vtype: char {
+    int_val,
+    dbl_val,
+    str_val
+};
 
-pspace::pspace ()
-{
-    m_name = "";
-    m_paramlist = params();
-    m_sizes = std::vector<int>();
-    m_ctrs = std::vector<int>();
-}
+param::param (const std::string &k, pspace_t t) :
+    m_key(k), m_type(t)
+{}
 
-pspace::pspace (std::string name)
-{
-    m_name = name;
-    // instatiate the vector of parameters
-    m_paramlist = params();
-}
+class node: public param {
+    public:
+        node (const std::string &k) :
+            param (k, pspace_t::node)
+        {
+            nodes = std::unordered_map<std::string, param *>();
+            values = std::unordered_map<std::string, param *>();
+        }
 
-void
-pspace::register_param (param *p)
-{
-    int size = (int) std::get<1>(*p).size();
-    m_sizes.push_back(size);
-    m_ctrs.push_back(0);
-    m_paramlist.push_back(*p);
-}
+        void
+        add_item (param *p)
+        {
+            pspace_t t = p->get_type ();
+            switch (t) {
+                case pspace_t::node:
+                    {
+                        nodes.insert({p->get_key(), p});
+                    }
+                default:
+                    {
+                        values.insert({p->get_key(), p});
+                    }
+            }
+        }
 
-void
-pspace::register_subspace(pspace *s)
-{
-    m_subspaces.push_back(s);
-}
+        param *
+        get_item (const std::string &k)
+        {
+            // not very pretty; refactor?
+            try {
+                return nodes.at(k);
+            } catch (const std::out_of_range &e) { }
 
-pspace::params *
-pspace::get_paramlist ()
-{
-    return &m_paramlist;
-}
+            try {
+                return values.at(k);
+            } catch (const std::out_of_range &e) { }
 
-pspace::subspaces *
-pspace::get_subspaces ()
-{
-    return &m_subspaces;
-}
+            return NULL;
+        }
 
-std::string
-pspace::get_name ()
-{
-    return m_name;
-}
+        std::unordered_map <std::string, param *> *
+        get_subspaces ()
+        { return &nodes; }
 
-// gridsearch implementation ---------------------------------------------------
+        std::unordered_map <std::string, param *> *
+        get_values ()
+        { return &values; }
 
-gridsearch::gridsearch (): optimiser ("gridsearch")
-{
-    // initialise a default root space;
-    // @todo verify that this is necessary.
-    m_root = new pspace("root");
-}
+        // TODO add an iteration method here
+
+    private:
+        // as an invariant, all param * in here have type pspace_t::node.
+        std::unordered_map <std::string, param *> nodes;
+        // as an invariant, all param * in here have type pspace_t::value.
+        std::unordered_map <std::string, param *> values;
+};
+
+template <class T>
+class value: public param {
+    public:
+        value (const std::string &k, vtype t) :
+            param (k, pspace_t::value), m_type(t)
+        {
+            m_values = std::vector<T>();
+        }
+
+        value (const std::string &k, std::vector<int> v) :
+            param (k, pspace_t::value), m_type(vtype::int_val)
+        {
+            m_values = std::vector<int>(v);
+        }
+
+        value (const std::string &k, std::vector<double> v) :
+            param (k, pspace_t::value), m_type (vtype::dbl_val)
+        {
+            m_values = std::vector<double>(v);
+        }
+
+        value (const std::string &k, std::vector<std::string> v) :
+            param (k, pspace_t::value), m_type (vtype::str_val)
+        {
+            m_values = std::vector<std::string>(v);
+        }
+
+        vtype get_type() { return m_type; }
+        std::vector<T> *get_vals() { return &m_values; }
+        T at(unsigned int i) { return m_values[i]; }
+        void set(std::vector<T> vs) { m_values = vs; }
+
+        // TODO add an iterator method here
+        // Sends a signal when the last value is returned (so that the calling
+        // process can know that the iteration is complete)
+        // count the lenght of the values array
+
+    private:
+        const vtype m_type;
+        std::vector<T> m_values;
+};
+
+typedef std::unordered_map<std::string, param *> subspaces;
+
+typedef std::unordered_map<std::string, param *> params;
+
+} // namespace __gs
+
+
+// Actual gridsearch class methods ============================================
+
+// free, static functions -----------------------------------------------------
 
 static void
-free_spaces (pspace *root)
+free_spaces (__gs::node *root)
 {
-    pspace::subspaces *ss = root->get_subspaces();
-    pspace::subspaces::iterator it;
-    for (it = ss->begin (); it != ss->end (); it++) {
-        free_spaces (*it);
+    __gs::subspaces *ss = root->get_subspaces ();
+    __gs::subspaces::iterator it;
+    for (it = ss->begin(); it != ss->end(); it++) {
+        __gs::node *tmp = static_cast<__gs::node *>((*it).second);
+        free_spaces (tmp);
     }
+    // free all the concrete values at this level
+    __gs::params *ps = root->get_values ();
+    __gs::params::iterator it;
+    for (it = ps->begin (); it != ps->end (); it++) {
+        __gs::value<int> *tmp = static_cast<__gs::value<int> *>((*it).second);
+        delete tmp;
+    }
+    // now actually free the 'root' node.
     delete root;
 }
 
+// gridsearch member functions ------------------------------------------------
+
+gridsearch::gridsearch () :
+    optimiser ("gridsearch")
+{ }
+
 gridsearch::~gridsearch ()
 {
-    // recurse through nested search spaces, freeing them
-    free_spaces (m_root);
-}
-
-void
-gridsearch::unpack_param (sspace::param_t *param, pspace *space)
-{
-    // 1. Assert that the parameter is of the correct type for gridsearch
-    pt t = param->get_type ();
-    assert (
-        t == pt::randint ||
-        t == pt::quniform ||
-        t == pt::categorical ||
-        t == pt::choice
-    );
-
-    switch (t) {
-        case pt::randint:
-        {
-            sspace::randint *ri = static_cast<sspace::randint *>(param);
-            std::string name = ri->get_name ();
-            std::vector<double> values;
-
-            for (int i = ri->m_lower; i < ri->m_upper; i++) {
-                values.push_back ((double) i);
-            }
-
-            pspace::param p = std::make_tuple (name, values);
-            space->register_param (&p);
-            break;
-        }
-        case pt::quniform:
-        {
-            sspace::quniform *qu = static_cast<sspace::quniform *>(param);
-            std::string name = qu->get_name ();
-            std::vector <double> values;
-
-            for (int i = qu->m_lower; i < qu->m_upper; i++) {
-                values.push_back ((double) i);
-            }
-
-            pspace::param p = std::make_tuple (name, values);
-            space->register_param (&p);
-            break;
-        }
-        case pt::categorical:
-        {
-            // NOTE: categorical must be double values
-            // anything else will segfault
-            sspace::categorical<double> *cat =
-                static_cast<sspace::categorical<double> *>(param);
-            std::string name = cat->get_name ();
-            std::vector <double> values = *cat->values();
-            pspace::param p = std::make_tuple (name, values);
-            space->register_param (&p);
-            break;
-        }
-        case pt::choice:
-        {
-            sspace::choice *c = static_cast<sspace::choice *>(param);
-
-            // creates a new pspace on the heap
-            pspace *nspace = new pspace (c->get_name ());
-            space->register_subspace (nspace);
-
-            sspace::sspace_t *subspace = c->options ();
-            sspace::sspace_t::iterator it;
-            for (it = subspace->begin (); it != subspace->end (); it++) {
-                gridsearch::unpack_param (*it, nspace);
-            }
-            break;
-        }
-
-        default:
-            // we should never arrive at this case due to the assert
-            // hence it is left unhandled
-            break;
-    }
-}
-
-void
-gridsearch::update_search_space (sspace::sspace_t *space)
-{
-    // free previous search spaces
-    free_spaces (m_root);
-
-    m_root = new pspace ("root");
-    sspace::sspace_t::iterator it;
-    for (it = space->begin (); it != space->end (); it++) {
-        gridsearch::unpack_param (*it, m_root);
-    }
-}
-
-inst::set
-gridsearch::generate_parameters (int param_id)
-{
-    /*
-    inst::set params = new std::vector<inst::param *>();
-
-    // TODO update gridsearch's destructor to clear this map
-    if (trials.count(param_id))
-        trials.at(param_id) = params;
-    else
-        trials.emplace(param_id, params);
-
-    // range through the search space, providing references to params
-    sspace::sspace_t::iterator it;
-    for(it = space->begin (); it != space->end (); it++) {
-        (*it)->
-    }
-
-
-    // the the parameter id is used to refer to a pointer to a memory location
-    // on the heap where the inst::set element is stored.
-
-    // 1. do gridsearch for the first layer (root pspace)
-    // pspace::params *pms = m_root->get_paramlist();
-    //
-    // TODO come back to this
-    */
-
-    return inst::set ();
-}
-
-// dummy functions for compilation ---------------------------------------------
-
-void gridsearch::receive_trial_results (int pid, inst::set params, double value) {
-    return;
+    __gs::node *tmp_root = static_cast<__gs::node *>(m_root);
+    free_spaces (tmp_root);
 }
 
