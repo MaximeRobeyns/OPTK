@@ -36,7 +36,9 @@ namespace __gs {
 
 enum class pspace_t: char {
     node,
-    value
+    int_val,
+    dbl_val,
+    str_val
 };
 
 class param {
