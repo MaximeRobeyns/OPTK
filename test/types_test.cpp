@@ -132,6 +132,8 @@ test_concrete_types ()
 static void
 test_categorical()
 {
+    // integers
+
     std::vector<int> myopts;
     for (int i = 0; i < 5; i++) {
         myopts.push_back (i);
@@ -140,7 +142,7 @@ test_categorical()
     sspace::categorical<int> test ("int categorical", &myopts);
 
     assert (test.get_name () == std::string ("int categorical"));
-    assert (test.get_type () == pt::categorical);
+    assert (test.get_type () == pt::categorical_int);
     assert (test.count () == myopts.size ());
 
     std::vector<int> *ret = test.values ();
@@ -149,6 +151,53 @@ test_categorical()
     for (int i = 0; i < 5; i++) {
         assert (test.get (i) == i);
     }
+
+    // doubles
+
+    std::vector<double> myopts_dbl;
+    for (double i = 0.0; i <= 10.0; i+=2.5) {
+        myopts.push_back (i);
+    }
+
+    sspace::categorical<double> test_dbl ("double categorical", &myopts_dbl);
+
+    assert (test_dbl.get_name () == std::string ("double categorical"));
+    assert (test_dbl.get_type () == pt::categorical_dbl);
+    assert (test_dbl.count () == myopts.size ());
+
+    std::vector<double> *ret_dbl = test_dbl.values ();
+    assert (ret_dbl->size () == myopts.size ());
+
+    for (int i = 0; i < 5; i++) {
+        assert (test.get (i) == i);
+    }
+    int ctr = 0;
+    for (double i = 0.0; i <= 10.0; i+=2.5)
+        dbleq (test_dbl.get (ctr++), i);
+
+    // strings
+
+    std::vector<std::string> myopts_str;
+    myopts_str.push_back (std::string("one"));
+    myopts_str.push_back (std::string("two"));
+    myopts_str.push_back (std::string("three"));
+    myopts_str.push_back (std::string("four"));
+    myopts_str.push_back (std::string("five"));
+
+    sspace::categorical<std::string> test_str ("string categorical", &myopts_str);
+
+    assert (test_str.get_name () == std::string ("string categorical"));
+    assert (test_str.get_type () == pt::categorical_str);
+    assert (test_str.count () == myopts.size ());
+
+    std::vector<std::string> *ret_str = test_str.values ();
+    assert (ret_str->size () == myopts.size ());
+
+    assert (test_str.get(0) == std::string ("one"));
+    assert (test_str.get(1) == std::string ("two"));
+    assert (test_str.get(2) == std::string ("three"));
+    assert (test_str.get(3) == std::string ("four"));
+    assert (test_str.get(4) == std::string ("five"));
 }
 
 static void test_choice_type() {
