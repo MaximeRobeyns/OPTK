@@ -23,15 +23,19 @@
 
 #include <tests/optimiser_test.hpp>
 
+/*
+
 static bool
 dbleq (double a, double b)
 {
     return std::fabs(a - b) < std::numeric_limits<double>::epsilon();
 }
+*/
 
 /**
  * test the values returned from a search space
  */
+/*
 static void
 tst_val (std::string n, int l, int u, pspace::params::iterator val)
 {
@@ -115,11 +119,13 @@ test_update_search_space ()
         ctr++;
     }
 }
+*/
 
 void
 run_gridsearch_tests()
 {
-    test_update_search_space ();
+    run_static_gridsearch_tests ();
+    // test_update_search_space ();
     std::cout << "All gridsearch tests pass" << std::endl;
 }
 

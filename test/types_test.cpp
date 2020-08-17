@@ -163,16 +163,13 @@ test_categorical()
 
     assert (test_dbl.get_name () == std::string ("double categorical"));
     assert (test_dbl.get_type () == pt::categorical_dbl);
-    assert (test_dbl.count () == myopts.size ());
+    assert (test_dbl.count () == myopts_dbl.size ());
 
     std::vector<double> *ret_dbl = test_dbl.values ();
-    assert (ret_dbl->size () == myopts.size ());
+    assert (ret_dbl->size () == myopts_dbl.size ());
 
-    for (int i = 0; i < 5; i++) {
-        assert (test.get (i) == i);
-    }
     int ctr = 0;
-    for (double i = 0.0; i <= 10.0; i+=2.5)
+    for (double i = 0.0; dbleq (i, 10.0); i+=2.5)
         dbleq (test_dbl.get (ctr++), i);
 
     // strings
@@ -188,10 +185,10 @@ test_categorical()
 
     assert (test_str.get_name () == std::string ("string categorical"));
     assert (test_str.get_type () == pt::categorical_str);
-    assert (test_str.count () == myopts.size ());
+    assert (test_str.count () == myopts_str.size ());
 
     std::vector<std::string> *ret_str = test_str.values ();
-    assert (ret_str->size () == myopts.size ());
+    assert (ret_str->size () == myopts_str.size ());
 
     assert (test_str.get(0) == std::string ("one"));
     assert (test_str.get(1) == std::string ("two"));
@@ -204,14 +201,22 @@ static void test_choice_type() {
     sspace::sspace_t options;
 
     sspace::randint ri("randint", 0, 10);
-    std::vector<int> opts = {0,1,2,3,4};
-    sspace::categorical<int> cat("categorical", &opts);
+    std::vector<int> int_opts = {0,1,2,3,4};
+    sspace::categorical<int> cat_int("categorical_int", &int_opts);
+    std::vector<double> dbl_opts = {0.0, 0.1, 0.2, 0.3, 0.4};
+    sspace::categorical<double> cat_dbl("categorical_dbl", &dbl_opts);
+    std::vector<std::string> str_opts = {
+        std::string("first"), std::string("second"), std::string("third")
+    };
+    sspace::categorical<std::string> cat_str("categorical_str", &str_opts);
     sspace::normal norm("normal", 0, 1);
     sspace::qloguniform qlogu ("qloguniform", 1, 10, 2);
     sspace::uniform uni ("uniform", 10, 20);
 
     options.push_back(&ri);
-    options.push_back(&cat);
+    options.push_back(&cat_int);
+    options.push_back(&cat_dbl);
+    options.push_back(&cat_str);
     options.push_back(&norm);
     options.push_back(&qlogu);
     options.push_back(&uni);
@@ -239,14 +244,36 @@ static void test_choice_type() {
                 }
                 break;
             }
-            case pt::categorical:
+            case pt::categorical_int:
             {
                 sspace::categorical<int> *cparam =
                     static_cast<sspace::categorical<int> *>(param);
-                assert (cparam->get_name () == std::string ("categorical"));
-                assert (cparam->get_type () == pt::categorical);
+                assert (cparam->get_name () == std::string ("categorical_int"));
+                assert (cparam->get_type () == pt::categorical_int);
                 for (int j = 0; j < 5; j++)
                     assert (cparam->get(i) == i);
+                break;
+            }
+            case pt::categorical_dbl:
+            {
+                sspace::categorical<double> *cparam =
+                    static_cast<sspace::categorical<double> *>(param);
+                assert (cparam->get_name () == std::string ("categorical_dbl"));
+                assert (cparam->get_type () == pt::categorical_dbl);
+                for (int j = 0; j < 5; j++) {
+                    assert (dbleq (cparam->get(j), ((double)j)/10.0));
+                }
+                break;
+            }
+            case pt::categorical_str:
+            {
+                sspace::categorical<std::string> *cparam =
+                    static_cast<sspace::categorical<std::string> *>(param);
+                assert (cparam->get_name () == std::string ("categorical_str"));
+                assert (cparam->get_type () == pt::categorical_str);
+                assert (cparam->get(0) == std::string("first"));
+                assert (cparam->get(1) == std::string("second"));
+                assert (cparam->get(2) == std::string("third"));
                 break;
             }
             case pt::normal:

@@ -23,6 +23,10 @@
 
 namespace __gs {
 
+typedef std::vector<std::tuple<std::string, param *>> subspaces;
+
+typedef std::vector<std::tuple<std::string, param *>> params;
+
 enum class vtype: char {
     int_val,
     dbl_val,
@@ -38,8 +42,8 @@ class node: public param {
         node (const std::string &k) :
             param (k, pspace_t::node)
         {
-            nodes = std::unordered_map<std::string, param *>();
-            values = std::unordered_map<std::string, param *>();
+            nodes = subspaces();
+            values = params();
         }
 
         void
@@ -49,15 +53,19 @@ class node: public param {
             switch (t) {
                 case pspace_t::node:
                     {
-                        nodes.insert({p->get_key(), p});
+                        nodes.push_back({p->get_key(), p});
                     }
                 default:
                     {
-                        values.insert({p->get_key(), p});
+                        values.push_back({p->get_key(), p});
                     }
             }
         }
 
+        // get_item is completely unnecessary; when will we ever directly
+        // access an element?
+        // TODO remove when safe
+        /*
         param *
         get_item (const std::string &k)
         {
@@ -72,12 +80,13 @@ class node: public param {
 
             return NULL;
         }
+        */
 
-        std::unordered_map <std::string, param *> *
+        subspaces *
         get_subspaces ()
         { return &nodes; }
 
-        std::unordered_map <std::string, param *> *
+        params *
         get_values ()
         { return &values; }
 
@@ -85,9 +94,9 @@ class node: public param {
 
     private:
         // as an invariant, all param * in here have type pspace_t::node.
-        std::unordered_map <std::string, param *> nodes;
+        subspaces nodes;
         // as an invariant, all param * in here have type pspace_t::value.
-        std::unordered_map <std::string, param *> values;
+        params values;
 };
 
 template <class T>
@@ -132,10 +141,6 @@ class value: public param {
         std::vector<T> m_values;
 };
 
-typedef std::unordered_map<std::string, param *> subspaces;
-
-typedef std::unordered_map<std::string, param *> params;
-
 } // namespace __gs
 
 
@@ -149,7 +154,7 @@ free_spaces (__gs::node *root)
     __gs::subspaces *ss = root->get_subspaces ();
     __gs::subspaces::iterator it;
     for (it = ss->begin(); it != ss->end(); it++) {
-        __gs::node *tmp = static_cast<__gs::node *>((*it).second);
+        __gs::node *tmp = static_cast<__gs::node *>(std::get<1>(*it));
         free_spaces (tmp);
     }
 
@@ -157,7 +162,7 @@ free_spaces (__gs::node *root)
     __gs::params *ps = root->get_values ();
     __gs::params::iterator val_it;
     for (val_it = ps->begin (); val_it != ps->end (); val_it++) {
-        __gs::value<int> *tmp = static_cast<__gs::value<int> *>((*val_it).second);
+        __gs::value<int> *tmp = static_cast<__gs::value<int> *>(std::get<1>(*val_it));
         delete tmp;
     }
 
@@ -186,7 +191,7 @@ unpack_categorical (sspace::param_t *param, __gs::node *parent)
  * unpacked value.
  */
 static void
-unpack_pararm (sspace::param_t *param, __gs::node *parent)
+unpack_param (sspace::param_t *param, __gs::node *parent)
 {
     // assert that the param type is comparible with gridsearch.
     pt t = param->get_type ();
@@ -221,7 +226,7 @@ unpack_pararm (sspace::param_t *param, __gs::node *parent)
             std::vector<double> values;
             // this is the appoximation to the values of quniform used for
             // gridsarch.
-            for (int i = qu->m_lower; i < qu->m_upper; i++) {
+            for (int i = qu->m_lower; i < qu->m_upper; i+=qu->m_q) {
                 values.push_back ((double) i);
             }
             __gs::param *tmp_val = new __gs::value<double>(name, values);
@@ -245,7 +250,7 @@ unpack_pararm (sspace::param_t *param, __gs::node *parent)
             sspace::sspace_t *subspace = c->options ();
             sspace::sspace_t::iterator it;
             for (it = subspace->begin (); it != subspace->end (); it++)
-                unpack_pararm(*it, nspace);
+                unpack_param(*it, nspace);
             break;
         }
         default:
@@ -279,18 +284,91 @@ gridsearch::update_search_space (sspace::sspace_t *space)
 
     // initialise a new parameter node on the heap
     __gs::node *new_root = new __gs::node("root");
+
     sspace::sspace_t::iterator it;
     for (it = space->begin (); it != space->end (); it++)
         unpack_param (*it, new_root);
 }
 
+// dummy functions TODO get rid of these ----------------------------------------
 
+inst::set gridsearch::generate_parameters (int param_id) {
+    return inst::set();
+}
 
+void gridsearch::receive_trial_results (int pid, inst::set params, double value)
+{
+    return;
+}
 
+// Gridsearch tests ===========================================================
 
+#ifdef __OPTK_TESTING
 
+// compare two double-precision floating point values.
+static bool
+dbleq (double a, double b)
+{
+    return std::fabs (a - b) < std::numeric_limits<double>::epsilon();
+}
 
+void
+test_update_search_space ()
+{
+    gridsearch test = gridsearch ();
 
+    sspace::randint tri ("testrandint", 0, 10);
+    sspace::quniform tqu ("testquniform", 0, 10, 2.5);
+    std::vector<int> int_opts = {0,1,2,3,4,5};
+    sspace::categorical<int> cat1("testcatint", &int_opts);
+    std::vector<double> dbl_opts = {0.0, 2.5, 5.0, 7.5, 10.0};
+    sspace::categorical<double> cat2("testcatdbl", &dbl_opts);
+    std::vector<std::string> str_opts = {
+        std::string("first"),
+        std::string("second"),
+        std::string("third"),
+    };
+    sspace::categorical<std::string> cat3("testcatstr", &str_opts);
 
+    sspace::randint c1("choice1", 0, 5);
+    sspace::quniform c2("choice2", 0, 5, 1);
+    sspace::categorical<int> c3("choice3", &int_opts);
+    sspace::categorical<double> c4("choice4", &dbl_opts);
+    sspace::categorical<std::string> c5("choice5", &str_opts);
+    sspace::sspace_t copts = {&c1, &c2, &c3, &c4, &c5};
+    sspace::choice choice("testchoice", &copts);
 
+    sspace::sspace_t testspace ({&tri, &tqu, &cat1, &cat2, &cat3, &choice});
+
+    test.update_search_space (&testspace);
+
+    // get_root is only defined when __OPTK_TESTING is defined.
+    __gs::param *root = test.get_root();
+
+    __gs::node *nroot = static_cast<__gs::node *>(root);
+
+    __gs::params *ps = nroot->get_values();
+    __gs::params::iterator p_it;
+
+    // testrandint ------------------------------------------------------------
+
+    std::tuple<std::string, __gs::param *> p_tri = ps->at(0);
+    assert (std::get<0>(p_tri) == std::string("testrandint"));
+    __gs::value<int> *pv_tri =
+        static_cast<__gs::value<int> *>(std::get<1>(p_tri));
+    assert (pv_tri->get_type() == __gs::vtype::int_val);
+    for (int i = 0; i < 10; i++)
+        assert (pv_tri->at(i) == i);
+
+    __gs::subspaces *ss = nroot->get_subspaces();
+}
+
+void
+run_static_gridsearch_tests ()
+{
+    test_update_search_space ();
+    std::cout << "gridsearch tests pass" << std::endl;
+}
+
+#endif // __OPTK_TESTING
 

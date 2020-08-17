@@ -24,6 +24,7 @@
 
 #include <assert.h>
 #include <iostream>
+// TODO get rid of this
 #include <unordered_map>
 #include <vector>
 #include <tuple>
@@ -98,7 +99,7 @@ class gridsearch: public optk::optimiser {
         );
 
 #ifdef __OPTK_TESTING
-        pspace * get_root () {
+        __gs::param *get_root () {
             return m_root;
         }
 #endif
@@ -119,5 +120,11 @@ class gridsearch: public optk::optimiser {
         std::unordered_map<int, inst::set> trials;
 
 };
+
+#ifdef __OPTK_TESTING
+#include <assert.h>
+
+void test_update_search_space();
+#endif // __OPTK_TESTING
 
 #endif // __GRIDSEARCH_H_

@@ -29,6 +29,8 @@
 
 #include <optk/types.hpp>
 
+extern void run_static_gridsearch_tests();
+
 /**
  * Runs tests for the gridsearch optimisation algorithm.
  */
