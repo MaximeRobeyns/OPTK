@@ -53,11 +53,7 @@ test_concrete_types ()
     inst::dbl_val v42("val4.2", 21.0);
     inst::str_val v43("val4.3", "string test");
     inst::node val4 ("val4");
-    val4.add_items (std::vector<inst::param *>({
-                &v41,
-                &v42,
-                &v43,
-                }));
+    val4.add_items (std::vector<inst::param *>({ &v41, &v42, &v43, }));
 
     inst::int_val val1("val1", 42);
     inst::dbl_val val2("val2", 21.0);
@@ -84,7 +80,7 @@ test_concrete_types ()
     inst::int_val *snd_int = inst::get<inst::int_val *>(&root, "val1");
     assert (snd_int->get_val () == 42);
     // using macro:
-    GETINT(trd_int, root, "val1");
+    GETINT(trd_int, &root, "val1");
     assert (trd_int->get_val() == 42);
 
     // double access
@@ -92,7 +88,7 @@ test_concrete_types ()
     assert (dbleq (fst_dbl->get_val(), 21.0));
     inst::dbl_val *snd_dbl = inst::get<inst::dbl_val *>(&root, "val2");
     assert (dbleq (snd_dbl->get_val(), 21.0));
-    GETDBL(trd_dbl, root, "val2");
+    GETDBL(trd_dbl, &root, "val2");
     assert (dbleq (trd_dbl->get_val(), 21.0));
 
     // string access
@@ -100,7 +96,7 @@ test_concrete_types ()
     assert (fst_str->get_val() == std::string ("string test"));
     inst::str_val *snd_str = inst::get<inst::str_val *>(&root, "val3");
     assert (snd_str->get_val() == std::string ("string test"));
-    GETSTR(trd_str, root, "val3");
+    GETSTR(trd_str, &root, "val3");
     assert (trd_str->get_val() == std::string ("string test"));
 
     // node access
@@ -108,23 +104,49 @@ test_concrete_types ()
     assert (fst_node->get_key() == std::string("val4"));
     inst::node *snd_node = inst::get<inst::node *>(&root, "val4");
     assert (snd_node->get_key() == std::string("val4"));
-    GETNODE(tmpnode, root, "val4");
+    GETNODE(tmpnode, &root, "val4");
     assert (tmpnode->get_key() == std::string("val4"));
 
     // nested item access
-    GETINT(nint, *tmpnode, "val4.1");
+    GETINT(nint, tmpnode, "val4.1");
     assert (nint->get_val() == 42);
     assert (nint->get_type () == inst::inst_t::int_val);
     assert (nint->get_key() == std::string ("val4.1"));
     nint->update_val(100);
-    GETINT(nint_2, *tmpnode, "val4.1");
+    GETINT(nint_2, tmpnode, "val4.1");
     assert (nint_2->get_val() == 100);
 
-    GETDBL(ndbl, *tmpnode, "val4.2");
+    GETDBL(ndbl, tmpnode, "val4.2");
     assert (dbleq (ndbl->get_val(), 21.0));
 
-    GETSTR(nstr, *tmpnode, "val4.3");
+    GETSTR(nstr, tmpnode, "val4.3");
     assert (nstr->get_val() == std::string("string test"));
+}
+
+static void
+test_heap_concrete_types ()
+{
+    inst::int_val *v41 = new inst::int_val("val4.1", 42);
+    inst::dbl_val *v42 = new inst::dbl_val("val4.2", 21.0);
+    inst::str_val *v43 = new inst::str_val("val4.3", "string test");
+    inst::node *val4 = new inst::node("val4");
+    val4->add_items (std::vector<inst::param *>({ v41, v42, v43, }));
+
+    inst::int_val *val1 = new inst::int_val("val1", 42);
+    inst::dbl_val *val2 = new inst::dbl_val("val2", 21.0);
+    inst::str_val *val3 = new inst::str_val("val3", "string test");
+
+    inst::node *root = new inst::node("root");
+    root->add_item(val1);
+    root->add_item(val2);
+    root->add_item(val3);
+    root->add_item(val4);
+
+    inst::free_node (root);
+
+    // There are no asserts in this function, but the address sanitiser will
+    // warn of any memory leaks if the free_node function does not work
+    // correctly.
 }
 
 // test search space types ----------------------------------------------------
@@ -475,6 +497,7 @@ run_type_tests()
 {
 
     test_concrete_types ();
+    test_heap_concrete_types ();
 
     test_choice_type();
     test_categorical ();

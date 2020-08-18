@@ -81,6 +81,42 @@ inst::str_val::str_val (const std::string &k, const std::string &v):
     val (v)
 {}
 
+void
+inst::free_node (inst::node *n)
+{
+    // iterate through the elements of this node, freeing them as we do so
+    std::unordered_map<std::string, param *> *vals = n->get_values();
+    std::unordered_map<std::string, param *>::iterator it;
+
+    for (it = vals->begin (); it != vals->end (); it++) {
+        inst::param *p = std::get<1>(*it);
+        switch (p->get_type()) {
+            case inst::inst_t::int_val:
+            {
+                delete static_cast<inst::int_val *>(p);
+                break;
+            }
+            case inst::inst_t::dbl_val:
+            {
+                delete static_cast<inst::dbl_val *>(p);
+                break;
+            }
+            case inst::inst_t::str_val:
+            {
+                delete static_cast<inst::str_val *>(p);
+                break;
+            }
+            case inst::inst_t::node:
+            {
+                inst::node *nn = static_cast<inst::node *>(p);
+                free_node (nn);
+                break;
+            }
+        }
+    }
+    delete n;
+}
+
 // search space types =========================================================
 
 sspace::param_t::param_t (std::string n, pt t) : m_name(n), m_type(t) {};

@@ -21,16 +21,25 @@
 
 #include <optimisers/gridsearch.hpp>
 
+/** This namespace contains types which are specific to the gridsearch
+ * algorithm */
 namespace __gs {
 
-typedef std::vector<std::tuple<std::string, param *>> subspaces;
+class node;
 
+/** Subspaces is a list of key, node pairs */
+typedef std::vector<std::tuple<std::string, node *>> subspaces;
+
+/** params is a list of key, value pairs; here represented as the base class
+ * __gs::param, values must be cast to their concrete type before use upon
+ * access. */
 typedef std::vector<std::tuple<std::string, param *>> params;
 
 param::param (const std::string &k, pspace_t t) :
     m_key(k), m_type(t)
 {}
 
+/** Value contains lists of integers, doubles or strings. */
 template <class T>
 class value: public param {
     public:
@@ -71,6 +80,8 @@ class value: public param {
         std::vector<T> m_values;
 };
 
+/** A node contains the parameters for this 'level' of the search space,
+ * including concrete parameters, and nested search spaces. */
 class node: public param {
     public:
         node (const std::string &k) :
@@ -84,8 +95,9 @@ class node: public param {
         {
             subspaces::iterator it;
             for (it = nodes.begin(); it != nodes.end(); it++) {
-                node *tmp_n = static_cast<node *>(std::get<1>(*it));
-                delete tmp_n;
+                // TODO shouldn't have to cast subspaces elements to node
+                // node *tmp_n = static_cast<node *>(std::get<1>(*it));
+                delete std::get<1>(*it);
             }
 
             params::iterator vit;
@@ -125,7 +137,8 @@ class node: public param {
             switch (t) {
                 case pspace_t::node:
                     {
-                        nodes.push_back({p->get_key(), p});
+                        node *tmp_node = static_cast<node *>(p);
+                        nodes.push_back({p->get_key(), tmp_node});
                         break;
                     }
                 default:
@@ -144,7 +157,14 @@ class node: public param {
         get_values ()
         { return &values; }
 
-        // TODO add an iteration method here
+        /**
+         * step
+         * TODO come back to this
+         */
+        inst::set step()
+        {
+            return NULL;
+        }
 
     private:
         // as an invariant, all param * in here have type pspace_t::node.
@@ -307,11 +327,21 @@ gridsearch::update_search_space (sspace::sspace_t *space)
     m_root = new_root;
 }
 
-// dummy functions TODO get rid of these ----------------------------------------
-
 inst::set gridsearch::generate_parameters (int param_id) {
+
+    // __gs::node *root = static_cast<__gs::node *>(m_root);
+
+    // TODO come back to here
+    inst::node set("gridsearch parameters");
+
+    // task list:
+    // 1. Add a destroctor to the inst:: elements
+
     return inst::set();
 }
+
+// dummy functions TODO get rid of these ----------------------------------------
+
 
 void gridsearch::receive_trial_results (int pid, inst::set params, double value)
 {
@@ -320,7 +350,8 @@ void gridsearch::receive_trial_results (int pid, inst::set params, double value)
 
 // Gridsearch tests ===========================================================
 
-#ifdef __OPTK_TESTING
+/// TODO uncomment this
+// #ifdef __OPTK_TESTING
 
 // compare two double-precision floating point values.
 static bool
@@ -425,9 +456,9 @@ test_update_search_space ()
     // node testing -----------------------------------------------------------
 
     __gs::subspaces *ss = nroot->get_subspaces();
-    std::tuple<std::string, __gs::param *> node_tpl = ss->at(0);
+    std::tuple<std::string, __gs::node *> node_tpl = ss->at(0);
     assert (std::get<0> (node_tpl) == std::string ("testchoice"));
-    __gs::node *fst_node = static_cast<__gs::node *>(std::get<1>(node_tpl));
+    __gs::node *fst_node = std::get<1>(node_tpl);
     assert (fst_node->get_subspaces()->size() == (unsigned int) 0);
 
     __gs::params *vals = fst_node->get_values();
@@ -443,12 +474,19 @@ test_update_search_space ()
     }
 }
 
+static void
+test_generate_parameters ()
+{
+    std::cout << "gridsearch generate parameters tests pass" << std::endl;
+}
+
 void
 run_static_gridsearch_tests ()
 {
     test_update_search_space ();
+    test_generate_parameters ();
     std::cout << "gridsearch tests pass" << std::endl;
 }
 
-#endif // __OPTK_TESTING
+// #endif // __OPTK_TESTING
 
