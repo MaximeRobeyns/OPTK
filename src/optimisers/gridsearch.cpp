@@ -199,12 +199,17 @@ class node: public param {
         /**
          * This will iterate through all the concrete parameters once, before
          * calling step on each of the the elemnts in the nodes array.
+         * @param parent A pointer to the node instance to which to add
+         * parameter values.
+         * @param complete A pointer to a boolean value which will be set to
+         * true if all values have been iterated over for this node.
          * @returns A pointer to a root node.
          */
         inst::set
-        step(inst::node *parent)
+        step(inst::node *parent, bool *complete)
         {
             bool cont = true;
+            int update = 0;
             unsigned int i, max = values.size();
             for (i = 0; i < max; i++) {
                 param *p = std::get<1>(values.at(i));
@@ -215,8 +220,10 @@ class node: public param {
                         value<int> *tmp_int = static_cast<value<int> *>(p);
                         inst::int_val *iinst =
                             static_cast<inst::int_val *>(local_params.at(i));
-                        if (cont)
+                        if (cont) {
                             cont = tmp_int->next (iinst->get_addr());
+                            update++;
+                        }
                         parent->add_item (
                                 new inst::int_val (p->get_key(), iinst->get_val())
                                 );
@@ -228,8 +235,10 @@ class node: public param {
                             static_cast<value<double> *>(p);
                         inst::dbl_val *dinst =
                             static_cast<inst::dbl_val *>(local_params.at(i));
-                        if (cont)
+                        if (cont) {
                             cont = tmp_dbl->next (dinst->get_addr ());
+                            update++;
+                        }
                         parent->add_item (
                                 new inst::dbl_val (p->get_key(), dinst->get_val())
                                 );
@@ -241,8 +250,10 @@ class node: public param {
                             static_cast<value<std::string> *>(p);
                         inst::str_val *sinst =
                             static_cast<inst::str_val *>(local_params.at(i));
-                        if (cont)
+                        if (cont) {
                             cont = tmp_str->next (sinst->get_addr ());
+                            update++;
+                        }
                         parent->add_item (
                                 new inst::str_val (p->get_key(), sinst->get_val())
                                 );
@@ -257,7 +268,7 @@ class node: public param {
             for (s_it = nodes.begin (); s_it != nodes.end (); s_it++) {
                 node *tmp_node = std::get<1>(*s_it);
                 inst::node *new_node = new inst::node (tmp_node->get_key());
-                parent->add_item (tmp_node->step(new_node));
+                parent->add_item (tmp_node->step(new_node, TODO ));
             }
 
             return parent;
@@ -273,6 +284,7 @@ class node: public param {
         std::vector<inst::param *> local_params;
 
         // TODO verify that x_max are necessary.
+        // TODO remove these unnecessary values.
         unsigned int node_idx, val_idx, node_max, val_max;
 };
 
@@ -324,7 +336,7 @@ unpack_param (sspace::param_t *param, __gs::node *parent)
             std::string name = ri->get_name ();
             std::vector<int> values;
 
-            for (int i = ri->m_lower; i <= ri->m_upper; i++) {
+            for (int i = ri->m_lower; i < ri->m_upper; i++) {
                 values.push_back (i);
             }
 
@@ -337,7 +349,7 @@ unpack_param (sspace::param_t *param, __gs::node *parent)
             sspace::quniform *qu = static_cast<sspace::quniform *>(param);
             std::string name = qu->get_name ();
             std::vector<double> values;
-            for (double i = qu->m_lower; i <= qu->m_upper; i+=qu->m_q)
+            for (double i = qu->m_lower; i < qu->m_upper; i+=qu->m_q)
                 values.push_back (i);
             __gs::param *tmp_val = new __gs::value<double>(name, values);
             parent->add_item (tmp_val);
@@ -403,6 +415,7 @@ gridsearch::gridsearch () :
     optimiser ("gridsearch")
 {
     m_root = NULL;
+    fst_gen = true;
 }
 
 gridsearch::~gridsearch ()
@@ -410,9 +423,13 @@ gridsearch::~gridsearch ()
     __gs::node *tmp_root = static_cast<__gs::node *>(m_root);
     delete tmp_root;
 
+    // delete any remaining parameter instances which were not deleted through
+    // receive_trial_results
     std::unordered_map<int, inst::set>::iterator it;
-    for (it = trials.begin (); it != trials.end (); it++)
+    for (it = trials.begin (); it != trials.end (); it++) {
+        std::cout << "destructor iteration" << std::endl;
         inst::free_node(std::get<1>(*it));
+    }
 }
 
 
@@ -448,19 +465,26 @@ gridsearch::generate_parameters (int param_id)
 
     __gs::node *r_node = static_cast<__gs::node *>(m_root);
 
-    r_node->step(root);
+    bool complete;
+    r_node->step(root, &complete);
+
+    if (complete) {
+        free_node(root);
+        return NULL;
+    }
 
     add_to_trials (param_id, root);
     return root;
 }
 
-// dummy functions TODO get rid of these ----------------------------------------
-
-
 void gridsearch::receive_trial_results (int pid, inst::set params, double value)
 {
-    // in here, free the parameter set which was previously allocated to the
-    // heap.
+    free_node (params);
+    trials.erase(pid);
+
+    // std::unordered_map<int, inst::set>::iterator it;
+    // for (it = trials.begin (); it != trials.end (); it++)
+        // inst::free_node(std::get<1>(*it));
     return;
 }
 
@@ -531,7 +555,7 @@ test_update_search_space ()
         static_cast<__gs::value<double> *>(std::get<1> (p_tqu));
     assert (pv_tqu->get_type () == __gs::pspace_t::dbl_val);
     assert (pv_tqu->get_key () == "testquniform");
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 4; i++)
         assert (dbleq (pv_tqu->at (i), i * 2.5));
 
     // testcatint -------------------------------------------------------------
@@ -593,6 +617,68 @@ test_update_search_space ()
 static void
 test_generate_parameters ()
 {
+    gridsearch test = gridsearch ();
+
+    sspace::randint fst ("fst_param", 0, 10);
+    sspace::randint snd ("snd_param", 0, 10);
+    sspace::sspace_t testspace ({&fst, &snd});
+
+    test.update_search_space (&testspace);
+
+    for (int i = 0; i < 100; i++) {
+        std::cout << "iteration: " << i;
+        inst::set this_set = test.generate_parameters (i);
+        GETINT(fst, this_set, "fst_param");
+        std::cout << ", ONE: " << fst->get_val();
+        assert (fst->get_val() < 10);
+        GETINT(snd, this_set, "snd_param");
+        std::cout << ", TWO: " << snd->get_val() << std::endl;
+        assert (snd->get_val() < 10);
+
+        // Note that while recommended for memory efficiency, if the calling
+        // process forgets / intentionally doesn't call receive_trial_results
+        // funciton, there is no resulting memory leak due to gridsearch's
+        // destructor.
+        test.receive_trial_results(i, this_set, 0.0);
+    }
+
+    sspace::randint tri ("testrandint", 0, 10);
+    sspace::quniform tqu ("testquniform", 0, 10, 2.5);
+    std::vector<int> int_opts = {0,1,2,3,4,5};
+    sspace::categorical<int> cat1 ("testcatint", &int_opts);
+    std::vector<double> dbl_opts = {0.0, 2.5, 5.0, 7.5, 10.0};
+    sspace::categorical<double> cat2 ("testcatdbl", &dbl_opts);
+    std::vector<std::string> str_opts = {
+        std::string ("first"),
+        std::string ("second"),
+        std::string ("third"),
+    };
+    sspace::categorical<std::string> cat3 ("testcatstr", &str_opts);
+
+    sspace::randint c1 ("choice1", 0, 5);
+    sspace::quniform c2 ("choice2", 0, 5, 1);
+    sspace::categorical<int> c3 ("choice3", &int_opts);
+    sspace::categorical<double> c4 ("choice4", &dbl_opts);
+    sspace::categorical<std::string> c5 ("choice5", &str_opts);
+    sspace::sspace_t copts = {&c1, &c2, &c3, &c4, &c5};
+    sspace::choice choice ("testchoice", &copts);
+
+    sspace::sspace_t newtestspace ({&tri, &tqu, &cat1, &cat2, &cat3, &choice});
+
+    gridsearch second = gridsearch ();
+    second.update_search_space (&newtestspace);
+
+    for (int i = 0; i < 200; i++) {
+        std::cout << "iteration: " << i;
+        inst::set this_set = second.generate_parameters (i);
+
+        // Note that while recommended for memory efficiency, if the calling
+        // process forgets / intentionally doesn't call receive_trial_results
+        // funciton, there is no resulting memory leak due to gridsearch's
+        // destructor.
+        second.receive_trial_results(i, this_set, 0.0);
+    }
+
     std::cout << "gridsearch generate parameters tests pass" << std::endl;
 }
 

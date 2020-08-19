@@ -129,6 +129,9 @@ class gridsearch: public optk::optimiser {
          */
         std::unordered_map<int, inst::set> trials;
 
+        /** Indicates whether this is the first call to generate_parameters */
+        bool fst_gen;
+
 };
 
 #ifdef __OPTK_TESTING
