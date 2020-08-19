@@ -60,6 +60,7 @@ test_concrete_types ()
     inst::str_val val3("val3", "string test");
 
     inst::node root ("root");
+
     root.add_item(&val1);
     root.add_item(&val2);
     root.add_item(&val3);

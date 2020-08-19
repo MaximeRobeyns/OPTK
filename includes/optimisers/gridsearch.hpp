@@ -107,11 +107,19 @@ class gridsearch: public optk::optimiser {
 #endif
 
     private:
-        /**
-         * This is a reference to the 'root' of the 'unpacked' (internal)
-         * representation of the search space.
-         */
+        /** This is a reference to the 'root' of the 'unpacked' (internal)
+         * representation of the search space. */
         __gs::param *m_root;
+
+        /**
+         * This will add a parameter configuration allocated on the heap to the
+         * gridsearch::trials map, so that it may be freed later by gridsearch's
+         * destructor. If a trial configuration already exists with the same param_id,
+         * those values will be freed, and the value in the map will be replaced.
+         * @param param_id The identifier for this trial.
+         * @param n The root node of the concrete parameter settings.
+         */
+        void add_to_trials (int param_id, inst::node *n);
 
         /**
          * This is used to keep track of previously generated instances or

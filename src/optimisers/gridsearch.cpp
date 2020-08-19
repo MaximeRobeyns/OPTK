@@ -47,37 +47,60 @@ class value: public param {
             param (k, t)
         {
             m_values = std::vector<T>();
+            m_i = 0; m_max = m_values.size();
         }
 
         value (const std::string &k, std::vector<int> v) :
             param (k, pspace_t::int_val)
         {
             m_values = std::vector<int>(v);
+            m_i = 0; m_max = m_values.size();
         }
 
         value (const std::string &k, std::vector<double> v) :
             param (k, pspace_t::dbl_val)
         {
             m_values = std::vector<double>(v);
+            m_i = 0; m_max = m_values.size();
         }
 
         value (const std::string &k, std::vector<std::string> v) :
             param (k, pspace_t::str_val)
         {
             m_values = std::vector<std::string>(v);
+            m_i = 0; m_max = m_values.size();
         }
 
         std::vector<T> *get_vals() { return &m_values; }
         T at(unsigned int i) { return m_values.at(i); }
         void set(std::vector<T> vs) { m_values = vs; }
 
-        // TODO add an iterator method here
-        // Sends a signal when the last value is returned (so that the calling
-        // process can know that the iteration is complete)
-        // count the lenght of the values array
+        /** Returns the cardinality of the set of values for this parmeter. */
+        unsigned int
+        get_count ()
+        {
+            return m_values.size();
+        }
+
+        /**
+         * Next will iterate through the enumerated values for this parameter,
+         * and update the val parameter to be the next one along. If this is
+         * the last value in the set, then this function will return true,
+         * otherwise it will return false.
+         * @param val The value to be updated with the next parameter.
+         * @returns A boolean indicating whether the returned value was the
+         * first in the set. This occurs upon first invokation, as well as when
+         * 'wrapping around'.
+         */
+        bool next (T *val) {
+            *val = m_values.at(m_i);
+            m_i = (m_i + 1)%m_max;
+            return m_i == 1;
+        }
 
     private:
         std::vector<T> m_values;
+        unsigned int m_i, m_max;
 };
 
 /** A node contains the parameters for this 'level' of the search space,
@@ -89,39 +112,44 @@ class node: public param {
         {
             nodes = subspaces();
             values = params();
+            node_idx = val_idx = node_max = val_max = 0;
         }
 
         ~node ()
         {
             subspaces::iterator it;
             for (it = nodes.begin(); it != nodes.end(); it++) {
-                // TODO shouldn't have to cast subspaces elements to node
-                // node *tmp_n = static_cast<node *>(std::get<1>(*it));
                 delete std::get<1>(*it);
             }
 
-            params::iterator vit;
-            for (vit = values.begin(); vit != values.end(); vit++) {
-                param *tmpv = std::get<1>(*vit);
+            for (unsigned int i = 0; i < values.size(); i++) {
+                param *tmpv = std::get<1>(values.at(i));
+                inst::param *tmp_inst = local_params.at(i);
                 pspace_t t = tmpv->get_type();
                 switch (t) {
                     case pspace_t::int_val:
                     {
                         value<int> *iv = static_cast<value<int> *>(tmpv);
-                        delete iv;
+                        inst::int_val *iiv =
+                            static_cast<inst::int_val *>(tmp_inst);
+                        delete iv; delete iiv;
                         break;
                     }
                     case pspace_t::dbl_val:
                     {
                         value<double> *dv = static_cast<value<double> *>(tmpv);
-                        delete dv;
+                        inst::dbl_val *idv =
+                            static_cast<inst::dbl_val *>(tmp_inst);
+                        delete dv; delete idv;
                         break;
                     }
                     case pspace_t::str_val:
                     {
                         value<std::string> *sv =
                             static_cast<value<std::string> *>(tmpv);
-                        delete sv;
+                        inst::str_val *isv =
+                            static_cast<inst::str_val *>(tmp_inst);
+                        delete sv; delete isv;
                         break;
                     }
                     default:
@@ -139,11 +167,22 @@ class node: public param {
                     {
                         node *tmp_node = static_cast<node *>(p);
                         nodes.push_back({p->get_key(), tmp_node});
+                        node_max = nodes.size ();
                         break;
                     }
                 default:
                     {
                         values.push_back({p->get_key(), p});
+                        val_max = values.size ();
+                        inst::param *tmp;
+                        if (t == pspace_t::int_val) {
+                            tmp = new inst::int_val(p->get_key(), 0);
+                        } else if (t == pspace_t::dbl_val) {
+                            tmp = new inst::dbl_val(p->get_key(), 0);
+                        } else {
+                            tmp = new inst::str_val(p->get_key(), "");
+                        }
+                        local_params.push_back (tmp);
                         break;
                     }
             }
@@ -158,19 +197,83 @@ class node: public param {
         { return &values; }
 
         /**
-         * step
-         * TODO come back to this
+         * This will iterate through all the concrete parameters once, before
+         * calling step on each of the the elemnts in the nodes array.
+         * @returns A pointer to a root node.
          */
-        inst::set step()
+        inst::set
+        step(inst::node *parent)
         {
-            return NULL;
+            bool cont = true;
+            unsigned int i, max = values.size();
+            for (i = 0; i < max; i++) {
+                param *p = std::get<1>(values.at(i));
+                pspace_t t = p->get_type();
+                switch (t) {
+                    case pspace_t::int_val:
+                    {
+                        value<int> *tmp_int = static_cast<value<int> *>(p);
+                        inst::int_val *iinst =
+                            static_cast<inst::int_val *>(local_params.at(i));
+                        if (cont)
+                            cont = tmp_int->next (iinst->get_addr());
+                        parent->add_item (
+                                new inst::int_val (p->get_key(), iinst->get_val())
+                                );
+                        break;
+                    }
+                    case pspace_t::dbl_val:
+                    {
+                        value<double> *tmp_dbl =
+                            static_cast<value<double> *>(p);
+                        inst::dbl_val *dinst =
+                            static_cast<inst::dbl_val *>(local_params.at(i));
+                        if (cont)
+                            cont = tmp_dbl->next (dinst->get_addr ());
+                        parent->add_item (
+                                new inst::dbl_val (p->get_key(), dinst->get_val())
+                                );
+                        break;
+                    }
+                    case pspace_t::str_val:
+                    {
+                        value<std::string> *tmp_str =
+                            static_cast<value<std::string> *>(p);
+                        inst::str_val *sinst =
+                            static_cast<inst::str_val *>(local_params.at(i));
+                        if (cont)
+                            cont = tmp_str->next (sinst->get_addr ());
+                        parent->add_item (
+                                new inst::str_val (p->get_key(), sinst->get_val())
+                                );
+                        break;
+                    }
+                    default: // this never happens, even if it did, we don't care
+                        break;
+                }
+            }
+
+            subspaces::iterator s_it;
+            for (s_it = nodes.begin (); s_it != nodes.end (); s_it++) {
+                node *tmp_node = std::get<1>(*s_it);
+                inst::node *new_node = new inst::node (tmp_node->get_key());
+                parent->add_item (tmp_node->step(new_node));
+            }
+
+            return parent;
         }
 
     private:
-        // as an invariant, all param * in here have type pspace_t::node.
+        // all param pointers in this array have type pspace_t::node.
         subspaces nodes;
-        // as an invariant, all param * in here have type pspace_t::value.
+        // all param pointers in this array have type pspace_t::value.
         params values;
+
+        // This is a vector of all the non-node parameter instances.
+        std::vector<inst::param *> local_params;
+
+        // TODO verify that x_max are necessary.
+        unsigned int node_idx, val_idx, node_max, val_max;
 };
 
 } // namespace __gs
@@ -306,7 +409,10 @@ gridsearch::~gridsearch ()
 {
     __gs::node *tmp_root = static_cast<__gs::node *>(m_root);
     delete tmp_root;
-    // free_spaces (tmp_root);
+
+    std::unordered_map<int, inst::set>::iterator it;
+    for (it = trials.begin (); it != trials.end (); it++)
+        inst::free_node(std::get<1>(*it));
 }
 
 
@@ -327,17 +433,25 @@ gridsearch::update_search_space (sspace::sspace_t *space)
     m_root = new_root;
 }
 
-inst::set gridsearch::generate_parameters (int param_id) {
+void
+gridsearch::add_to_trials (int param_id, inst::set n)
+{
+    if (trials.count(param_id))
+        inst::free_node(trials.at(param_id));
+    trials.emplace(param_id, n);
+}
 
-    // __gs::node *root = static_cast<__gs::node *>(m_root);
+inst::set
+gridsearch::generate_parameters (int param_id)
+{
+    inst::node *root = new inst::node("gridsearch parameters");
 
-    // TODO come back to here
-    inst::node set("gridsearch parameters");
+    __gs::node *r_node = static_cast<__gs::node *>(m_root);
 
-    // task list:
-    // 1. Add a destroctor to the inst:: elements
+    r_node->step(root);
 
-    return inst::set();
+    add_to_trials (param_id, root);
+    return root;
 }
 
 // dummy functions TODO get rid of these ----------------------------------------
@@ -345,6 +459,8 @@ inst::set gridsearch::generate_parameters (int param_id) {
 
 void gridsearch::receive_trial_results (int pid, inst::set params, double value)
 {
+    // in here, free the parameter set which was previously allocated to the
+    // heap.
     return;
 }
 
