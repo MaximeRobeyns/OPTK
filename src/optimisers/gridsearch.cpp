@@ -19,6 +19,7 @@
  * @brief This file implements a simple gridsearch algorithm.
  */
 
+#include "optk/types.hpp"
 #include <optimisers/gridsearch.hpp>
 
 /** This namespace contains types which are specific to the gridsearch
@@ -73,7 +74,7 @@ class value: public param {
 
         std::vector<T> *get_vals() { return &m_values; }
         T at(unsigned int i) { return m_values.at(i); }
-        T current() { return m_values.at(m_i); }
+        T current() { return m_values.at((m_i-1+m_max)%m_max); }
         void set(std::vector<T> vs) { m_values = vs; }
 
         /** Returns the cardinality of the set of values for this parmeter. */
@@ -113,7 +114,8 @@ class node: public param {
         {
             nodes = subspaces();
             values = params();
-            ucount = 0;
+            ucount = 1;
+            first_iter = true;
         }
 
         ~node ()
@@ -334,18 +336,14 @@ class node: public param {
                 }
             }
 
-            // true if we have generated a full permutation of all the local values
-            bool sscont = !update || (ucount == 0 || (ucount + 1)%last_val_count == 0);
-            ucount++;
-
             // Generate the subspace values; either clones of previous, or updated.
             unsigned int j, ss_update, ss_max;
             ss_update = ss_max = nodes.size();
             for (j = 0; j < ss_max; j++) {
                 node *tmp_node = std::get<1>(nodes.at(j));
-                if (sscont) {
+                if (cont) {
                     inst::node *new_node = new inst::node (tmp_node->get_key());
-                    parent->add_item (tmp_node->step(new_node, &sscont));
+                    parent->add_item (tmp_node->step(new_node, &cont));
                     ss_update--;
                 } else {
                     parent->add_item (tmp_node->clone());
@@ -353,20 +351,9 @@ class node: public param {
                 break;
             }
 
-            /*
-            bool substep_complete = false;
-            subspaces::iterator s_it;
-            for (s_it = nodes.begin (); s_it != nodes.end (); s_it++) {
-                bool this_ss_complete;
-                node *tmp_node = std::get<1>(*s_it);
-                inst::node *new_node = new inst::node (tmp_node->get_key());
-                parent->add_item (tmp_node->step(new_node, &this_ss_complete));
-                substep_complete |= this_ss_complete;
-            }
-            */
+            *complete = cont || first_iter;
 
-            // TODO ensure that this is correct
-            *complete = sscont && cont;
+            first_iter = false;
 
             return parent;
         }
@@ -381,6 +368,8 @@ class node: public param {
         std::vector<inst::param *> local_params;
 
         unsigned int ucount, last_val_count;
+
+        bool first_iter;
 };
 
 } // namespace __gs
@@ -716,7 +705,14 @@ test_generate_parameters ()
 
     sspace::randint fst ("fst_param", 0, 2);
     sspace::randint snd ("snd_param", 0, 2);
-    sspace::sspace_t testspace ({&fst, &snd});
+
+    sspace::randint cfst ("c_fst_param", 10, 12);
+    sspace::randint csnd ("c_snd_param", 10, 12);
+
+    sspace::sspace_t options ({&cfst, &csnd});
+    sspace::choice sub ("subspace", &options);
+
+    sspace::sspace_t testspace ({&fst, &snd, &sub});
 
     test.update_search_space (&testspace);
 
@@ -727,10 +723,14 @@ test_generate_parameters ()
         if (!this_set) break;
         GETINT(fst, this_set, "fst_param");
         GETINT(snd, this_set, "snd_param");
-        std::cout << "1: " << fst->get_val() << ", 2: " << snd->get_val() << std::endl;
+        GETNODE(subspace, this_set, "subspace");
+        GETINT(cfst, subspace, "c_fst_param");
+        GETINT(csnd, subspace, "c_snd_param");
+        std::cout << "1: " << fst->get_val() << ", 2: " << snd->get_val();
+        std::cout << ", c1: " << cfst->get_val() << ", c2: " << csnd->get_val() << std::endl;
         i++;
     }
-    assert (i == 4);
+    assert (i == 16);
 
     // NOTE: no receive_trial_results called; memory de-allocation is deferred
     // to gridsearch's destructor. asan verifies no memory leak.
@@ -803,4 +803,3 @@ run_static_gridsearch_tests ()
 }
 
 // #endif // __OPTK_TESTING
-
