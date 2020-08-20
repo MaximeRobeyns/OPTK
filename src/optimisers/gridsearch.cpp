@@ -108,58 +108,15 @@ class value: public param {
 /** A node contains the parameters for this 'level' of the search space,
  * including concrete parameters, and nested search spaces. */
 class node: public param {
+
     public:
-        node (const std::string &k) :
-            param (k, pspace_t::node)
-        {
-            nodes = subspaces();
-            values = params();
-            ucount = 1;
-            first_iter = true;
-        }
+        /** Construct a gridsearch node parameter with the given key.
+         * @param k The idenfying key of this subspace. */
+        node (const std::string &k);
 
-        ~node ()
-        {
-            subspaces::iterator it;
-            for (it = nodes.begin(); it != nodes.end(); it++) {
-                delete std::get<1>(*it);
-            }
-
-            for (unsigned int i = 0; i < values.size(); i++) {
-                param *tmpv = std::get<1>(values.at(i));
-                inst::param *tmp_inst = local_params.at(i);
-                pspace_t t = tmpv->get_type();
-                switch (t) {
-                    case pspace_t::int_val:
-                    {
-                        value<int> *iv = static_cast<value<int> *>(tmpv);
-                        inst::int_val *iiv =
-                            static_cast<inst::int_val *>(tmp_inst);
-                        delete iv; delete iiv;
-                        break;
-                    }
-                    case pspace_t::dbl_val:
-                    {
-                        value<double> *dv = static_cast<value<double> *>(tmpv);
-                        inst::dbl_val *idv =
-                            static_cast<inst::dbl_val *>(tmp_inst);
-                        delete dv; delete idv;
-                        break;
-                    }
-                    case pspace_t::str_val:
-                    {
-                        value<std::string> *sv =
-                            static_cast<value<std::string> *>(tmpv);
-                        inst::str_val *isv =
-                            static_cast<inst::str_val *>(tmp_inst);
-                        delete sv; delete isv;
-                        break;
-                    }
-                    default:
-                        break;
-                }
-            }
-        }
+        /** This destructor will free all the local gridsearch nodes and values
+         * allocated on the heap. */
+        ~node ();
 
         /**
          * Add a parameter or subspace to this 'level' of the search space.
@@ -167,49 +124,14 @@ class node: public param {
          * results in undefined behaviour.
          * @param p The new parameter to add.
          */
-        void
-        add_item (param *p)
-        {
-            pspace_t t = p->get_type ();
-            switch (t) {
-                case pspace_t::node:
-                {
-                        node *tmp_node = static_cast<node *>(p);
-                        nodes.push_back({p->get_key(), tmp_node});
-                        break;
-                }
-                case pspace_t::int_val:
-                {
-                    value<int> *tmp_val = static_cast<value<int> *>(p);
-                    last_val_count = tmp_val->get_count ();
-                    values.push_back ({p->get_key (), p});
-                    local_params.push_back(new inst::int_val(p->get_key(), 0));
-                    break;
-                }
-                case pspace_t::dbl_val:
-                {
-                    value<double> *tmp_val = static_cast<value<double> *>(p);
-                    last_val_count = tmp_val->get_count ();
-                    values.push_back ({p->get_key (), p});
-                    local_params.push_back(new inst::dbl_val(p->get_key(),0));
-                    break;
-                }
-                case pspace_t::str_val:
-                {
-                    value<std::string> *tmp_val =
-                        static_cast<value<std::string> *>(p);
-                    last_val_count = tmp_val->get_count();
-                    values.push_back ({p->get_key (), p});
-                    local_params.push_back(new inst::str_val(p->get_key(), ""));
-                    break;
-                }
-            }
-        }
+        void add_item (param *p);
 
+        /** Get the list of subspaces registered at this node. */
         subspaces *
         get_subspaces ()
         { return &nodes; }
 
+        /** Get the list of parameters in this (sub) search space. */
         params *
         get_values ()
         { return &values; }
@@ -217,53 +139,10 @@ class node: public param {
         /**
          * This creates a full copy of a node and all nested subspaces with the
          * current values of local_params with memory allocated on the heap.
+         * This is used when iterating through values, and a subspace does not
+         * need to be updated.
          */
-        inst::param *
-        clone ()
-        {
-            // create the parent first:
-            inst::node *parent = new inst::node(this->get_key());
-
-            for (unsigned int i = 0; i < values.size(); i++) {
-                param *p = std::get<1>(values.at(i));
-                pspace_t t = p->get_type();
-                switch (t) {
-                    case pspace_t::int_val:
-                    {
-                        value<int> *tmp_int = static_cast<value<int> *>(p);
-                        parent->add_item (
-                                new inst::int_val (p->get_key(), tmp_int->current())
-                                );
-                        break;
-                    }
-                    case pspace_t::dbl_val:
-                    {
-                        value<double> *tmp_dbl = static_cast<value<double> *>(p);
-                        parent->add_item (
-                                new inst::dbl_val (p->get_key(), tmp_dbl->current())
-                                );
-                        break;
-                    }
-                    case pspace_t::str_val:
-                    {
-                        value<std::string> *tmp_str =
-                            static_cast<value<std::string> *>(p);
-                        parent->add_item (
-                                new inst::str_val (p->get_key(), tmp_str->current())
-                                );
-                        break;
-                    }
-                    default:
-                        break;
-                }
-            }
-
-            for (unsigned int i = 0; i < nodes.size(); i++)
-                parent->add_item (std::get<1>(nodes.at(i))->clone());
-
-            return parent;
-        }
-
+        inst::param * clone ();
 
         /**
          * This will iterate through all the concrete parameters once, before
@@ -274,106 +153,265 @@ class node: public param {
          * true if all values have been iterated over for this node.
          * @returns A pointer to a root node.
          */
-        inst::set
-        step(inst::node *parent, bool *complete)
-        {
-            // TODO break this local value iteration step out into a private method
-            bool cont = true;
-            unsigned int i, update, max;
-            update = max = values.size();
-            for (i = 0; i < max; i++) {
-                param *p = std::get<1>(values.at(i));
-                pspace_t t = p->get_type();
-                switch (t) {
-                    case pspace_t::int_val:
-                    {
-                        value<int> *tmp_int = static_cast<value<int> *>(p);
-                        inst::int_val *iinst =
-                            static_cast<inst::int_val *>(local_params.at(i));
-                        if (cont) {
-                            cont = tmp_int->next (iinst->get_addr());
-                            update--;
-                        }
-                        parent->add_item (
-                                new inst::int_val (p->get_key(), iinst->get_val())
-                                );
-                        break;
-                    }
-                    case pspace_t::dbl_val:
-                    {
-                        value<double> *tmp_dbl =
-                            static_cast<value<double> *>(p);
-                        inst::dbl_val *dinst =
-                            static_cast<inst::dbl_val *>(local_params.at(i));
-                        if (cont) {
-                            cont = tmp_dbl->next (dinst->get_addr ());
-                            update--;
-                        }
-                        parent->add_item (
-                                new inst::dbl_val (p->get_key(), dinst->get_val())
-                                );
-                        break;
-                    }
-                    case pspace_t::str_val:
-                    {
-                        value<std::string> *tmp_str =
-                            static_cast<value<std::string> *>(p);
-                        inst::str_val *sinst =
-                            static_cast<inst::str_val *>(local_params.at(i));
-                        if (cont) {
-                            cont = tmp_str->next (sinst->get_addr ());
-                            update--;
-                        }
-                        parent->add_item (
-                                new inst::str_val (p->get_key(), sinst->get_val())
-                                );
-                        break;
-                    }
-                    // This default should never happen, if it did, we wouldn't
-                    // care because everything else would be broken:
-                    default:
-                        break;
-                }
-            }
-
-            // Generate the subspace values; either clones of previous, or updated.
-            unsigned int j, ss_update, ss_max;
-            ss_update = ss_max = nodes.size();
-            for (j = 0; j < ss_max; j++) {
-                node *tmp_node = std::get<1>(nodes.at(j));
-                if (cont) {
-                    inst::node *new_node = new inst::node (tmp_node->get_key());
-                    parent->add_item (tmp_node->step(new_node, &cont));
-                    ss_update--;
-                } else {
-                    parent->add_item (tmp_node->clone());
-                }
-                break;
-            }
-
-            *complete = cont || first_iter;
-
-            first_iter = false;
-
-            return parent;
-        }
+        inst::set step(inst::node *parent, bool *complete);
 
     private:
-        // all param pointers in this array have type pspace_t::node.
-        subspaces nodes;
-        // all param pointers in this array have type pspace_t::value.
+        /** A local list of all the values at this level of the search space;
+         * all param pointers in this array have type pspace_t::value. */
         params values;
 
-        // This is a vector of all the non-node parameter instances.
+        /** A local list of all the subspaces at this level in the search
+         * space; all parameter pointers in this array have type
+         * pspace_t::node. */
+        subspaces nodes;
+
+        /** This is a vector of all the non-node parameter instances. */
         std::vector<inst::param *> local_params;
 
-        unsigned int ucount, last_val_count;
-
-        bool first_iter;
+        // bool first_iter;
 };
 
-} // namespace __gs
+node::node (const std::string &k) :
+    param (k, pspace_t::node)
+{
+    nodes = subspaces();
+    values = params();
+    // first_iter = true;
+}
 
+node::~node ()
+{
+    subspaces::iterator it;
+    for (it = nodes.begin(); it != nodes.end(); it++) {
+        delete std::get<1>(*it);
+    }
+
+    for (unsigned int i = 0; i < values.size(); i++) {
+        param *tmpv = std::get<1>(values.at(i));
+        inst::param *tmp_inst = local_params.at(i);
+        pspace_t t = tmpv->get_type();
+        switch (t) {
+            case pspace_t::int_val:
+            {
+                value<int> *iv = static_cast<value<int> *>(tmpv);
+                inst::int_val *iiv =
+                    static_cast<inst::int_val *>(tmp_inst);
+                delete iv; delete iiv;
+                break;
+            }
+            case pspace_t::dbl_val:
+            {
+                value<double> *dv = static_cast<value<double> *>(tmpv);
+                inst::dbl_val *idv =
+                    static_cast<inst::dbl_val *>(tmp_inst);
+                delete dv; delete idv;
+                break;
+            }
+            case pspace_t::str_val:
+            {
+                value<std::string> *sv =
+                    static_cast<value<std::string> *>(tmpv);
+                inst::str_val *isv =
+                    static_cast<inst::str_val *>(tmp_inst);
+                delete sv; delete isv;
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}
+
+void
+node::add_item (param *p)
+{
+    pspace_t t = p->get_type ();
+    switch (t) {
+        case pspace_t::node:
+        {
+            node *tmp_node = static_cast<node *>(p);
+            nodes.push_back({p->get_key(), tmp_node});
+            break;
+        }
+        case pspace_t::int_val:
+        {
+            values.push_back ({p->get_key (), p});
+            local_params.push_back(new inst::int_val(p->get_key(), 0));
+            break;
+        }
+        case pspace_t::dbl_val:
+        {
+            values.push_back ({p->get_key (), p});
+            local_params.push_back(new inst::dbl_val(p->get_key(),0));
+            break;
+        }
+        case pspace_t::str_val:
+        {
+            values.push_back ({p->get_key (), p});
+            local_params.push_back(new inst::str_val(p->get_key(), ""));
+            break;
+        }
+    }
+}
+
+inst::param *
+node::clone ()
+{
+    inst::node *parent = new inst::node(this->get_key());
+
+    for (unsigned int i = 0; i < values.size(); i++) {
+        param *p = std::get<1>(values.at(i));
+        pspace_t t = p->get_type();
+        switch (t) {
+            case pspace_t::int_val:
+            {
+                value<int> *tmp_int = static_cast<value<int> *>(p);
+                parent->add_item (
+                        new inst::int_val (p->get_key(), tmp_int->current())
+                        );
+                break;
+            }
+            case pspace_t::dbl_val:
+            {
+                value<double> *tmp_dbl = static_cast<value<double> *>(p);
+                parent->add_item (
+                        new inst::dbl_val (p->get_key(), tmp_dbl->current())
+                        );
+                break;
+            }
+            case pspace_t::str_val:
+            {
+                value<std::string> *tmp_str =
+                    static_cast<value<std::string> *>(p);
+                parent->add_item (
+                        new inst::str_val (p->get_key(), tmp_str->current())
+                        );
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    for (unsigned int i = 0; i < nodes.size(); i++)
+        parent->add_item (std::get<1>(nodes.at(i))->clone());
+
+    return parent;
+}
+
+/**
+ * This is a local method called from the __gs::node::step function which
+ * iterates through the parameters at this point in the search space.
+ * @param cont A boolean used to indicate whether the next value should be
+ * incremented or simply copied.
+ * @param parent The parent node instance to which the parameter instances
+ * are added.
+ * @param values The description of the parameters at this level of the search
+ * space.
+ * @param local_params Concrete instances of the parameters at this level of
+ * the search space.
+ */
+static void
+iterate_local_params (
+        bool *cont,
+        inst::node *parent,
+        params *values,
+        std::vector<inst::param *> *local_params
+) {
+    unsigned int i, max = values->size();
+    for (i = 0; i < max; i++) {
+        param *p = std::get<1>(values->at(i));
+        pspace_t t = p->get_type();
+        switch (t) {
+            case pspace_t::int_val:
+            {
+                value<int> *tmp_int = static_cast<value<int> *>(p);
+                inst::int_val *iinst =
+                    static_cast<inst::int_val *>(local_params->at(i));
+                if (*cont)
+                    *cont = tmp_int->next (iinst->get_addr());
+                parent->add_item (
+                        new inst::int_val (p->get_key(), iinst->get_val())
+                        );
+                break;
+            }
+            case pspace_t::dbl_val:
+            {
+                value<double> *tmp_dbl =
+                    static_cast<value<double> *>(p);
+                inst::dbl_val *dinst =
+                    static_cast<inst::dbl_val *>(local_params->at(i));
+                if (*cont)
+                    *cont = tmp_dbl->next (dinst->get_addr ());
+                parent->add_item (
+                        new inst::dbl_val (p->get_key(), dinst->get_val())
+                        );
+                break;
+            }
+            case pspace_t::str_val:
+            {
+                value<std::string> *tmp_str =
+                    static_cast<value<std::string> *>(p);
+                inst::str_val *sinst =
+                    static_cast<inst::str_val *>(local_params->at(i));
+                if (*cont)
+                    *cont = tmp_str->next (sinst->get_addr ());
+                parent->add_item (
+                        new inst::str_val (p->get_key(), sinst->get_val())
+                        );
+                break;
+            }
+            // This default should never happen, if it did, we wouldn't
+            // care because everything else would be broken:
+            default:
+                break;
+        }
+    }
+}
+
+/**
+ * This function is also called from __gs::node::step. If it is called before
+ * iterate_local_params, then a depth-first search is realised, otherwise
+ * gridsearch performs a breadth-first search.
+ * @param cont A boolean indicating whether or not the next searchspace along
+ * in the list should be updated.
+ * @param parent The node instance to which to add the instances of each node
+ * at this level in the search space.
+ * @param nodes The list of nodes registered at this level of the search space.
+ */
+static void
+iterate_subspaces (bool *cont, inst::node *parent, subspaces *nodes)
+{
+    // Generate the subspace values; either clones of previous, or updated.
+    unsigned int j, ss_max;
+    ss_max = nodes->size();
+    for (j = 0; j < ss_max; j++) {
+        node *tmp_node = std::get<1>(nodes->at(j));
+        if (*cont) {
+            inst::node *new_node = new inst::node (tmp_node->get_key());
+            parent->add_item (tmp_node->step(new_node, cont));
+        } else {
+            parent->add_item (tmp_node->clone());
+        }
+    }
+}
+
+inst::set
+node::step(inst::node *parent, bool *complete)
+{
+    bool cont = true;
+
+    // To do depth-first search, rather than breadth-firse search, just swap
+    // the order of the following two function calls, no problemo.
+    iterate_local_params(&cont, parent, &values, &local_params);
+    iterate_subspaces (&cont, parent, &nodes);
+
+    *complete = cont;
+
+    return parent;
+}
+
+} // namespace __gs
 
 // Actual gridsearch class methods ============================================
 
