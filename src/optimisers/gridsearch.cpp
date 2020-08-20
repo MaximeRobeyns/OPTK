@@ -549,7 +549,6 @@ gridsearch::~gridsearch ()
     // receive_trial_results
     std::unordered_map<int, inst::set>::iterator it;
     for (it = trials.begin (); it != trials.end (); it++) {
-        std::cout << "destructor iteration" << std::endl;
         inst::free_node(std::get<1>(*it));
     }
 }
@@ -741,62 +740,45 @@ test_generate_parameters ()
 {
     gridsearch test = gridsearch ();
 
-    sspace::randint fst ("fst_param", 0, 2);
-    sspace::randint snd ("snd_param", 0, 2);
+    sspace::randint first ("first", 0, 5);
+    sspace::randint second ("second", 10, 15);
+    sspace::randint third ("third", 20, 25);
+    sspace::randint fourth ("fourth", 30, 35);
 
-    sspace::randint cfst ("c_fst_param", 10, 12);
-    sspace::randint csnd ("c_snd_param", 10, 12);
-
-    sspace::sspace_t options ({&cfst, &csnd});
+    sspace::sspace_t options ({&third, &fourth});
     sspace::choice sub ("subspace", &options);
 
-    sspace::sspace_t testspace ({&fst, &snd, &sub});
+    sspace::sspace_t testspace ({&first, &second, &sub});
 
     test.update_search_space (&testspace);
 
-    inst::set this_set;
-    int i = 0;
-    while (i < 100) {
-        this_set = test.generate_parameters (i);
-        if (!this_set) break;
-        GETINT(fst, this_set, "fst_param");
-        GETINT(snd, this_set, "snd_param");
-        GETNODE(subspace, this_set, "subspace");
-        GETINT(cfst, subspace, "c_fst_param");
-        GETINT(csnd, subspace, "c_snd_param");
-        std::cout << "1: " << fst->get_val() << ", 2: " << snd->get_val();
-        std::cout << ", c1: " << cfst->get_val() << ", c2: " << csnd->get_val() << std::endl;
-        i++;
+    int idx = 0;
+    for (int l = 30; l < 35; l++) {
+        for (int k = 20; k < 25; k++) {
+            for (int j = 10; j < 15; j++) {
+                for (int i = 0; i < 5; i++) {
+                    inst::set tmp_set = test.generate_parameters (idx++);
+                    GETINT(a, tmp_set, "first");
+                    GETINT(b, tmp_set, "second");
+                    GETNODE(ss, tmp_set, "subspace");
+                    GETINT(c, ss, "third");
+                    GETINT(d, ss, "fourth");
+                    assert (a->get_val() == i);
+                    assert (b->get_val() == j);
+                    assert (c->get_val() == k);
+                    assert (d->get_val() == l);
+                }
+            }
+        }
     }
-    assert (i == 16);
+    assert (idx == 625);
+    assert (test.generate_parameters (idx++) == NULL);
 
-    // NOTE: no receive_trial_results called; memory de-allocation is deferred
-    // to gridsearch's destructor. asan verifies no memory leak.
-
-    /*
-    for (int i = 0; i < 100; i++) {
-        std::cout << "iteration: " << i;
-        inst::set this_set = test.generate_parameters (i);
-        GETINT(fst, this_set, "fst_param");
-        std::cout << ", ONE: " << fst->get_val();
-        assert (fst->get_val() < 10);
-        GETINT(snd, this_set, "snd_param");
-        std::cout << ", TWO: " << snd->get_val() << std::endl;
-        assert (snd->get_val() < 10);
-
-        // Note that while recommended for memory efficiency, if the calling
-        // process forgets / intentionally doesn't call receive_trial_results
-        // funciton, there is no resulting memory leak due to gridsearch's
-        // destructor.
-        test.receive_trial_results(i, this_set, 0.0);
-    }
-    */
-
-    sspace::randint tri ("testrandint", 0, 10);
-    sspace::quniform tqu ("testquniform", 0, 10, 2.5);
-    std::vector<int> int_opts = {0,1,2,3,4,5};
+    sspace::randint tri ("testrandint", 0, 5);
+    sspace::quniform tqu ("testquniform", 0, 5, 2.5);
+    std::vector<int> int_opts = {0,1,2};
     sspace::categorical<int> cat1 ("testcatint", &int_opts);
-    std::vector<double> dbl_opts = {0.0, 2.5, 5.0, 7.5, 10.0};
+    std::vector<double> dbl_opts = {0.0, 2.5, 5.0};
     sspace::categorical<double> cat2 ("testcatdbl", &dbl_opts);
     std::vector<std::string> str_opts = {
         std::string ("first"),
@@ -805,8 +787,8 @@ test_generate_parameters ()
     };
     sspace::categorical<std::string> cat3 ("testcatstr", &str_opts);
 
-    sspace::randint c1 ("choice1", 0, 5);
-    sspace::quniform c2 ("choice2", 0, 5, 1);
+    sspace::randint c1 ("choice1", 0, 3);
+    sspace::quniform c2 ("choice2", 0, 3, 1);
     sspace::categorical<int> c3 ("choice3", &int_opts);
     sspace::categorical<double> c4 ("choice4", &dbl_opts);
     sspace::categorical<std::string> c5 ("choice5", &str_opts);
@@ -815,19 +797,18 @@ test_generate_parameters ()
 
     sspace::sspace_t newtestspace ({&tri, &tqu, &cat1, &cat2, &cat3, &choice});
 
-    gridsearch second = gridsearch ();
-    second.update_search_space (&newtestspace);
+    gridsearch testspace_2 = gridsearch ();
+    testspace_2.update_search_space (&newtestspace);
 
-    for (int i = 0; i < 200; i++) {
-        std::cout << "iteration: " << i;
-        inst::set this_set = second.generate_parameters (i);
-
+    for (int i = 0; i < 65610; i++) {
+        inst::set this_set = testspace_2.generate_parameters (i);
         // Note that while recommended for memory efficiency, if the calling
         // process forgets / intentionally doesn't call receive_trial_results
         // funciton, there is no resulting memory leak due to gridsearch's
         // destructor.
-        second.receive_trial_results(i, this_set, 0.0);
+        testspace_2.receive_trial_results(i, this_set, 0.0);
     }
+    assert (testspace_2.generate_parameters (65611) == NULL);
 
     std::cout << "gridsearch generate parameters tests pass" << std::endl;
 }
