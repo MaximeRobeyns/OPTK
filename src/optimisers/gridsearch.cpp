@@ -113,6 +113,7 @@ class node: public param {
         {
             nodes = subspaces();
             values = params();
+            ucount = 0;
         }
 
         ~node ()
@@ -334,7 +335,8 @@ class node: public param {
             }
 
             // true if we have generated a full permutation of all the local values
-            bool sscont = !update && ++ucount == last_val_count;
+            bool sscont = !update || (ucount == 0 || (ucount + 1)%last_val_count == 0);
+            ucount++;
 
             // Generate the subspace values; either clones of previous, or updated.
             unsigned int j, ss_update, ss_max;
@@ -562,8 +564,12 @@ gridsearch::generate_parameters (int param_id)
     r_node->step(root, &complete);
 
     if (complete) {
-        free_node(root);
-        return NULL;
+        if (fst_gen) {
+            fst_gen = false;
+        } else {
+            free_node(root);
+            return NULL;
+        }
     }
 
     add_to_trials (param_id, root);
@@ -708,21 +714,23 @@ test_generate_parameters ()
 {
     gridsearch test = gridsearch ();
 
-    sspace::randint fst ("fst_param", 0, 10);
-    sspace::randint snd ("snd_param", 0, 10);
+    sspace::randint fst ("fst_param", 0, 2);
+    sspace::randint snd ("snd_param", 0, 2);
     sspace::sspace_t testspace ({&fst, &snd});
 
     test.update_search_space (&testspace);
 
     inst::set this_set;
     int i = 0;
-    do {
-        this_set = test.generate_parameters (i++);
+    while (i < 100) {
+        this_set = test.generate_parameters (i);
+        if (!this_set) break;
         GETINT(fst, this_set, "fst_param");
         GETINT(snd, this_set, "snd_param");
         std::cout << "1: " << fst->get_val() << ", 2: " << snd->get_val() << std::endl;
-    } while (this_set);
-    assert (i == 100);
+        i++;
+    }
+    assert (i == 4);
 
     // NOTE: no receive_trial_results called; memory de-allocation is deferred
     // to gridsearch's destructor. asan verifies no memory leak.
