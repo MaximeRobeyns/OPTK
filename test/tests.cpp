@@ -21,12 +21,18 @@
 #include <tests/tests.hpp>
 #include <tests/types_test.hpp>
 #include <tests/optimiser_test.hpp>
+#include <tests/benchmark_test.hpp>
 
 void
 OPTKtest::testmain ()
 {
     run_type_tests ();
+
+    // TODO move gs into an optimisation algorithm test function
     run_gridsearch_tests ();
+
+    run_benchmark_tests ();
+
     std::cout << "All tests pass." << std::endl;
 }
 

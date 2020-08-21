@@ -16,48 +16,20 @@
  * limitations under the License.
  *
  * @file
- * @brief This file implements the base class for benchmarks.
+ * @brief Implements tests for the benchmark algorithms algorithm.
  */
 
-#include <optk/benchmark.hpp>
+#include <tests/benchmark_test.hpp>
 
-optk::benchmark::benchmark (const std::string &name)
+static void
+test_synthetic_benchmarks ()
 {
-    m_name = name;
-}
-
-std::string
-optk::benchmark::get_name ()
-{
-    return m_name;
-}
-
-/* TODO delete these commended lines
-sspace::sspace_t *
-optk::benchmark::get_search_space ()
-{
-    return &m_params;
-}
-
-double
-optk::benchmark::evaluate (inst::set x)
-{
-    return x;
-} */
-
-optk::benchmarks::benchmarks ()
-{
-    m_arr = std::vector<benchmark *>();
+    std::cout << "TODO write synthetic benchmark correctness tests" << std::endl;
 }
 
 void
-optk::benchmarks::register_benchmark (optk::benchmark *b)
+run_benchmark_tests()
 {
-    m_arr.push_back(b);
-}
-
-std::vector <optk::benchmark *> *
-optk::benchmarks::collection ()
-{
-    return &m_arr;
+    test_synthetic_benchmarks();
+    std::cout << "All gridsearch tests pass" << std::endl;
 }

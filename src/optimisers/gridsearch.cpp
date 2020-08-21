@@ -479,37 +479,17 @@ unpack_param (sspace::param_t *param, __gs::node *parent)
         }
         case pt::categorical_int:
         {
-            // unpack_categorical<int>(param, parent);
-            sspace::categorical<int> *cat =
-                static_cast<sspace::categorical<int> *>(param);
-            std::string name = cat->get_name ();
-            std::vector<int> values = *cat->values ();
-            __gs::param *tmp_val = new __gs::value<int>(name, values);
-            parent->add_item (tmp_val);
+            unpack_categorical<int>(param, parent);
             break;
         }
         case pt::categorical_dbl:
         {
-            // unpack_categorical<double>(param, parent);
-            sspace::categorical<double> *cat =
-                static_cast<sspace::categorical<double> *>(param);
-            std::string name = cat->get_name ();
-            std::vector<double> values = *cat->values ();
-            __gs::param *tmp_val = new __gs::value<double>(name, values);
-            parent->add_item (tmp_val);
+            unpack_categorical<double>(param, parent);
             break;
         }
         case pt::categorical_str:
         {
             unpack_categorical<std::string>(param, parent);
-            /*
-            sspace::categorical<std::string> *cat =
-                static_cast<sspace::categorical<std::string> *>(param);
-            std::string name = cat->get_name ();
-            std::vector<std::string> values = *cat->values ();
-            __gs::param *tmp_val = new __gs::value<std::string>(name, values);
-            parent->add_item (tmp_val);
-            */
             break;
         }
         case pt::choice:
@@ -611,8 +591,7 @@ void gridsearch::receive_trial_results (int pid, inst::set params, double value)
 
 // Gridsearch tests ===========================================================
 
-/// TODO uncomment this
-// #ifdef __OPTK_TESTING
+#ifdef __OPTK_TESTING
 
 // compare two double-precision floating point values.
 static bool
@@ -809,8 +788,6 @@ test_generate_parameters ()
         testspace_2.receive_trial_results(i, this_set, 0.0);
     }
     assert (testspace_2.generate_parameters (65611) == NULL);
-
-    std::cout << "gridsearch generate parameters tests pass" << std::endl;
 }
 
 void
@@ -821,4 +798,4 @@ run_static_gridsearch_tests ()
     std::cout << "gridsearch tests pass" << std::endl;
 }
 
-// #endif // __OPTK_TESTING
+#endif // __OPTK_TESTING

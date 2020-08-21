@@ -30,7 +30,7 @@ void
 run_gridsearch_tests()
 {
     run_static_gridsearch_tests ();
-    // test_update_search_space ();
+    test_update_search_space ();
     std::cout << "All gridsearch tests pass" << std::endl;
 }
 

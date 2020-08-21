@@ -24,7 +24,6 @@
 
 #include <assert.h>
 #include <iostream>
-// TODO get rid of this
 #include <unordered_map>
 #include <vector>
 #include <tuple>
