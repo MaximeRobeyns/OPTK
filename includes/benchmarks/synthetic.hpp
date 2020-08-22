@@ -23,8 +23,12 @@
 #ifndef __SYNTHETIC_H_
 #define __SYNTHETIC_H_
 
+#include <cmath>
+#include <stdexcept>
+
 #include <optk/benchmark.hpp>
 #include <sys/types.h>
+#include <tests/testutils.hpp>
 
 namespace syn {
 
@@ -104,6 +108,15 @@ class synthetic: public optk::benchmark {
          * with; or the fixed dimension that the derived function can take. */
         u_int get_dims () { return m_dims; }
 
+        /**
+         * This function validates that a set of parameter instances provided
+         * to be evaluated is compatible with the search space.
+         * @param x The search space provided by the optimisation algorithm.
+         * @throws std::invalid_argument when the parameter set instance is
+         * invalid.
+         */
+        void validate_param_set (inst::set x);
+
     protected:
         u_int m_dims;
         double m_lb, m_ub, m_opt;
@@ -113,10 +126,28 @@ class synthetic: public optk::benchmark {
 };
 
 /**
- * TODO document the ackley1 function here.
+ * TODO return to this; provided with an optimisation algorithm, this will run
+ * through all the synthetic benchmarks (perhaps in parallel) and evaluate the
+ * performance of the optimisation algorithm on this (e.g. calculating traces,
+ * AUC etc.)
+ */
+class synthetic_benchmark {
+    public:
+    private:
+};
+
+/**
+ * The ackley1 function has formula
+ * \f[
+ *  f(x) = -20e^{0.02\sqrt{D^{-1}\sum^D_{i=1}x^2_i}}
+ *  - e^{D^{-1}\sum^D_{i=1}\cos(2\pi x_i)} + 20 + e,
+ * \f]
+ * with \f$D\f$ being the number of dimensions of the problem.
+ * The global minima is located at the origin;
+ * \f$\mathbf{x}^* = (0, \ldots, 0)\f$, with
+ * \f$f(\mathbf{x^*}) = 0\f$.
  */
 class ackley1: public synthetic {
-
     public:
         /** The constructor for the ackley1 function.
          * @param d The number of dimensions for this problem. */
@@ -125,6 +156,5 @@ class ackley1: public synthetic {
 };
 
 } // end namespace syn
-
 
 #endif // __SYNTHETIC_H_
