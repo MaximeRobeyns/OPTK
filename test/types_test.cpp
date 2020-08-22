@@ -24,12 +24,6 @@
 #include <tests/types_test.hpp>
 #include <optk/types.hpp>
 
-static bool
-dbleq (double a, double b)
-{
-    return std::fabs(a - b) < std::numeric_limits<double>::epsilon();
-}
-
 // test types for concrete values ---------------------------------------------
 
 /*

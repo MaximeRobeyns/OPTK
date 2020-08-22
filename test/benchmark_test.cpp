@@ -21,10 +21,27 @@
 
 #include <tests/benchmark_test.hpp>
 
+#include <benchmarks/synthetic.hpp>
+
 static void
 test_synthetic_benchmarks ()
 {
-    std::cout << "TODO write synthetic benchmark correctness tests" << std::endl;
+    syn::ackley1 a1(5);
+
+    assert (a1.get_name() == std::string("ackley1"));
+    sspace::sspace_t *tmp_space = a1.get_search_space();
+    u_int dims = a1.get_dims();
+
+    // iterate throguh all 5 parameters.
+    for (u_int i = 0; i < dims; i++) {
+        sspace::param_t *tmp = tmp_space->at(i);
+        assert (tmp->get_type() == pt::uniform);
+        sspace::uniform *tmp_uni = static_cast<sspace::uniform *>(tmp);
+        assert (dbleq (tmp_uni->m_lower, -35));
+        assert (dbleq (tmp_uni->m_upper, 35));
+        assert (tmp_uni->get_name() == std::to_string(i));
+    }
+    // todo evaluate at optimal parameters and ensure correct
 }
 
 void

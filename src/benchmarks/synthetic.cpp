@@ -34,16 +34,63 @@ synthetic::synthetic (
         double opt) :
     benchmark(n), m_dims(dims), m_lb(lb), m_ub(ub), m_opt(opt)
 {
-    // this is not gonna work is it??
     for (u_int i = 0; i < dims; i++) {
-        sspace::uniform temp(std::to_string (i), m_lb, m_ub);
-        m_sspace.push_back(&temp);
+        sspace::uniform *temp = new sspace::uniform(std::to_string (i), m_lb, m_ub);
+        m_sspace.push_back(temp);
+    }
+}
+
+#define deltype(type, src) \
+    { \
+    type *tmp_type = static_cast<type *>(src); \
+    delete tmp_type; \
+    break; \
+    }
+
+synthetic::~synthetic()
+{
+    sspace::sspace_t::iterator it;
+    for (it = m_sspace.begin (); it != m_sspace.end (); it++) {
+        sspace::param_t *tmp = (*it);
+        pt t = tmp->get_type();
+        switch (t) {
+            case pt::categorical_int:
+                deltype(sspace::categorical<int>, tmp);
+            case pt::categorical_dbl:
+                deltype(sspace::categorical<double>, tmp);
+            case pt::categorical_str:
+                deltype(sspace::categorical<std::string>, tmp);
+            case pt::choice:
+                deltype(sspace::choice, tmp);
+            case pt::normal:
+                deltype(sspace::normal, tmp);
+            case pt::qnormal:
+                deltype(sspace::qnormal, tmp);
+            case pt::lognormal:
+                deltype(sspace::lognormal, tmp);
+            case pt::qlognormal:
+                deltype(sspace::qlognormal, tmp);
+            case pt::uniform:
+                deltype(sspace::uniform, tmp);
+            case pt::quniform:
+                deltype(sspace::quniform, tmp);
+            case pt::loguniform:
+                deltype(sspace::loguniform, tmp);
+            case pt::qloguniform:
+                deltype(sspace::qloguniform, tmp);
+            case pt::randint:
+                deltype(sspace::randint, tmp);
+        }
     }
 }
 
 ackley1::ackley1 (int d) :
-    synthetic ("ackley", 10, -35, 35, 0)
-{ }
+    synthetic ("ackley1", 10, -35, 35, 0)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous
+                }));
+}
 
 double
 ackley1::evaluate (inst::set x)
@@ -51,27 +98,5 @@ ackley1::evaluate (inst::set x)
     // TODO actually implement
     return 0;
 }
-
-/*
-
-sspace::sspace_t *
-ackley1::get_search_space ()
-{
-    // for every dimension, create a uniform parameter within the bounds
-}
-
-vecd_t
-ackley::evaluate(inst::set x)
-{
-    vecd_t result;
-
-    for (vecd_t::iterator i = x.begin(); i != x.end(); i++) {
-        double tmp = *i + 5;
-        result.push_back(tmp);
-    }
-
-    return result;
-}
-*/
 
 } // end namespace syn

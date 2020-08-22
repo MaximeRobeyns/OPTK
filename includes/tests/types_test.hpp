@@ -26,6 +26,7 @@
 #include <iostream>
 
 #include <optk/types.hpp>
+#include <tests/testutils.hpp>
 
 /**
  * Runs all the tests for the types.

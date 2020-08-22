@@ -16,24 +16,14 @@
  * limitations under the License.
  *
  * @file
+ * @brief Implements the test utiliities.
  */
 
-#include <tests/tests.hpp>
-#include <tests/types_test.hpp>
-#include <tests/optimiser_test.hpp>
-#include <tests/benchmark_test.hpp>
+#include <tests/testutils.hpp>
 
-void
-OPTKtest::testmain ()
+bool
+dbleq (double a, double b)
 {
-    run_type_tests ();
-
-    // TODO move gs into an optimisation algorithm test function
-    // run_gridsearch_tests ();
-
-    run_benchmark_tests ();
-
-    std::cout << "All tests pass." << std::endl;
+    return std::fabs(a - b) < std::numeric_limits<double>::epsilon();
 }
-
 

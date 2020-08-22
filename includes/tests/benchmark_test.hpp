@@ -26,6 +26,7 @@
 #include <iostream>
 
 #include <optk/types.hpp>
+#include <tests/testutils.hpp>
 
 /**
  * Runs correctness tests for the gridsearch default benchmarks
