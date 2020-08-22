@@ -19,10 +19,8 @@
  * @brief Implements tests for optk types.
  */
 
-#include <iostream>
-#include <memory>
+#include "optk/types.hpp"
 #include <tests/types_test.hpp>
-#include <optk/types.hpp>
 
 // test types for concrete values ---------------------------------------------
 
@@ -80,11 +78,11 @@ test_concrete_types ()
 
     // double access
     inst::dbl_val *fst_dbl = static_cast<inst::dbl_val *>(root.get_item ("val2"));
-    assert (dbleq (fst_dbl->get_val(), 21.0));
+    assert (tutils::dbleq (fst_dbl->get_val(), 21.0));
     inst::dbl_val *snd_dbl = inst::get<inst::dbl_val *>(&root, "val2");
-    assert (dbleq (snd_dbl->get_val(), 21.0));
+    assert (tutils::dbleq (snd_dbl->get_val(), 21.0));
     GETDBL(trd_dbl, &root, "val2");
-    assert (dbleq (trd_dbl->get_val(), 21.0));
+    assert (tutils::dbleq (trd_dbl->get_val(), 21.0));
 
     // string access
     inst::str_val *fst_str = static_cast<inst::str_val *>(root.get_item ("val3"));
@@ -112,7 +110,7 @@ test_concrete_types ()
     assert (nint_2->get_val() == 100);
 
     GETDBL(ndbl, tmpnode, "val4.2");
-    assert (dbleq (ndbl->get_val(), 21.0));
+    assert (tutils::dbleq (ndbl->get_val(), 21.0));
 
     GETSTR(nstr, tmpnode, "val4.3");
     assert (nstr->get_val() == std::string("string test"));
@@ -186,8 +184,8 @@ test_categorical()
     assert (ret_dbl->size () == myopts_dbl.size ());
 
     int ctr = 0;
-    for (double i = 0.0; dbleq (i, 10.0); i+=2.5)
-        dbleq (test_dbl.get (ctr++), i);
+    for (double i = 0.0; tutils::dbleq (i, 10.0); i+=2.5)
+        tutils::dbleq (test_dbl.get (ctr++), i);
 
     // strings
 
@@ -278,7 +276,7 @@ static void test_choice_type() {
                 assert (cparam->get_name () == std::string ("categorical_dbl"));
                 assert (cparam->get_type () == pt::categorical_dbl);
                 for (int j = 0; j < 5; j++) {
-                    assert (dbleq (cparam->get(j), ((double)j)/10.0));
+                    assert (tutils::dbleq (cparam->get(j), ((double)j)/10.0));
                 }
                 break;
             }
@@ -487,6 +485,126 @@ test_qlognormal ()
     }
 }
 
+// validation tests -----------------------------------------------------------
+
+static void
+validate_invalid (inst::param *p, sspace::sspace_t *root)
+{
+    inst::node i ("invalid");
+    i.add_item (p);
+    try {
+        sspace::validate_param_values(i.get_values(), root);
+        assert (1 == 0);
+    } catch (const std::invalid_argument &) { }
+}
+
+static void
+test_validation ()
+{
+    sspace::sspace_t options;
+
+    sspace::randint ri("randint", 0, 10);
+    std::vector<int> int_opts = {0,1,2,3,4};
+    sspace::categorical<int> cat_int("categorical_int", &int_opts);
+    std::vector<double> dbl_opts = {0.0, 0.1, 0.2, 0.3, 0.4};
+    sspace::categorical<double> cat_dbl("categorical_dbl", &dbl_opts);
+    std::vector<std::string> str_opts = {
+        std::string("first"), std::string("second"), std::string("third")
+    };
+    sspace::categorical<std::string> cat_str("categorical_str", &str_opts);
+    sspace::normal norm("normal", 0, 1);
+    sspace::lognormal lognorm("lognormal", 0, 1);
+    sspace::qnormal qnorm("qnormal", 0, 1, 0.25);
+    sspace::qnormal qlognorm("qlognormal", 0, 1, 0.25);
+    sspace::uniform uni ("uniform", 10, 20);
+    sspace::quniform quni ("quniform", 10, 20, 2.5);
+    sspace::loguniform loguni ("loguniform", 10, 20);
+    sspace::qloguniform qloguni ("qloguniform", 10, 20, 2.5);
+
+    options.push_back(&ri);
+    options.push_back(&cat_int);
+    options.push_back(&cat_dbl);
+    options.push_back(&cat_str);
+    options.push_back(&norm);
+    options.push_back(&lognorm);
+    options.push_back(&qnorm);
+    options.push_back(&qlognorm);
+    options.push_back(&uni);
+    options.push_back(&quni);
+    options.push_back(&loguni);
+    options.push_back(&qloguni);
+
+    sspace::choice test("testchoice", &options);
+
+    sspace::sspace_t testroot = options;
+    testroot.push_back(&test);
+
+    // concrete
+    inst::int_val ri_c("randint", 5);
+    inst::int_val ci_c("categorical_int", 2);
+    inst::dbl_val cd_c("categorical_dbl", .4);
+    inst::str_val cs_c("categorical_str", "second");
+    inst::dbl_val n_c("normal", 0.25);
+    inst::dbl_val qn_c("qnormal", 0.25);
+    inst::dbl_val ln_c("lognormal", 0.25);
+    inst::dbl_val qln_c("qlognormal", 0.25);
+    inst::dbl_val u_c("uniform", 17.5);
+    inst::dbl_val qu_c("quniform", 17.5);
+    inst::dbl_val lu_c("loguniform", 17.5);
+    inst::dbl_val qlu_c("qloguniform", 17.5);
+
+    inst::node choice ("testchoice");
+    choice.add_items({
+            &ri_c, &ci_c, &cd_c, &cs_c,
+            &n_c, &qn_c, &ln_c, &qln_c,
+            &u_c, &qu_c, &lu_c, &qlu_c });
+
+    inst::node instroot ("testroot");
+    instroot.add_items({
+            &ri_c, &ci_c, &cd_c, &cs_c,
+            &n_c, &qn_c, &ln_c, &qln_c,
+            &u_c, &qu_c, &lu_c, &qlu_c,
+            &choice});
+
+    sspace::validate_param_values(instroot.get_values(), &testroot);
+
+    inst::int_val iri_c("randint", 15);
+    validate_invalid (&iri_c, &testroot);
+
+    inst::int_val ici_c("categorical_int", 5);
+    validate_invalid (&ici_c, &testroot);
+
+    inst::dbl_val icd_c("categorical_dbl", .5);
+    validate_invalid (&icd_c, &testroot);
+
+    inst::str_val ics_c("categorical_str", "fourth");
+    validate_invalid (&ics_c, &testroot);
+
+    inst::dbl_val iqn_c("qnormal", 0.15);
+    validate_invalid (&iqn_c, &testroot);
+
+    inst::dbl_val iqln_c("qlognormal", 0.15);
+    validate_invalid (&iqln_c, &testroot);
+
+    inst::dbl_val iu_c("uniform", 9);
+    validate_invalid (&iu_c, &testroot);
+
+    inst::dbl_val iqu_c1("quniform", 9);
+    validate_invalid (&iqu_c1, &testroot);
+
+    inst::dbl_val iqu_c2("quniform", 11.5);
+    validate_invalid (&iqu_c2, &testroot);
+
+    inst::dbl_val ilu_c("loguniform", 9);
+    validate_invalid (&ilu_c, &testroot);
+
+    inst::dbl_val iqlu_c1("qloguniform", 9);
+    validate_invalid (&iqlu_c1, &testroot);
+
+    inst::dbl_val iqlu_c2("qloguniform", 11.5);
+    validate_invalid (&iqlu_c2, &testroot);
+}
+
 void
 run_type_tests()
 {
@@ -506,6 +624,8 @@ run_type_tests()
     test_lognormal ();
     test_qlognormal ();
     test_choice_type ();
+
+    test_validation ();
     std::cout << "All type tests pass" << std::endl;
 }
 

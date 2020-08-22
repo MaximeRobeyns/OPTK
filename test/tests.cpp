@@ -29,7 +29,7 @@ OPTKtest::testmain ()
     run_type_tests ();
 
     // TODO move gs into an optimisation algorithm test function
-    // run_gridsearch_tests ();
+    run_gridsearch_tests ();
 
     run_benchmark_tests ();
 

@@ -24,6 +24,7 @@
 
 #include <assert.h>
 #include <iostream>
+#include <limits>
 
 #include <optk/types.hpp>
 #include <tests/testutils.hpp>
@@ -32,8 +33,6 @@
  * Runs correctness tests for the gridsearch default benchmarks
  */
 void run_benchmark_tests();
-
-
 
 
 #endif // __BENCHMARK_TEST_H_

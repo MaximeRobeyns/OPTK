@@ -30,6 +30,7 @@
 
 #include <optk/optimiser.hpp>
 #include <optk/types.hpp>
+#include <tests/testutils.hpp>
 
 namespace __gs {
 

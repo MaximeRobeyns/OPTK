@@ -24,6 +24,7 @@
 
 #include <assert.h>
 #include <iostream>
+#include <memory>
 
 #include <optk/types.hpp>
 #include <tests/testutils.hpp>

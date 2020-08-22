@@ -27,8 +27,8 @@
 #include <stdexcept>
 
 #include <optk/benchmark.hpp>
+#include <optk/types.hpp>
 #include <sys/types.h>
-#include <tests/testutils.hpp>
 
 namespace syn {
 
@@ -71,6 +71,7 @@ class synthetic: public optk::benchmark {
                 double lb,
                 double ub,
                 double opt);
+
         /**
          * This destructor frees the search space which was
          * automatically-generated in the constructor.
@@ -92,14 +93,6 @@ class synthetic: public optk::benchmark {
         std::vector <properties> get_properties() { return m_properties; }
 
         /**
-         * Sets the parameters which give the optimum when evaluated. Note that
-         * this set needn't be unique; for instance in multimodal functions.
-         * This set is not passed as an argument of this class' constructor to
-         * improve the legibility of source code.
-         * @param op The set of optimal parameter instances.
-         */
-        void set_opt_param (inst::set op) { opt_params = op; }
-        /**
          * Returns the known optimal parameter set.
          */
         inst::set get_opt_param () { return opt_params; }
@@ -118,6 +111,17 @@ class synthetic: public optk::benchmark {
         void validate_param_set (inst::set x);
 
     protected:
+        /**
+         * Sets the parameters which give the optimum when evaluated. This set
+         * needn't be unique; for instance in multimodal functions it is not.
+         *
+         * Only call once from the constructor of a derived class; multiple
+         * invocations leads to memory leaks. It is 'protected' to guard
+         * against this.
+         * @param op The set of optimal parameter instances.
+         */
+        void set_opt_param (inst::set op);
+
         u_int m_dims;
         double m_lb, m_ub, m_opt;
         std::vector<properties> m_properties;
@@ -126,7 +130,8 @@ class synthetic: public optk::benchmark {
 };
 
 /**
- * TODO return to this; provided with an optimisation algorithm, this will run
+ * TODO return to this;
+ * provided with an optimisation algorithm, this will run
  * through all the synthetic benchmarks (perhaps in parallel) and evaluate the
  * performance of the optimisation algorithm on this (e.g. calculating traces,
  * AUC etc.)

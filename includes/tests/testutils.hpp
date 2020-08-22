@@ -23,5 +23,9 @@
 #include <limits>
 #include <sys/types.h>
 
+namespace tutils {
+
 /** Compares two double-precision floating point numbers for equality. */
 bool dbleq (double a, double b);
+
+} // end namespace tutils

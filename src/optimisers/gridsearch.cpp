@@ -19,7 +19,6 @@
  * @brief This file implements a simple gridsearch algorithm.
  */
 
-#include "optk/types.hpp"
 #include <optimisers/gridsearch.hpp>
 
 /** This namespace contains types which are specific to the gridsearch
@@ -593,13 +592,6 @@ void gridsearch::receive_trial_results (int pid, inst::set params, double value)
 
 #ifdef __OPTK_TESTING
 
-// compare two double-precision floating point values.
-static bool
-dbleq (double a, double b)
-{
-    return std::fabs (a - b) < std::numeric_limits<double>::epsilon();
-}
-
 void
 test_update_search_space ()
 {
@@ -656,7 +648,7 @@ test_update_search_space ()
     assert (pv_tqu->get_type () == __gs::pspace_t::dbl_val);
     assert (pv_tqu->get_key () == "testquniform");
     for (int i = 0; i < 4; i++)
-        assert (dbleq (pv_tqu->at (i), i * 2.5));
+        assert (tutils::dbleq (pv_tqu->at (i), i * 2.5));
 
     // testcatint -------------------------------------------------------------
 
@@ -678,7 +670,7 @@ test_update_search_space ()
     assert (pv_tcd->get_type () == __gs::pspace_t::dbl_val);
     assert (pv_tcd->get_key () == "testcatdbl");
     for (int i = 0; i < 5; i++)
-        assert (dbleq (pv_tcd->at (i), i * 2.5));
+        assert (tutils::dbleq (pv_tcd->at (i), i * 2.5));
 
     // testcatstr ------------------------------------------------------------
 

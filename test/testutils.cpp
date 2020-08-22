@@ -22,8 +22,7 @@
 #include <tests/testutils.hpp>
 
 bool
-dbleq (double a, double b)
+tutils::dbleq (double a, double b)
 {
     return std::fabs(a - b) < std::numeric_limits<double>::epsilon();
 }
-
