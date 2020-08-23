@@ -21,6 +21,7 @@
  */
 
 #include <benchmarks/synthetic.hpp>
+#include <cmath>
 
 /** This namespace contains all free functions and types relating to the
  * synthetic test functions. */
@@ -183,6 +184,8 @@ ackley3::ackley3 ():
 double
 ackley3::evaluate (inst::set x)
 {
+    validate_param_set (x);
+
     double x12 = std::pow(x->getdbl("0"), 2.);
     double x22 = std::pow(x->getdbl("1"), 2.);
     double e1 = -0.2 * std::sqrt(x12 + x22);
@@ -195,7 +198,7 @@ adjiman::adjiman ():
 {
     sspace::sspace_t *ss = this->get_search_space();
     sspace::param_t *x1 = new sspace::uniform ("0", -1, 2);
-    sspace::param_t *x2 = new sspace::uniform ("0", -1, 1);
+    sspace::param_t *x2 = new sspace::uniform ("1", -1, 1);
     ss->push_back(x1);
     ss->push_back(x2);
 
@@ -216,9 +219,121 @@ adjiman::adjiman ():
 double
 adjiman::evaluate (inst::set x)
 {
+    validate_param_set (x);
+
     double x1 = x->getdbl(0);
     double x2 = x->getdbl(1);
     return std::cos(x1) * std::sin(x2) - (x1 / (x2*x2 + 1));
+}
+
+alpine1::alpine1 (int dims):
+    synthetic ("alpine1", dims, -10., 10., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::non_differentiable,
+                properties::separable,
+                properties::scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("alpine1 opt");
+    for (int i = 0; i < dims; i++)
+        opt->add_item (new inst::dbl_val(std::to_string (i), 0.));
+    this->set_opt_param (opt);
+}
+
+double
+alpine1::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double res = 0.;
+    for (u_int i = 0; i < m_dims; i++) {
+        double tmp = x->getdbl(i);
+        res += std::fabs(tmp * std::sin(tmp) + 0.1 * tmp);
+    }
+    return res;
+}
+
+alpine2::alpine2 (int dims):
+    synthetic ("alpine2", dims, 0., 10., 0)
+{
+    this->update_opt (std::pow(2.808, (double) dims));
+
+    this->set_properties (std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::separable,
+                properties::scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("alpine2 opt");
+    for (int i = 0; i < dims; i++)
+        opt->add_item (new inst::dbl_val(std::to_string (i), 7.917));
+    this->set_opt_param (opt);
+}
+
+double
+alpine2::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double res = 1.;
+    for (u_int i = 0; i < m_dims; i++) {
+        double tmp = x->getdbl(i);
+        res *= std::sqrt(tmp) * std::sin(tmp);
+    }
+    return res;
+}
+
+brad::brad ():
+    synthetic ("brad", 3, 0.00821487)
+{
+    sspace::sspace_t *ss = this->get_search_space();
+    sspace::param_t *x1 = new sspace::uniform ("0", -0.25, 0.25);
+    sspace::param_t *x2 = new sspace::uniform ("1", 0.01, 2.5);
+    sspace::param_t *x3 = new sspace::uniform ("2", 0.01, 2.5);
+    ss->push_back(x1);
+    ss->push_back(x2);
+    ss->push_back(x3);
+
+    this->set_properties (std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("brad opt");
+    opt->add_item (new inst::dbl_val ("0", 0.08241040));
+    opt->add_item (new inst::dbl_val ("1", 1.133033));
+    opt->add_item (new inst::dbl_val ("2", 2.343697));
+    this->set_opt_param (opt);
+}
+
+double
+brad::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double y[15] = {
+        0.14, 0.18, 0.22, 0.25, 0.29, 0.32, 0.35, 0.39,
+        0.37, 0.58, 0.73, 0.96, 1.34, 2.10, 4.39
+    };
+    double res = 0.;
+    double x1 = x->getdbl(0);
+    double x2 = x->getdbl(1);
+    double x3 = x->getdbl(2);
+    for (int i = 1; i < 16; i++) {
+        res += std::pow(
+                    (y[i-1] - x1 - (double)i) /
+                    ((double) (16-i) * x2 + (double) std::min(i, 16-i) * x3),
+                2.);
+    }
+    return res;
 }
 
 } // end namespace syn

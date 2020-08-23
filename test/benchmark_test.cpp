@@ -105,6 +105,22 @@ test_synthetic_benchmarks ()
     assert (am.get_dims() == 2u);
     double resam = am.evaluate(am.get_opt_param ());
     assert (nearly_equal (resam, am.get_opt(), 1.e-5));
+
+    // alpine1
+    syn::alpine1 al1(10);
+    double resal1 = al1.evaluate(al1.get_opt_param ());
+    assert (nearly_equal (resal1, al1.get_opt()));
+
+    // alpine2
+    syn::alpine2 al2(10);
+    double resal2 = al2.evaluate(al2.get_opt_param ());
+    assert (nearly_equal (resal2, al2.get_opt(), 1e-3*std::exp(al2.get_dims())));
+
+    // brad
+    syn::brad bd;
+    double resbd = bd.evaluate(bd.get_opt_param ());
+    std::cout << "resbd opt: " << resbd << std::endl;
+    // assert (nearly_equal (resbd, bd.get_opt()));
 }
 
 void

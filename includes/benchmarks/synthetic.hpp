@@ -40,6 +40,8 @@ namespace syn {
 enum class properties: char {
     continuous,
     differentiable,
+    non_differentiable,
+    separable,
     non_separable,
     scalable,
     non_scalable,
@@ -114,6 +116,11 @@ class synthetic: public optk::benchmark {
          * Returns (one of) the known global minima.
          */
         double get_opt () { return m_opt; }
+
+        /**
+         * Update the value of the global minimum.
+         */
+        void update_opt (double opt) { m_opt = opt; }
 
         /** Get the number of dimensions that this problem was instantiated
          * with; or the fixed dimension that the derived function can take. */
@@ -229,7 +236,58 @@ class adjiman: public synthetic {
         double evaluate(inst::set x) override;
 };
 
+/**
+ * The alpine1 function has formula
+ * \f[
+ * f(x) = \sum^D_{i=1}\left\vert x_i\sin(x_i) + 0.1 x_i\right\vert,
+ * \f]
+ * with \f$D\f$ parameters subject to \f$-10 \le x_i \le 10\f$. The global
+ * minimum is located at the origin; \f$\mathbf{x}^* = (0, \ldots, 0)\f$, with
+ * value \$ff(\mathbf{x}^*) = 0\f$.
+ */
+class alpine1: public synthetic {
+    public:
+        alpine1 (int dims);
+        double evaluate(inst::set x) override;
+};
 
+/**
+ * The alpine2 function has formula
+ * \f[
+ * f(x) = \prod^D_{i=1}\sqrt{x_i}\sin(x_i),
+ * \f]
+ * with \f$D\f$ parameters subject to \f$0 \le x_i \le 10\f$. The global
+ * minimum is located at \f$\mathbf{x}^* = (7.917, \ldots, 7.917)\f$, with
+ * value \$ff(\mathbf{x}^*) = 2.808^D\f$.
+ */
+class alpine2: public synthetic {
+    public:
+        alpine2 (int dims);
+        double evaluate(inst::set x) override;
+};
+
+/**
+ * The brad function comes from 'A Comparison of Gradient Methods for the
+ * Solution of Nonlinear Parameter Estimation Problems'
+ * (https://doi.org/10.1137/0707011), p170 Problem 1.
+ * It has formula
+ * \f[
+ * y(x) = \sum^15_{i=1}\left[
+ * \frac{y_i - x_1 - i}
+ * {(16-i)\cdot x_2 + \min(i, 16-i)\cdot x_3}
+ * \right]^2,
+ * \f]
+ * where \f$y_i = [0.14, 0.18, 0.22, 0.25, 0.29, 0.32, 0.35, 0.39, 0.37, 0.58,
+ * 0.73, 0.96, 1.34, 2.10, 4.39]^T\f$. The three parameters are subject to
+ * \f$-0.25 \le x_1 \le 0.25\f$ as well as \f$0.01 \le x_2, x_3 \le 2.5\f$.
+ * The global minimum is located at \f$\mathbf{x}^* = (0.08241040, 1.133033,
+ * 2.343697)$, with \f$(\mathbf{x}^*) = TODO \f$.
+ */
+class brad: public synthetic {
+    public:
+        brad ();
+        double evaluate(inst::set x) override;
+};
 
 } // end namespace syn
 
