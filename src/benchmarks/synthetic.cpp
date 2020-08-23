@@ -289,7 +289,7 @@ alpine2::evaluate (inst::set x)
 }
 
 brad::brad ():
-    synthetic ("brad", 3, 0.00821487)
+    synthetic ("brad", 3, 0.00821488)
 {
     sspace::sspace_t *ss = this->get_search_space();
     sspace::param_t *x1 = new sspace::uniform ("0", -0.25, 0.25);
@@ -329,9 +329,254 @@ brad::evaluate (inst::set x)
     double x3 = x->getdbl(2);
     for (int i = 1; i < 16; i++) {
         res += std::pow(
-                    (y[i-1] - x1 - (double)i) /
-                    ((double) (16-i) * x2 + (double) std::min(i, 16-i) * x3),
-                2.);
+                x1 + ((double)i/(x2*(double)(16-i) + x3*(double)std::min(i, 16-i))) - y[i-1]
+                , 2.
+                );
+    }
+    return res;
+}
+
+bartels_conn::bartels_conn ():
+    synthetic ("bartels conn", 2, -500., 500., 1.)
+{
+    this->set_properties (std::vector<properties>({
+                properties::continuous,
+                properties::non_differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("brad opt");
+    opt->add_item (new inst::dbl_val ("0", 0.));
+    opt->add_item (new inst::dbl_val ("1", 0.));
+    this->set_opt_param (opt);
+}
+
+double
+bartels_conn::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl("0"), x2 = x->getdbl("1");
+    double x12 = std::pow(x1, 2.), x22 = std::pow(x2, 2.);
+    return
+        std::abs(x12 + x22 + x1*x2) +
+        std::abs(std::sin(x1)) +
+        std::abs(std::cos(x2));
+}
+
+beale::beale ():
+    synthetic ("beale", 2, -4.5, 4.5, 0.)
+{
+    this->set_properties (std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+    inst::node *opt = new inst::node ("beale opt");
+    opt->add_item (new inst::dbl_val ("0", 3.));
+    opt->add_item (new inst::dbl_val ("1", 0.5));
+    this->set_opt_param (opt);
+}
+
+double
+beale::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    double x22 = std::pow(x2, 2.), x23 = std::pow(x2, 3.);
+    return std::pow((1.5 - x1 + x1 * x2), 2.) +
+        std::pow((2.25 - x1 + x1 * x22), 2.) +
+        std::pow (2.625 - x1 + x1 * x23, 2.);
+}
+
+biggs_exp2::biggs_exp2 ():
+    synthetic ("biggs exp2", 2, 0., 20., 0.)
+{
+    this->set_properties (std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("biggs exp2 opt");
+    opt->add_item (new inst::dbl_val ("0", 1.));
+    opt->add_item (new inst::dbl_val ("1", 10.));
+    this->set_opt_param (opt);
+}
+
+double
+biggs_exp2::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    double res = 0.;
+    for (int i = 1; i < 11; i++) {
+        res += std::pow(std::exp (-0.1 * i * x1)
+            - 5 * std::exp (-0.1 * i * x2)
+            - std::exp (-0.1 * i)
+            + 5 * std::exp (-i),
+            2.);
+    }
+    return res;
+}
+
+biggs_exp3::biggs_exp3 ():
+    synthetic ("biggs exp3", 3, 0., 20., 0.)
+{
+    this->set_properties (std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("biggs exp3 opt");
+    opt->add_item (new inst::dbl_val ("0", 1.));
+    opt->add_item (new inst::dbl_val ("1", 10.));
+    opt->add_item (new inst::dbl_val ("2", 5.));
+    this->set_opt_param (opt);
+}
+
+double
+biggs_exp3::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1), x3 = x->getdbl(2);
+    double res = 0.;
+    for (int i = 1; i < 11; i++) {
+        res += std::pow(std::exp (-0.1 * i * x1)
+            - x3 * std::exp (-0.1 * i * x2)
+            - std::exp (-0.1 * i)
+            + 5 * std::exp (-i),
+            2.);
+    }
+    return res;
+}
+
+biggs_exp4::biggs_exp4 ():
+    synthetic ("biggs exp4", 4, 0., 20., 0.)
+{
+    this->set_properties (std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("biggs exp4 opt");
+    opt->add_item (new inst::dbl_val ("0", 1.));
+    opt->add_item (new inst::dbl_val ("1", 10.));
+    opt->add_item (new inst::dbl_val ("2", 1.));
+    opt->add_item (new inst::dbl_val ("3", 5.));
+    this->set_opt_param (opt);
+}
+
+double
+biggs_exp4::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1), x3 = x->getdbl(2);
+    double x4 = x->getdbl(3);
+    double res = 0.;
+    for (int i = 1; i < 11; i++) {
+        res += x3 * std::pow(std::exp (-0.1 * i * x1)
+            - x4 * std::exp (-0.1 * i * x2)
+            - std::exp (-0.1 * i)
+            + 5 * std::exp (-i),
+            2.);
+    }
+    return res;
+}
+
+biggs_exp5::biggs_exp5 ():
+    synthetic ("biggs exp5", 5, 0., 20., 0.)
+{
+    this->set_properties (std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("biggs exp5 opt");
+    opt->add_item (new inst::dbl_val ("0", 1.));
+    opt->add_item (new inst::dbl_val ("1", 10.));
+    opt->add_item (new inst::dbl_val ("2", 1.));
+    opt->add_item (new inst::dbl_val ("3", 5.));
+    opt->add_item (new inst::dbl_val ("4", 4.));
+    this->set_opt_param (opt);
+}
+
+double
+biggs_exp5::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1), x3 = x->getdbl(2);
+    double x4 = x->getdbl(3), x5 = x->getdbl(4);
+    double res = 0.;
+    for (int i = 1; i < 11; i++) {
+        res += x3 * std::pow(std::exp (-0.1 * i * x1)
+            - x4 * std::exp (-0.1 * i * x2)
+            + 3 * std::exp (-0.1 * i * x5)
+            - std::exp (-0.1 * i)
+            + 5 * std::exp (-i)
+            - 3 * std::exp (-0.4 * i),
+            2.);
+    }
+    return res;
+}
+
+biggs_exp6::biggs_exp6 ():
+    synthetic ("biggs exp6", 6, -20., 20., 0.)
+{
+    this->set_properties (std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("biggs exp5 opt");
+    opt->add_item (new inst::dbl_val ("0", 1.));
+    opt->add_item (new inst::dbl_val ("1", 10.));
+    opt->add_item (new inst::dbl_val ("2", 1.));
+    opt->add_item (new inst::dbl_val ("3", 5.));
+    opt->add_item (new inst::dbl_val ("4", 4.));
+    opt->add_item (new inst::dbl_val ("5", 3.));
+    this->set_opt_param (opt);
+}
+
+double
+biggs_exp6::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1), x3 = x->getdbl(2);
+    double x4 = x->getdbl(3), x5 = x->getdbl(4), x6 = x->getdbl(5);
+    double res = 0.;
+    for (int i = 1; i < 11; i++) {
+        res += x3 * std::pow(std::exp (-0.1 * i * x1)
+            - x4 * std::exp (-0.1 * i * x2)
+            + x6 * std::exp (-0.1 * i * x5)
+            - std::exp (-0.1 * i)
+            + 5 * std::exp (-i)
+            - 3 * std::exp (-0.4 * i),
+            2.);
     }
     return res;
 }

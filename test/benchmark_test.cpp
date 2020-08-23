@@ -119,8 +119,42 @@ test_synthetic_benchmarks ()
     // brad
     syn::brad bd;
     double resbd = bd.evaluate(bd.get_opt_param ());
-    std::cout << "resbd opt: " << resbd << std::endl;
-    // assert (nearly_equal (resbd, bd.get_opt()));
+    assert (nearly_equal (resbd, bd.get_opt(), 1e-8));
+
+    // bartels_conn
+    syn::bartels_conn bc;
+    double resbc = bc.evaluate(bc.get_opt_param ());
+    assert (nearly_equal (resbc, bc.get_opt()));
+
+    // beale
+    syn::beale be;
+    double resbe = be.evaluate(be.get_opt_param ());
+    assert (nearly_equal (resbe, be.get_opt()));
+
+    // biggs_exp2
+    syn::biggs_exp2 bx2;
+    double resbx2 = bx2.evaluate(bx2.get_opt_param ());
+    assert (nearly_equal (resbx2, bx2.get_opt()));
+
+    // biggs_exp3
+    syn::biggs_exp3 bx3;
+    double resbx3 = bx3.evaluate(bx3.get_opt_param ());
+    assert (nearly_equal (resbx3, bx3.get_opt()));
+
+    // biggs_exp4
+    syn::biggs_exp4 bx4;
+    double resbx4 = bx4.evaluate(bx4.get_opt_param ());
+    assert (nearly_equal (resbx4, bx4.get_opt()));
+
+    // biggs_exp5
+    syn::biggs_exp5 bx5;
+    double resbx5 = bx5.evaluate(bx5.get_opt_param ());
+    assert (nearly_equal (resbx5, bx5.get_opt()));
+
+    // biggs_exp6
+    syn::biggs_exp6 bx6;
+    double resbx6 = bx6.evaluate(bx6.get_opt_param ());
+    assert (nearly_equal (resbx6, bx6.get_opt()));
 }
 
 void

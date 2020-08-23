@@ -206,7 +206,7 @@ class ackley2: public synthetic {
 /**
  * The ackley3 function has formula
  * \f[
- * f(x) = 200 e^{-0.02\sqrt{x_1^2 + x_2^2}} + 52^{\cos(3x_1) + \sin(3x_2)},
+ * f(x) = 200 e^{-0.02\sqrt{x_1^2 + x_2^2}} + 5e^{\cos(3x_1) + \sin(3x_2)},
  * \f]
  * with only two parameters \f$x_1\f$ and \$fx_2\$f.
  * The global minimum is located at \f$\mathbf{x}^* = (0,0)\f$,
@@ -269,10 +269,10 @@ class alpine2: public synthetic {
 /**
  * The brad function comes from 'A Comparison of Gradient Methods for the
  * Solution of Nonlinear Parameter Estimation Problems'
- * (https://doi.org/10.1137/0707011), p170 Problem 1.
- * It has formula
+ * (https://doi.org/10.1137/0707011), and is a modified version of Problem 1,
+ * p170. We give it the formula
  * \f[
- * y(x) = \sum^15_{i=1}\left[
+ * f(x) = \sum^15_{i=1}\left[
  * \frac{y_i - x_1 - i}
  * {(16-i)\cdot x_2 + \min(i, 16-i)\cdot x_3}
  * \right]^2,
@@ -281,11 +281,125 @@ class alpine2: public synthetic {
  * 0.73, 0.96, 1.34, 2.10, 4.39]^T\f$. The three parameters are subject to
  * \f$-0.25 \le x_1 \le 0.25\f$ as well as \f$0.01 \le x_2, x_3 \le 2.5\f$.
  * The global minimum is located at \f$\mathbf{x}^* = (0.08241040, 1.133033,
- * 2.343697)$, with \f$(\mathbf{x}^*) = TODO \f$.
+ * 2.343697)$, with \f$(\mathbf{x}^*) = 0.00821488 \f$.
  */
 class brad: public synthetic {
     public:
         brad ();
+        double evaluate(inst::set x) override;
+};
+
+/**
+ * The bartels conn function has the formula
+ * \f[
+ * f(x) = \vert x_1^2 + x_2^2 + x_1x_2\vert +
+ * \vert \sin(x_1)\vert + \vert \cos(x_2)\vert,
+ * \f]
+ * subject to \f$-500 \le x_i \le 500\f$, with the global minimum located at
+ * \f$\mathbf{x}^* = (0,0)\f$, with \f$f(\mathbf{x}^*) = 1\f$.
+ */
+class bartels_conn: public synthetic {
+    public:
+        bartels_conn ();
+        double evaluate(inst::set x) override;
+};
+
+/**
+ * The beale conn function has the formula
+ * \f[
+ * \begin{align*}
+ * f(x) = &\bigg(1.5 - x_1 + x_1x_2\bigg)^2 + \bigg(2.25 - x_1 + x_1x_2^2\bigg)^2 \\
+ * &+\bigg(2.625 - x_1 + x_1x_2^2\bigg)^2,
+ * \end{align*}
+ * \f]
+ * subject to \f$-4.5 \le x_i \le 4.5\f$, with the global minimum located at
+ * \f$\mathbf{x}^* = (3,0.5)\f$, with \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class beale: public synthetic {
+    public:
+        beale ();
+        double evaluate(inst::set x) override;
+};
+
+/**
+ * The biggs_exp2 function has the formula
+ * \f[
+ * y(x) = \sum^{10}_{i=1} \left(e^{-0.1i \cdot x_1} - 5e^{-0.1i \cdot x_2}
+ * - e^{-0.1i} + 5e^{-i}
+ * \right)^2,
+ * \f]
+ * subject to \f$0 \le x_i \le 20\f$, with the global minimum located at
+ * \f$\mathbf{x}^* = (1,10)\f$, with \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class biggs_exp2: public synthetic {
+    public:
+        biggs_exp2 ();
+        double evaluate(inst::set x) override;
+};
+
+/**
+ * The biggs_exp3 function is a three-dimensional variation on the previous
+ * one, and has the formula
+ * \f[
+ * y(x) = \sum^{10}_{i=1} \left(e^{-0.1i \cdot x_1} - x_3e^{-0.1i \cdot x_2}
+ * - e^{-0.1i} + 5e^{-i}
+ * \right)^2,
+ * \f]
+ * subject to \f$0 \le x_i \le 20\f$, with the global minimum located at
+ * \f$\mathbf{x}^* = (1,10, 5)\f$, with \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class biggs_exp3: public synthetic {
+    public:
+        biggs_exp3 ();
+        double evaluate(inst::set x) override;
+};
+
+/**
+ * The biggs_exp4 function adds another parameter to the previous version to
+ * make it a 4-dimensional problem:
+ * \f[
+ * y(x) = \sum^{10}_{i=1} \left(x_3 e^{-0.1i \cdot x_1} - x_4e^{-0.1i \cdot x_2}
+ * - e^{-0.1i} + 5e^{-i}
+ * \right)^2,
+ * \f]
+ * subject to \f$0 \le x_i \le 20\f$, with the global minimum located at
+ * \f$\mathbf{x}^* = (1,10, 1, 5)\f$, with \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class biggs_exp4: public synthetic {
+    public:
+        biggs_exp4 ();
+        double evaluate(inst::set x) override;
+};
+
+/**
+ * The biggs_exp5 function is a five dimensional problem with the following formula:
+ * \f[
+ * y(x) = \sum^{11}_{i=1} \left(x_3 e^{-0.1i \cdot x_1} - x_4e^{-0.1i \cdot x_2}
+ * + 3 e^{-0.1 i \cdot x_5} e^{-0.1i} + 5e^{-i} - 3 e^{-0.4i}
+ * \right)^2,
+ * \f]
+ * subject to \f$0 \le x_i \le 20\f$, with the global minimum located at
+ * \f$\mathbf{x}^* = (1,10, 1, 5, 4)\f$, with \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class biggs_exp5: public synthetic {
+    public:
+        biggs_exp5 ();
+        double evaluate(inst::set x) override;
+};
+
+/**
+ * The biggs_exp6 function is the last of the series, with 6 parameters:
+ * \f[
+ * y(x) = \sum^{11}_{i=1} \left(x_3 e^{-0.1i \cdot x_1} - x_4e^{-0.1i \cdot x_2}
+ * + x6 e^{-0.1 i \cdot x_5} e^{-0.1i} + 5e^{-i} - 3 e^{-0.4i}
+ * \right)^2,
+ * \f]
+ * subject to \f$-20 \le x_i \le 20\f$, with the global minimum located at
+ * \f$\mathbf{x}^* = (1,10, 1, 5, 4, 3)\f$, with \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class biggs_exp6: public synthetic {
+    public:
+        biggs_exp6 ();
         double evaluate(inst::set x) override;
 };
 
