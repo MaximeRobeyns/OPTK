@@ -140,6 +140,19 @@ test_heap_concrete_types ()
     // There are no asserts in this function, but the address sanitiser will
     // warn of any memory leaks if the free_node function does not work
     // correctly.
+
+    inst::node *nroot = new inst::node("root");
+    for (int i = 0; i < 10; i++) {
+        nroot->add_item (new inst::dbl_val(std::to_string(i), (double)i*123));
+    }
+    for (int i = 0; i < 10; i++) {
+        double d1 = nroot->getdbl(i);
+        double d2 = nroot->getdbl(std::to_string(i));
+        assert (tutils::dbleq (d1, d2));
+        assert (tutils::dbleq (d1, (double) i*123));
+        assert (tutils::dbleq (d2, (double) i*123));
+    }
+    inst::free_node(nroot);
 }
 
 // test search space types ----------------------------------------------------

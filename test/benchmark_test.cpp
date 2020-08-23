@@ -23,38 +23,88 @@
 
 #include <benchmarks/synthetic.hpp>
 
-// We allow the following floating-point arithmetic error for synthetic
-// benchmark function evaluation.
-#define SYN_EPSILON std::numeric_limits<double>::epsilon() * 10;
+static int64_t
+ulps_distance(const double a, const double b)
+{
+    // Save work if the floats are equal.
+    // Also handles +0 == -0
+    if (a == b) return 0;
+
+    const auto max = std::numeric_limits<int64_t>::max();
+
+    // Max distance for NaN
+    if (std::isnan(a) || std::isnan(b)) return max;
+
+    // If one's infinite and they're not equal, max distance.
+    if (std::isinf(a) || std::isinf(b)) return max;
+
+    int64_t ia, ib;
+    memcpy(&ia, &a, sizeof(double));
+    memcpy(&ib, &b, sizeof(double));
+
+    // Don't compare differently-signed doubles
+    if ((ia < 0) != (ib < 0)) return max;
+
+    // Return the absolute value of the distance in ULPs.
+    int64_t distance = ia - ib;
+    if (distance < 0) distance = -distance;
+    return distance;
+}
 
 static bool
-syneq (double a, double b)
-{
-    return std::fabs(a - b) < SYN_EPSILON;
+nearly_equal(
+        double a, double b,
+        double fixedEpsilon = 1.e-10,
+        int ulpsEpsilon = 10
+) {
+    // Handle the near-zero case.
+    const double difference = fabs(a - b);
+    if (difference <= fixedEpsilon) return true;
+
+    return ulps_distance(a, b) <= ulpsEpsilon;
 }
 
 static void
 test_synthetic_benchmarks ()
 {
-    syn::ackley1 a1(5);
+    // ackley1
+    syn::ackley1 a1(10);
 
     assert (a1.get_name() == std::string("ackley1"));
-    sspace::sspace_t *tmp_space = a1.get_search_space();
+    sspace::sspace_t *tmp_space = a1.get_search_space ();
     u_int dims = a1.get_dims();
-    assert (dims == 5u);
+    assert (dims == 10u);
 
     // iterate throguh all 5 parameters.
     for (u_int i = 0; i < dims; i++) {
         sspace::param_t *tmp = tmp_space->at(i);
-        assert (tmp->get_type() == pt::uniform);
+        assert (tmp->get_type () == pt::uniform);
         sspace::uniform *tmp_uni = static_cast<sspace::uniform *>(tmp);
         assert (tutils::dbleq (tmp_uni->m_lower, -35));
         assert (tutils::dbleq (tmp_uni->m_upper, 35));
-        assert (tmp_uni->get_name() == std::to_string(i));
+        assert (tmp_uni->get_name () == std::to_string (i));
     }
 
-    double res = a1.evaluate(a1.get_opt_param());
-    assert (syneq (res, 0.));
+    double resa1 = a1.evaluate(a1.get_opt_param ());
+    assert (nearly_equal (resa1, 0.));
+
+    // ackley2
+    syn::ackley2 a2;
+    assert (a2.get_dims() == 2u);
+    double resa2 = a2.evaluate(a2.get_opt_param ());
+    assert (nearly_equal (resa2, -200));
+
+    // ackley3
+    syn::ackley3 a3;
+    assert (a3.get_dims() == 2u);
+    double resa3 = a3.evaluate(a3.get_opt_param ());
+    assert (nearly_equal (resa3, a3.get_opt()));
+
+    // adjiman
+    syn::adjiman am;
+    assert (am.get_dims() == 2u);
+    double resam = am.evaluate(am.get_opt_param ());
+    assert (nearly_equal (resam, am.get_opt(), 1.e-5));
 }
 
 void

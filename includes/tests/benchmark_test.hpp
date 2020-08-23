@@ -26,6 +26,9 @@
 #include <iostream>
 #include <limits>
 
+// TODO get rid of this
+#include <iostream>
+
 #include <optk/types.hpp>
 #include <tests/testutils.hpp>
 

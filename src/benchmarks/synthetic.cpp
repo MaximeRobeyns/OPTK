@@ -40,6 +40,10 @@ synthetic::synthetic (
     }
 }
 
+synthetic::synthetic (const std::string &n, u_int dims, double opt):
+    benchmark(n), m_dims(dims), m_opt(opt)
+{ }
+
 #define deltype(type, src) \
     { \
     type *tmp_type = static_cast<type *>(src); \
@@ -113,14 +117,14 @@ ackley1::ackley1 (int d) :
 
     inst::node *opt = new inst::node("ackley1 opt");
     for (int i = 0; i < d; i++)
-        opt->add_item (new inst::dbl_val(std::to_string(i), 0.0));
-    this->set_opt_param(opt);
+        opt->add_item (new inst::dbl_val(std::to_string (i), 0.));
+    this->set_opt_param (opt);
 }
 
 double
-ackley1::evaluate(inst::set x)
+ackley1::evaluate (inst::set x)
 {
-    validate_param_set(x);
+    validate_param_set (x);
 
     double e1 = 0., e2 = 0.;
     double rD = 1. / (double) m_dims;
@@ -131,5 +135,90 @@ ackley1::evaluate(inst::set x)
     return -20. * std::exp(-0.2 * std::sqrt(rD * e1))
         - std::exp(rD * e2) + 20. + M_E;
 };
+
+ackley2::ackley2 ():
+    synthetic ("ackley2", 2, -32, 32, -200)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+
+    inst::node *opt = new inst::node("ackley2 opt");
+    opt->add_item (new inst::dbl_val("0", 0.));
+    opt->add_item (new inst::dbl_val("1", 0.));
+    this->set_opt_param (opt);
+}
+
+double
+ackley2::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x12 = x->getdbl(0) * x->getdbl(0);
+    double x22 = x->getdbl(1) * x->getdbl(1);
+    return -200 * std::exp(-0.02 * std::sqrt (x12 + x22));
+}
+
+ackley3::ackley3 ():
+    synthetic ("ackley3", 2, -32, 32, 5.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+
+    inst::node *opt = new inst::node("ackley3 opt");
+    opt->add_item (new inst::dbl_val("0", 0.));
+    opt->add_item (new inst::dbl_val("1", 0.));
+    this->set_opt_param (opt);
+}
+
+double
+ackley3::evaluate (inst::set x)
+{
+    double x12 = std::pow(x->getdbl("0"), 2.);
+    double x22 = std::pow(x->getdbl("1"), 2.);
+    double e1 = -0.2 * std::sqrt(x12 + x22);
+    double e2 = std::cos(3 * x->getdbl("0")) + std::sin(3 * x->getdbl("1"));
+    return -200 * e1 + 5 * e2;
+}
+
+adjiman::adjiman ():
+    synthetic ("adjiman", 2, -2.02181)
+{
+    sspace::sspace_t *ss = this->get_search_space();
+    sspace::param_t *x1 = new sspace::uniform ("0", -1, 2);
+    sspace::param_t *x2 = new sspace::uniform ("0", -1, 1);
+    ss->push_back(x1);
+    ss->push_back(x2);
+
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node("ackley3 opt");
+    opt->add_item (new inst::dbl_val("0", 2.));
+    opt->add_item (new inst::dbl_val("1", 0.10578));
+    this->set_opt_param (opt);
+}
+
+double
+adjiman::evaluate (inst::set x)
+{
+    double x1 = x->getdbl(0);
+    double x2 = x->getdbl(1);
+    return std::cos(x1) * std::sin(x2) - (x1 / (x2*x2 + 1));
+}
 
 } // end namespace syn

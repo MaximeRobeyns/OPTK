@@ -24,7 +24,9 @@
 #define __SYNTHETIC_H_
 
 #include <cmath>
+#include <cstring>
 #include <stdexcept>
+#include <bits/stdint-intn.h>
 
 #include <optk/benchmark.hpp>
 #include <optk/types.hpp>
@@ -41,7 +43,8 @@ enum class properties: char {
     non_separable,
     scalable,
     non_scalable,
-    multimodal
+    multimodal,
+    unimodal
 };
 
 /**
@@ -73,6 +76,16 @@ class synthetic: public optk::benchmark {
                 double opt);
 
         /**
+         * A simpler base constructor for synthetic benchmarks which have more
+         * complicated search spaces which will be manually set in the derived
+         * class' constructor.
+         * @param n The name of the benchmark
+         * @param dims The number of dimensions of this benchmark
+         * @param opt The global minimum
+         */
+        synthetic (const std::string &n, u_int dims, double opt);
+
+        /**
          * This destructor frees the search space which was
          * automatically-generated in the constructor.
          */
@@ -96,6 +109,11 @@ class synthetic: public optk::benchmark {
          * Returns the known optimal parameter set.
          */
         inst::set get_opt_param () { return opt_params; }
+
+        /**
+         * Returns (one of) the known global minima.
+         */
+        double get_opt () { return m_opt; }
 
         /** Get the number of dimensions that this problem was instantiated
          * with; or the fixed dimension that the derived function can take. */
@@ -148,9 +166,10 @@ class synthetic_benchmark {
  *  - e^{D^{-1}\sum^D_{i=1}\cos(2\pi x_i)} + 20 + e,
  * \f]
  * with \f$D\f$ being the number of dimensions of the problem.
- * The global minima is located at the origin;
+ * The global minimum is located at the origin;
  * \f$\mathbf{x}^* = (0, \ldots, 0)\f$, with
- * \f$f(\mathbf{x^*}) = 0\f$.
+ * \f$f(\mathbf{x^*}) = 0\f$. The bounds are subject to
+ * \f$-35 \le x_i \le 35\f$.
  */
 class ackley1: public synthetic {
     public:
@@ -159,6 +178,58 @@ class ackley1: public synthetic {
         ackley1 (int d);
         double evaluate(inst::set x) override;
 };
+
+/**
+ * The ackley2 function has formula
+ * \f[
+ * f(x) = -20 e^{-0.02\sqrt{x_1^2 + x_2^2),
+ * \f]
+ * with only two parameters \f$x_1\f$ and \$fx_2\$f.
+ * The global minimum is located at the origin;
+ * \f$\mathbf{x}^* = (0, 0)\f$, with
+ * \f$f(\mathbf{x^*}) = -200\f$. The bounds are subject to
+ * \f$-32 \le x_i \le 32\f$.
+ */
+class ackley2: public synthetic {
+    public:
+        ackley2 ();
+        double evaluate(inst::set x) override;
+};
+
+/**
+ * The ackley3 function has formula
+ * \f[
+ * f(x) = 200 e^{-0.02\sqrt{x_1^2 + x_2^2}} + 52^{\cos(3x_1) + \sin(3x_2)},
+ * \f]
+ * with only two parameters \f$x_1\f$ and \$fx_2\$f.
+ * The global minimum is located at \f$\mathbf{x}^* = (0,0)\f$,
+ * with \f$f(\mathbf{x^*}) = 5\f$. The bounds are subject to
+ * \f$-32 \le x_i \le 32\f$.
+ */
+class ackley3: public synthetic {
+    public:
+        ackley3 ();
+        double evaluate(inst::set x) override;
+};
+
+/**
+ * The adjiman function has formula
+ * \f[
+ * f(x) = \cos(x_1)\sin(x_2) - \frac{x_1}{(x_2^2+1)},
+ * \f]
+ * with only two parameters \f$x_1\f$ and \$fx_2\$f, subject to
+ * \f$-1 \le x_1 \le 2\f$ and \f$-1 \le x_2 \le 1\f$. The global minimum is
+ * located on the boundary of the search space at
+ * \f$\mathbf{x}^* = (2, 0.10578)\f$, with minimum
+ * \$ff(\mathbf{x}^*) = -2.02181\f$.
+ */
+class adjiman: public synthetic {
+    public:
+        adjiman ();
+        double evaluate(inst::set x) override;
+};
+
+
 
 } // end namespace syn
 
