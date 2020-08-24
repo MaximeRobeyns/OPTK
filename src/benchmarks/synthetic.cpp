@@ -21,7 +21,7 @@
  */
 
 #include <benchmarks/synthetic.hpp>
-#include <cmath>
+#include <sys/types.h>
 
 /** This namespace contains all free functions and types relating to the
  * synthetic test functions. */
@@ -1382,6 +1382,8 @@ cube::cube ():
 double
 cube::evaluate (inst::set x)
 {
+    validate_param_set (x);
+
     double x1 = x->getdbl(0), x2 = x->getdbl(1);
     return 100. * std::pow (x2 - std::pow (x1, 3.), 2.) + std::pow (1 - x1, 2.);
 }
@@ -1406,6 +1408,8 @@ damavandi::damavandi ():
 double
 damavandi::evaluate (inst::set x)
 {
+    validate_param_set (x);
+
     double x1 = x->getdbl(0), x2 = x->getdbl(1);
     double t1 = M_PI * (x1 - 2), t2 = M_PI * (x2 - 2);
     double q1;
@@ -1447,6 +1451,7 @@ deb1::deb1 (int dims):
 double
 deb1::evaluate (inst::set x)
 {
+    validate_param_set (x);
 
     double res = 0.;
     double q = -1. / (double) m_dims;
@@ -1475,6 +1480,7 @@ deb2::deb2 (int dims):
 double
 deb2::evaluate (inst::set x)
 {
+    validate_param_set (x);
 
     double res = 0.;
     double q = -1. / (double) m_dims;
@@ -1486,5 +1492,239 @@ deb2::evaluate (inst::set x)
     return q * res;
 }
 
+deckkers_aarts::deckkers_aarts ():
+    synthetic ("deckkers aarts", 2, -20., 20., -24777.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("deckkers aarts opt");
+    opt->add_item (new inst::dbl_val ("0", 0.));
+    opt->add_item (new inst::dbl_val ("1", 15.));
+    this->set_opt_param (opt);
+}
+
+double
+deckkers_aarts::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    double x12 = std::pow (x1, 2.), x22 = std::pow (x2, 2.);
+
+    return std::pow (10., 5.) * x12 +
+        x22 -
+        std::pow (x12 + x22, 2.) +
+        std::pow (10, -5) * std::pow (x12 + x22, 4.);
+}
+
+devillers_glasser1::devillers_glasser1 ():
+    synthetic ("deVillers Glasser 1", 4, -500., 500., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("deVillers glasser opt");
+    opt->add_item (new inst::dbl_val ("0", 60.173));
+    opt->add_item (new inst::dbl_val ("1", 1.371));
+    opt->add_item (new inst::dbl_val ("2", 3.112));
+    opt->add_item (new inst::dbl_val ("3", 1.761));
+    this->set_opt_param (opt);
+}
+
+double
+devillers_glasser1::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    double x3 = x->getdbl(2), x4 = x->getdbl(3);
+
+    double res = 0.;
+    for (int i = 1; i <= 24; i++) {
+        double ti = 0.1 * ((double)i - 1.);
+        double yi = 60.137 *
+            std::pow (1.371, ti) *
+            std::sin (3.112 * ti + 1.761);
+        res += std::pow (
+                x1 *
+                std::pow (x2, ti) *
+                std::sin (x3 * ti + x4) -
+                yi,
+                2.);
+    }
+    return res;
+}
+
+devillers_glasser2::devillers_glasser2 ():
+    synthetic ("deVillers Glasser 2", 5, -500., 500., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("deVillers glasser opt");
+    opt->add_item (new inst::dbl_val ("0", 53.81));
+    opt->add_item (new inst::dbl_val ("1", 1.27));
+    opt->add_item (new inst::dbl_val ("2", 3.012));
+    opt->add_item (new inst::dbl_val ("3", 2.13));
+    opt->add_item (new inst::dbl_val ("4", 0.507));
+    this->set_opt_param (opt);
+}
+
+double
+devillers_glasser2::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1), x3 = x->getdbl(2);
+    double x4 = x->getdbl(3), x5 = x->getdbl(4);
+    double res = 0.;
+    for (int i = 1; i <= 16; i++) {
+        double ti = 0.1 *((double)i - 1.);
+        double yi = 53.81 *
+            std::pow (1.27, ti) *
+            std::tanh (3.012 * ti + std::sin(2.31 * ti)) *
+            std::cos (std::exp (0.507) * ti);
+        res += std::pow (
+                x1 *
+                std::pow (x2, ti) *
+                std::tanh (x3 * ti + std::sin (x4 * ti)) *
+                std::cos (std::exp (x5) * ti) -
+                yi,
+                2.);
+    }
+    return res;
+}
+
+dixon_price::dixon_price (int dims):
+    synthetic ("dixon price", dims, -10., 10., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::scalable,
+                properties::unimodal
+                }));
+
+    inst::node *opt = new inst::node ("dixon & price opt");
+    for (uint i = 1; i <= m_dims; i++) {
+        double v = std::pow (2., -(std::pow (2., i) - 2.)/(std::pow (2., i)));
+        opt->add_item (new inst::dbl_val (std::to_string (i-1), v));
+    }
+    this->set_opt_param (opt);
+}
+
+double
+dixon_price::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double res = std::pow (x->getdbl(0) - 1, 2.);
+    for (uint i = 2; i <= m_dims; i++) {
+        res += (double) i *
+            std::pow (
+                    2. * std::pow (x->getdbl(i-1), 2.) -
+                    x->getdbl(i-2),
+                    2.);
+    }
+    return res;
+}
+
+dolan::dolan ():
+    synthetic ("dolan", 5, -100., 100., -529.8714387324576)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("dolan opt");
+    opt->add_item (new inst::dbl_val ("0", 98.964258312237106));
+    opt->add_item (new inst::dbl_val ("1", 100.));
+    opt->add_item (new inst::dbl_val ("2", 100.));
+    opt->add_item (new inst::dbl_val ("3", 99.224323672554704));
+    opt->add_item (new inst::dbl_val ("4", -0.249987527588471));
+    this->set_opt_param (opt);
+}
+
+double
+dolan::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1), x3 = x->getdbl(2);
+    double x4 = x->getdbl(3), x5 = x->getdbl(4);
+
+    return (x1 + 1.7 * x2) * std::sin (x1) -
+        1.5 * x3 -
+        0.1 * x4 * std::cos (x5 + x4 - x1) +
+        0.2 * std::pow (x5, 2.) - x2 - 1;
+}
+
+deceptive::deceptive (int dims):
+    synthetic ("deceptive", dims, 0., 1., -1.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::non_differentiable,
+                properties::non_separable,
+                properties::scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("deceptive opt");
+    double delta = 0.8 / (double) m_dims;
+    for (uint i = 0; i < m_dims; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), 0.1 + delta * (double)i));
+    this->set_opt_param (opt);
+}
+
+double
+deceptive::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    inst::set opt = this->get_opt_param ();
+
+    double g = 0.;
+    for (uint i = 0; i < m_dims; i++) {
+        double ai = opt->getdbl(i);
+        double xi = x->getdbl(i);
+
+        if (xi <= 0) {
+            g += xi;
+        } else if (xi < 0.8 * ai) {
+            g += -xi / ai + 0.8;
+        } else if (xi < ai) {
+            g += 5 * xi / ai - 4;
+        } else if (xi < (1 + 4 * ai) / 5.) {
+            g += 5 * (xi - ai) / (ai - 1.) + 1.;
+        } else if (xi <= 1.) {
+            g += (xi - 1.) / (1. - ai) + 0.8;
+        } else {
+            g += xi - 1.;
+        }
+    }
+    return -std::pow((1./(double)m_dims) * g, 2.);
+}
 
 } // end namespace syn

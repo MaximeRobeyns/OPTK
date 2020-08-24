@@ -295,6 +295,36 @@ test_synthetic_benchmarks ()
     syn::deb2 deb2(10);
     double resdeb2 = deb2.evaluate(deb2.get_opt_param ());
     assert (nearly_equal (resdeb2, deb2.get_opt()));
+
+    // deckkers_aarts
+    syn::deckkers_aarts da;
+    double resda = da.evaluate(da.get_opt_param ());
+    assert (nearly_equal (resda, da.get_opt(), 6));
+
+    // devillers_glasser1
+    syn::devillers_glasser1 dvg1;
+    double resdvg1 = dvg1.evaluate(dvg1.get_opt_param ());
+    assert (nearly_equal (resdvg1, dvg1.get_opt(), 1e-1));
+
+    // devillers_glasser 2
+    syn::devillers_glasser2 dvg2;
+    double resdvg2 = dvg2.evaluate(dvg2.get_opt_param ());
+    assert (nearly_equal (resdvg2, dvg2.get_opt(), 2));
+
+    // dixon & price (10)
+    syn::dixon_price dxp (10);
+    double resdxp = dxp.evaluate(dxp.get_opt_param ());
+    assert (nearly_equal (resdxp, dxp.get_opt()));
+
+    // dolan
+    syn::dolan dln;
+    double resdln = dln.evaluate(dln.get_opt_param ());
+    assert (nearly_equal (resdln, dln.get_opt()));
+
+    // deceptive (10)
+    syn::deceptive dec (10);
+    double resdec = dec.evaluate(dec.get_opt_param ());
+    assert (nearly_equal (resdec, dec.get_opt()));
 }
 
 void

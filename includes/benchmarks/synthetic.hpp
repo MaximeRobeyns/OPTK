@@ -904,6 +904,129 @@ class deb2: public synthetic {
         double evaluate (inst::set x) override;
 };
 
+/**
+ * The Deckkers-Aarts function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = 15^5x_1^2 + x_2^2 - \big(x_1^2 + x_2^2\big)^2 +
+ * 10^{-5}\big(x_1^2 + x_2^2\big)^4,
+ * \f]
+ * subject to \f$-20 \le x_i \le 20\f$. The two global minima are located at
+ * \f$\mathbf{x}^* (0, \pm15)\f$, with value \f$f(\mathbf{x}^*) = -24777\f$.
+ *
+ * FIXME resolve floating-point arithmetic precision errors in this function's
+ * implementation.
+ */
+class deckkers_aarts: public synthetic {
+    public:
+        deckkers_aarts ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The deVillers Glasser 1 function has the following formula, adapted from :
+ * 'A Continuation Approach for Solving Large-Residual Nonlinear Least Squares
+ * Problems', p1145 <https://epubs.siam.org/doi/abs/10.1137/0908058>
+ * \f[
+ * f(\mathbf{x}) = \sum^{24}_{i=1}\left( x_1x_2^{0.1(i-1)}\sin(0.1x_3(i-1) + x_4) - y_i
+ * \right)^2,
+ * \f]
+ * where
+ * \f[
+ * y_i = 60.137 \cdot 1.371^{0.1 (i-1)} \sin(3.112 \cdot 0.1(i-1) + 1.761).
+ * \f]
+ * This is subject to the bounds \f$-500 \le x_i \le 500\f$, with the global
+ * minimum arising at \f$\mathbf{x}^* = (60.173, 1.371, 3.112, 1.761)\f$, with
+ * a value of \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class devillers_glasser1: public synthetic {
+    public:
+        devillers_glasser1 ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The deVillers Glasser 2 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \sum^{16}_{i=1}\left(x_1x_2^{0.1(i-1)}\tanh\big(x_4\cdot 0.1(i-1) + \sin(x_4 \cdot 0.1(i-1))\big)\cos\big(0.1(i-1)e^{x_5} - y_i \right)^2,
+ * \f]
+ * where
+ * \f[
+ * y_i = 53.81 \cdot 1.27^{0.1(i-1)}\tanh\big(3.012 \cdot 0.1(i-1) + \sin(2.13
+ * \cdot 0.1(i-1)\big) \cos\big(e^{0.507} \cdot 0.1(i-1)\big).
+ * \f]
+ * It is subject to \f$-500 \le x_i \le 500\f$, and has a global minimum at
+ * \f$\mathbf{x}^* = (53.81, 1.27, 3.012, 2.13, 0.507)\f$ with value
+ * \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class devillers_glasser2: public synthetic {
+    public:
+        devillers_glasser2 ();
+        /**
+         * FIXME improve floating point calculation accuracy for function
+         * evaluations
+         */
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Dixon & Price function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = (x_1-1)^2 + \sum^D_{i=2} i(2x_i^2-x_{i-1})^2,
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$. The global minimum is found at the
+ * input vector with elements \f$\mathbf{x}_i^* = 2^{\frac{2^i-2}{2^i}}\f$,
+ * with value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class dixon_price: public synthetic {
+    public:
+        dixon_price (int dims);
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Dolan function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \left(x_1+1.7x_2\right)\sin\left(x_1\right)-1.5x_3-0.1x_4
+ * \cos\left(x_5+x_4-x_1\right)+0.2x_5^2-x_2-1
+ * \f]
+ * subject to \f$-100 \le x_i \le 100\f$. There is a global minimum at
+ * \f$\mathbf{x}^* =
+ * (98.964258312237106,100,100,99.224323672554704,−0.249987527588471)\f$
+ * with value \f$f(\mathbf{x}^*) = −529.8714387324576\f$.
+ */
+class dolan: public synthetic {
+    public:
+        dolan ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The (type III) Complex Deceptive Problem is given by
+ * \f[
+ * f(\mathbf{x}) = -\left[ \frac{1}{n}\sum^n_{i=1}g_i(x_i)\right]^\beta,
+ * \f]
+ * where \f$\beta\f$ is a non-linearity factor. Here we take \f$\beta = 2\f$.
+ * Further
+ * \f[
+ * g_i(x_i) = \begin{cases}
+ * x_i &\text{if } x_i < 0\\
+ * -\frac{x_i}{\alpha_i} + \frac{4}{5} &\text{if } 0\le x_i \le \frac{4}{5}\alpha_i \\
+ *  \frac{5x_i}{\alpha_i} - 4 &\text{if } \frac{4}{5}\alpha_i \le x_i < \alpha_i \\
+ *  \frac{5(x_i - \alpha_i)}{\alpha_i - 1}+1 &\text{if } \alpha_i \le x+o <
+ *  \frac{1 + 4\alpha_i}{5} \\
+ *  \frac{x_i - 1}{1-\alpha_i} + \frac{4}{5} &\text{otherwise.}
+ * \end{cases}
+ * \f]
+ * For each dimension, we select \f$\alpha_i \in (0, 1)\f$. The parameters are
+ * constrained such that \f$0\le x_i \le 1\f$. The global minimum arises at
+ * \f$\mathbf{x}_i^* = \alpha_i\f$, with value \f%f(\mathbf{x}^*) = -1.\f$.
+ */
+class deceptive: public synthetic {
+    public:
+        deceptive (int dims);
+        double evaluate (inst::set x) override;
+};
+
 
 } // end namespace syn
 
