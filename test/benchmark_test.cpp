@@ -325,6 +325,51 @@ test_synthetic_benchmarks ()
     syn::deceptive dec (10);
     double resdec = dec.evaluate(dec.get_opt_param ());
     assert (nearly_equal (resdec, dec.get_opt()));
+
+    // deflected corrugated spring
+    syn::deceptive dcs (10);
+    double resdcs = dcs.evaluate(dcs.get_opt_param ());
+    assert (nearly_equal (resdcs, dcs.get_opt()));
+
+    // drop wave
+    syn::drop_wave dw;
+    double resdw = dw.evaluate(dw.get_opt_param ());
+    assert (nearly_equal (resdw, dw.get_opt()));
+
+    // easom wave
+    syn::easom esm;
+    double resesm = esm.evaluate(esm.get_opt_param ());
+    assert (nearly_equal (resesm, esm.get_opt()));
+
+    // egg create
+    syn::egg_crate egc;
+    double resegc = egc.evaluate(egc.get_opt_param ());
+    assert (nearly_equal (resegc, egc.get_opt()));
+
+    // egg holder
+    syn::egg_holder egh;
+    double resegh = egh.evaluate(egh.get_opt_param ());
+    assert (nearly_equal (resegh, egh.get_opt(), 1e-9));
+
+    // el_attar_vidyasagar_dutta
+    syn::el_attar_vidyasagar_dutta elatt;
+    double reselatt = elatt.evaluate(elatt.get_opt_param ());
+    assert (nearly_equal (reselatt, elatt.get_opt(), 1e-9));
+
+    // exponential
+    syn::exponential exp (10);
+    double resexp = exp.evaluate(exp.get_opt_param ());
+    assert (nearly_equal (resexp, exp.get_opt()));
+
+    // exp2
+    syn::exp2 exp2;
+    double resexp2 = exp2.evaluate(exp2.get_opt_param ());
+    assert (nearly_equal (resexp2, exp2.get_opt()));
+
+    // exp2
+    syn::franke fnk;
+    double resfnk = fnk.evaluate(fnk.get_opt_param ());
+    assert (nearly_equal (resfnk, fnk.get_opt(), 1e-1));
 }
 
 void

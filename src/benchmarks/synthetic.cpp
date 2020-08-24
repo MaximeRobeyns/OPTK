@@ -1727,4 +1727,272 @@ deceptive::evaluate (inst::set x)
     return -std::pow((1./(double)m_dims) * g, 2.);
 }
 
+deflected_corrugated_spring::deflected_corrugated_spring (int dims) :
+    synthetic ("deflected corrugated spring", dims, 0., 10., -1.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("deflected corrugated spring opt");
+    for (uint i = 0; i < m_dims; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), 5.));
+    this->set_opt_param (opt);
+}
+
+double
+deflected_corrugated_spring::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double sum = 0.;
+    for (uint i = 0; i < m_dims; i++)
+        sum += std::pow (x->getdbl(i) - 5, 2.);
+    return 0.1 * sum - std::cos (5. * std::sqrt (sum));
+}
+
+drop_wave::drop_wave ():
+    synthetic ("drop wave", 2, -5.12, 5.12, -1.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("drop wave opt");
+    opt->add_item (new inst::dbl_val ("0", 0.));
+    opt->add_item (new inst::dbl_val ("1", 0.));
+    this->set_opt_param (opt);
+}
+
+double
+drop_wave::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    double d1 = std::pow (x1, 2.) + std::pow (x2, 2.);
+    double n = 1 + std::cos (12. * std::sqrt (d1));
+    double d = 0.5 * d1 + 2.;
+    return - n/d;
+}
+
+easom::easom ():
+    synthetic ("easom", 2, -10., 10., -1.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("easom opt");
+    opt->add_item (new inst::dbl_val ("0", M_PI));
+    opt->add_item (new inst::dbl_val ("1", M_PI));
+    this->set_opt_param (opt);
+}
+
+double
+easom::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    return -1. *
+        std::cos (x1) *
+        std::cos (x2) *
+        std::exp (
+                -std::pow (x1 - M_PI, 2.) -
+                -std::pow (x2 - M_PI, 2.)
+                );
+}
+
+egg_crate::egg_crate ():
+    synthetic ("egg crate", 2, -5., 5., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::separable,
+                properties::non_scalable,
+                }));
+
+    inst::node *opt = new inst::node ("egg create opt");
+    opt->add_item (new inst::dbl_val ("0", 0.));
+    opt->add_item (new inst::dbl_val ("1", 0.));
+    this->set_opt_param (opt);
+}
+
+double
+egg_crate::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    return std::pow (x1, 2.) +
+           std::pow (x2, 2.) +
+           25 * (
+                   std::pow (std::sin (x1), 2.) +
+                   std::pow (std::sin (x2), 2.)
+                );
+}
+
+egg_holder::egg_holder ():
+    synthetic ("egg holder", 2, -512., 512., -959.640662711)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::separable,
+                properties::non_scalable,
+                }));
+
+    inst::node *opt = new inst::node ("egg create opt");
+    opt->add_item (new inst::dbl_val ("0", 512.));
+    opt->add_item (new inst::dbl_val ("1", 404.2319));
+    this->set_opt_param (opt);
+}
+
+double
+egg_holder::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    return -(x2 + 47) *
+           std::sin (std::sqrt (std::fabs (x2 + x1/2. + 47.))) -
+           x1 * std::sin (std::sqrt (std::fabs (x1 - (x2 + 47))));
+}
+
+el_attar_vidyasagar_dutta::el_attar_vidyasagar_dutta ():
+    synthetic ("el_attar_vidyasagar_dutta", 2, -100., 100., 1.712780354)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+
+    inst::node *opt = new inst::node ("el_attar_vidyasagar_dutta opt");
+    opt->add_item (new inst::dbl_val ("0", 3.40918683));
+    opt->add_item (new inst::dbl_val ("1", -2.17143304));
+    this->set_opt_param (opt);
+}
+
+double
+el_attar_vidyasagar_dutta::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    return std::pow (std::pow (x1, 2.) + x2 - 10, 2.) +
+           std::pow (x1 + std::pow (x2, 2.) - 7 , 2.) +
+           std::pow (std::pow (x1, 2.) + std::pow (x2, 3.) - 1 , 2.);
+}
+
+exponential::exponential (int dims):
+    synthetic ("exponential", dims, -1., 1., -1.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("exponential opt");
+    for (uint i = 0; i < m_dims; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), 0));
+    this->set_opt_param (opt);
+}
+
+double
+exponential::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double sum = 0.;
+    for (uint i = 0; i < m_dims; i++) {
+        sum += std::pow (x->getdbl(i), 2.);
+    }
+    return -std::exp (-0.5 * sum);
+}
+
+exp2::exp2 ():
+    synthetic ("exp2", 2, 0., 20., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+
+    inst::node *opt = new inst::node ("exp2 opt");
+    opt->add_item (new inst::dbl_val ("0", 1.));
+    opt->add_item (new inst::dbl_val ("1", 10.));
+    this->set_opt_param (opt);
+}
+
+double
+exp2::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    double res = 0.;
+    for (int i = 0; i < 10; i++) {
+        res += std::pow (
+                std::exp ((-i * x1)/10.) -
+                5. * std::exp ((-i * x2)/10.) -
+                std::exp (-i / 10.) +
+                5 * std::exp (-i)
+                , 2.);
+    }
+    return res;
+}
+
+franke::franke ():
+    synthetic ("franke", 2, 0., 1., 0.00111528244)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+
+    inst::node *opt = new inst::node ("franke opt");
+    opt->add_item (new inst::dbl_val ("0", 0.45571037432));
+    opt->add_item (new inst::dbl_val ("1", 0.78419067287));
+    this->set_opt_param (opt);
+}
+
+double
+franke::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    return
+        0.75 * std::exp (-std::pow (9*x1-2, 2.)/4. - std::pow (9*x2-2, 2.)/4.) +
+        0.75 * std::exp (-std::pow (9*x1+1, 2.)/49. - (9*x2+1) / 10.) +
+        0.5 * std::exp (-std::pow (9*x1-7, 2.)/4. - std::pow (9*x2-3, 2.)/4.) -
+        0.2 * std::exp (-std::pow(9*x1-4, 2.) - std::pow (8*x2-7, 2.));
+}
+
 } // end namespace syn

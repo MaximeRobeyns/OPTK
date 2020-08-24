@@ -1027,6 +1027,152 @@ class deceptive: public synthetic {
         double evaluate (inst::set x) override;
 };
 
+/**
+ * The deflected corrugated spring benchmark has the following formula:
+ * \f[
+ * f(\mathbf{x}) = 0.1 \sum^n_{i=1}(x_i - \alpha)^2 - \cos \left( k
+ * \sqrt{\sum^n_{i=1}(x_i - \alpha)^2}\right),
+ * \f]
+ * where \f$\alpha = k = 5\f$, and the parameters are subject to \f$0 \le x_i
+ * \le 2\alpha\f$. The global minimum is located at \f$x^*_i = \alpha\f$ with a
+ * value of \f$f(\mathbf{x}^*) = -1\f$.
+ */
+class deflected_corrugated_spring: public synthetic {
+    public:
+        deflected_corrugated_spring (int dims);
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Drop Wave function has the following equation:
+ * \f[
+ * f(\mathbf{x}) = -\frac{1 + \cos\left(12\sqrt{x_1^2 + x_2^2}\right)}
+ * {\frac{1}{2}\left(x_1^2+x_2^2\right) + 2},
+ * \f]
+ * where \f$-5.12 \le x_i \le 5.12\f$, with the global minimum located at the
+ * origin \f$\mathbf{x}^* = (0, 0)\f$ with value \f$f(\mathbf{x}^*) = -1\f$
+ */
+class drop_wave: public synthetic {
+    public:
+        drop_wave ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Easom function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = -\cos(x_1)\cos(x_2)\exp\left[-(x_1 - \pi)^2 - (x_2 -
+ * \pi)^2\right],
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$, with the global minimum located at
+ * \f$\mathbf{x}^* = (\pi, \pi)\f$ with value \f$f(\mathbf{x}^*) = -1\f$.
+ */
+class easom: public synthetic {
+    public:
+        easom ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Egg Crate function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = x_1^2 + x_2^2 + 25\big(\sin^2(x_1) + \sin^2(x_2)\big),
+ * \f]
+ * subject to \f$-5\le x_i \le 5\f$, with the global minimum located at the
+ * origin: \f$\mathbf{x}^* = (0,0)\f$, with value \f$(\mathbf{x}^*) = 0\f$.
+ */
+class egg_crate: public synthetic {
+    public:
+        egg_crate ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Egg Holder function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \sum^{n-1}_{i=1}\left(-(x_{i+1} + 47)\sin \bigg(\sqrt{\vert
+ * x_{i+1} + 0.5x_i + 47\vert}\bigg) - x_1\sin \bigg(\sqrt{\vertx_i - (x_{i+1}
+ * + 47\vert}\bigg)\right),
+ * \f]
+ * subject to \f$-512 \le x_i \le 512\f$ with the global minimum located at
+ * \f$\mathbf{x}^* = (512, 404.2319)\f$, with value \f$f(\mathbf{x}^*) \approx
+ * -959.640662720850742\f$.
+ */
+class egg_holder: public synthetic {
+    public:
+        egg_holder ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The El-Attar-Vidyasagar-Dutta function is the following formula:
+ * \f[
+ * f(\mathbf{x}) = (x_1^2 + x_2 - 10)^2 + (x_1 + x_2^2 - 7)^2 + (x_1^2 + x_2^3
+ * - 1)^2,
+ * \f]
+ * and is subject to \f$-100 \le x_i \le 100\f$, with the global minimum at
+ * \f$\mathbf{x}^* = (3.40918683, -2.17143304)\f$ with a value of
+ * \f$f(\mathbf{x}^* = 1.712780354\f$.
+ */
+class el_attar_vidyasagar_dutta: public synthetic {
+    public:
+        el_attar_vidyasagar_dutta ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The exponential benchmark function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = -\exp \left(-0.5\sum^n_{i=1}x_i^2\right),
+ * \f]
+ * subject to \f$-1 \le x_i \le 1\f$, with the global minimum located at the
+ * origin; \f$\mathbf{x}^* = (0, \ldots, 0)\f$, with value \f$f(\mathbf{x}^*) =
+ * -1\f$.
+ */
+class exponential: public synthetic {
+    public:
+        exponential (int dims);
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The exp2 function has the following formula
+ * \f[
+ * f(\mathbf{x}) = \sum^9_{i=0}\left(
+ * \exp\bigg(\frac{-ix_1}{10}\bigg) - 5\exp\bigg(\frac{-ix_2}{10}\bigg)
+ * - \exp\bigg(\frac{-i}{10}\bigg) + 5\exp(-i)
+ * \right)^2,
+ * \f]
+ * with domain \f$0\le x_i \le 20\f$ and a global minimum located at
+ * \f$\mathbf{x}^* = (1,10)\f$ with value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class exp2: public synthetic {
+    public:
+        exp2 ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Franke function has the following equation:
+ * \f[
+ * f(\mathbf{x}) = \frac{3}{4} \exp \left( -\frac{(9x_1 - 2)^2}{4} -
+ * \frac{(9x_2 - 2)^2}{4}\right) +
+ * \frac{3}{4} \exp \left(-\frac{(9x_1 + 1)^2}{49} - \frac{(9x_2 + 1)^2}{10}
+ * \right) +
+ * \frac{1}{2} \exp \left(-\frac{(9x_1 - 7)^2}{4} - \frac{(9x_2 - 3)^2}{4}
+ * \right) -
+ * \frac{1}{5} \exp \left(-(9x_1 - 4)^2 - (9x_2 - 7)^2\right),
+ * \f]
+ * subject to \f$0 \le x_i \le 1\f$ with a global minimum at \f$\mathbf{x}^* =
+ * (0.45571037432, 0.78419067287)\f$ with value \f$f(\mathbf{x}^*) =
+ * 0.00111528244\f$.
+ */
+class franke: public synthetic {
+    public:
+        franke ();
+        double evaluate (inst::set x) override;
+};
+
 
 } // end namespace syn
 
