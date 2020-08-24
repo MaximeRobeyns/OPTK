@@ -765,12 +765,145 @@ class colville: public synthetic {
  * The parameters are subject to \f$-100 \le x_i \le 100\f$ for \f$i =
  * 1,2,3,4\f$, with the global minimum occurring at \f$\mathbf{x}^* = (0,
  * \cdots, 0)\f$ with value \f$f(\mathbf{x}^*) = 0\f$.
+ *
+ * FIXME Do not use in rankings; fix the floating-point inaccuracies before
+ * including in benchmark suite.
  */
 class corana: public synthetic {
     public:
         corana ();
         double evaluate (inst::set x) override;
 };
+
+/**
+ * The cosine mixture function (2-dimensional) has the following formula:
+ * \f[
+ * f(\mathbf{x}) = -0.1 \sum^n_{i=1}\cos(5\pi x_i) - \sum^n_{i=1}x_i^2
+ * \f]
+ * subject to \f$-1 \le x_i \le 1\f$ and \f$n=2\f$. The global minimum is
+ * locatd at \f$\mathbf{x}^* = (0, 0)\f$ and has value \f$f(\mathbf{x}^*) =
+ * 0.2\f$.
+ */
+class cosine_mixture2: public synthetic {
+    public:
+        cosine_mixture2 ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The cosine mixture function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = -0.1 \sum^n_{i=1}\cos(5\pi x_i) - \sum^n_{i=1}x_i^2
+ * \f]
+ * subject to \f$-1 \le x_i \le 1\f$. The global minimum is
+ * locatd at \f$\mathbf{x}^* = (0, \ldots, 0)\f$ and has value \f$f(\mathbf{x}^*) =
+ * \frac{1}{n}\f$.
+ */
+class cosine_mixture: public synthetic {
+    public:
+        cosine_mixture (int dims);
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Cross-in-tray function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = -0.0001\bigg(\vert \sin(x_1)\sin(x_2)
+ * e^{\vert 100 - \sqrt{x_1^2 + x_2^2}/\pi\vert}\vert + 1 \bigg)^{0.1},
+ * \f]
+ * subject to
+ * \f$-10\le x_i \le 10\f$. There are four global minima, located at
+ * \f$\mathbf{x}^* = (\pm 1.349406685353340, \pm 1.349406608602084)\f$ with
+ * value \f$f(\mathbf{x}^*) = -2.062611870822739\f$.
+ */
+class cross_in_tray: public synthetic {
+    public:
+        cross_in_tray ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Csendes function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \sum^D_{i=1} x_i^6\left(2 + \sin\frac{1}{x_i}\right),
+ * \f]
+ * subject to \f$-1\le x_i \le 1\f$. The global minimum is located at
+ * \f$\mathbf{x}^* = (0, \ldots, 0)\f$ with value \f$f(\mathbf{x}^*) = 0\f$.
+ * Note that to avoid evaluating \f$\lim_{x_i\to 0}\sin\left(\frac{1}{x_i}\right)\f$, we
+ * add the smallest representable floating point value above \c 1.0 to
+ * \f$x_i\f$.
+ */
+class csendes: public synthetic {
+    public:
+        csendes (int dims);
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Cube function has the formula:
+ * \f[
+ * f(\mathbf{x}) = 100 (x_2 - x_1^3)^2 + (1 - x_1)^2,
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$, with the global minimum located at
+ * \f$\mathbf{x}^* = (1, 1)\f$, with value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class cube: public synthetic {
+    public:
+        cube ();
+        double evaluate (inst::set x) override;
+};
+
+
+/**
+ * The Damavandi function has the following formula:
+ * \f[
+ * \begin{align*}
+ * f(\mathbf{x}) =
+ * &\bigg(1 - \left\vert \frac{\sin\big(\pi(x_1 - 2)\big) \cdot
+ * \sin\big(\pi(x_2 - 2)\big)}{\pi^2(x_1-2)(x_2-2)\right\vert^5\bigg) //
+ * &\bigg(2 + (x_1-7)^2 + 2(x_2 - 7)^2\bigg),
+ * \end{align*}
+ * \f]
+ * subject to \f$0\le x_i \le 14\f$, with the global minimum located at
+ * \f$\mathbf{x}^* = (2,2)\f$ with value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class damavandi: public synthetic {
+    public:
+        damavandi ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Deb 1 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \frac{1}{D}\sum^D_{i=1}\sin^6(5\pi x_i),
+ * \f]
+ * subject to \f$-1 \le x_i \le 1\f$. There are \f$5^Df$ global minima which
+ * are evenly spaced. One such minimum is found at \f$\mathbf{x}^* = (0.3,
+ * \ldots, 0.3)\f$ with value \f$f(\mathbf{x}^*) = -1\f$.
+ */
+class deb1: public synthetic {
+    public:
+        deb1 (int dims);
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Deb 2 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = -\frac{1}{D}\sum^D_{i=1} \sin^6\left(5\pi
+ * \big(x_i^{3/4} - 0.05 \big)\right),
+ * \f]
+ * subject to \f$-1 \le x_i \le 1\f$. There are \f$5^Df$ global minima which
+ * are evenly spaced. One such minimum is found at \f$\mathbf{x}^* = (0.0796993926887,
+ * \ldots, 0.0796993926887)\f$ with value \f$f(\mathbf{x}^*) = -1\f$.
+ */
+class deb2: public synthetic {
+    public:
+        deb2 (int dims);
+        double evaluate (inst::set x) override;
+};
+
 
 } // end namespace syn
 

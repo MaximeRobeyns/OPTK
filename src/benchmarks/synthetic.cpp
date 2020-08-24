@@ -1249,10 +1249,8 @@ corana::evaluate (inst::set x)
     for (int i = 0; i < 4; i++) {
         double sgnx = xs[i] < 0. ? -1. : 1.;
         double z = 0.2 * std::floor (std::fabs (xs[i] / 0.2) + 0.49999) * sgnx;
-        std::cout << "zi: " << z << std::endl;
         double sgnz = z < 0. ? -1. : 1.;
         if (std::fabs (xs[i] - z) < 0.05) {
-            std::cout << "here: " << std::pow(z - 0.05 * sgnz, 2.) << std::endl;
             res += 0.15 * ds[i] * std::pow(z - 0.05 * sgnz, 2.);
         } else {
             res += ds[i] * std::pow (xs[i], 2.);
@@ -1260,5 +1258,233 @@ corana::evaluate (inst::set x)
     }
     return res;
 }
+
+cosine_mixture::cosine_mixture (int dims):
+    synthetic ("cosine mixture", dims, -1., 1., 0.)
+{
+    this->update_opt ((double)dims / 10.);
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::non_differentiable,
+                properties::separable,
+                properties::scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("cosine mixture opt");
+    for (int i = 0; i < dims; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), 0.));
+    this->set_opt_param (opt);
+}
+
+double
+cosine_mixture::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double xs[m_dims];
+    for (u_int i = 0; i < m_dims; i++)
+        xs[i] = x->getdbl(i);
+
+    double s1 = 0., s2 = 0.;
+    for (u_int i = 0; i < m_dims; i++) {
+        s1 += std::cos (5. * M_PI * xs[i]);
+        s2 += std::pow (xs[i], 2.);
+    }
+    return 0.1 * s1 - s2;
+}
+
+cross_in_tray::cross_in_tray ():
+    synthetic ("cross in tray", 2, -10., 10., -2.062611870822739)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("cross in tray opt");
+    opt->add_item (new inst::dbl_val ("0", 1.349406685353340));
+    opt->add_item (new inst::dbl_val ("1", 1.349406685353340));
+    this->set_opt_param (opt);
+}
+
+double
+cross_in_tray::evaluate (inst::set x)
+{
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    double e1 = std::exp (std::fabs (
+                100 -
+                std::sqrt (std::pow (x1, 2.) + std::pow (x2, 2.)) / M_PI
+                ));
+    return -0.0001 * std::pow ((
+            std::fabs (
+                std::sin (x1) * std::sin(x2) * e1
+                )
+            + 1
+            ), 0.1);
+}
+
+csendes::csendes (int dims):
+    synthetic ("csendes", dims, -1., 1., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::separable,
+                properties::scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("csendes opt");
+    for (int i = 0; i < dims; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), 0.));
+    this->set_opt_param (opt);
+}
+
+double
+csendes::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double res = 0.;
+    for (u_int i = 0; i < m_dims; i++) {
+        double x_tmp = x->getdbl(i);
+        double x_tmp6 = std::pow (x_tmp, 6.);
+        res += x_tmp6 * (2 +
+                std::sin (1. /
+                        (x_tmp + std::numeric_limits<float>::epsilon())
+                    )
+                );
+    }
+    return res;
+}
+
+cube::cube ():
+    synthetic ("cube", 2, -10., 10., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+
+    inst::node *opt = new inst::node ("cube opt");
+    opt->add_item (new inst::dbl_val ("0", 1.));
+    opt->add_item (new inst::dbl_val ("1", 1.));
+    this->set_opt_param (opt);
+}
+
+double
+cube::evaluate (inst::set x)
+{
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    return 100. * std::pow (x2 - std::pow (x1, 3.), 2.) + std::pow (1 - x1, 2.);
+}
+
+damavandi::damavandi ():
+    synthetic ("damavandi", 2, 0., 14., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("damavandi opt");
+    opt->add_item (new inst::dbl_val ("0", 2.));
+    opt->add_item (new inst::dbl_val ("1", 2.));
+    this->set_opt_param (opt);
+}
+
+double
+damavandi::evaluate (inst::set x)
+{
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    double t1 = M_PI * (x1 - 2), t2 = M_PI * (x2 - 2);
+    double q1;
+    if (std::fabs (x1-2) > 1e-3 && std::fabs(x2-2) > 1e-3) {
+        double n1 = std::sin (t1) * std::sin (t2);
+        double d1 = t1 * t2;
+        q1 = n1 / d1;
+    } else {
+        double x_t = std::fabs (x1 - 2) <= 1e-3 ?
+            1. - std::pow (t1, 2.) / 6. :
+            std::sin (t1) / t1;
+        double y_t = std::fabs (x2 - 2) <= 1e-3 ?
+            1. - std::pow (t2, 2.) / 6. :
+            std::sin (t2) / t2;
+        q1 = x_t * y_t;
+    }
+    double f1 = 1. - std::pow (std::fabs (q1), 5.);
+    double f2 = 2. + std::pow (x1 - 7, 2.) + 2 * std::pow (x2 - 7, 2.);
+    return f1 * f2;
+}
+
+deb1::deb1 (int dims):
+    synthetic ("deb 1", dims, -1., 1., -1.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::separable,
+                properties::scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("deb 1 opt");
+    for (u_int i = 0; i < m_dims; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), 0.3));
+    this->set_opt_param (opt);
+}
+
+double
+deb1::evaluate (inst::set x)
+{
+
+    double res = 0.;
+    double q = -1. / (double) m_dims;
+    for (u_int i = 0; i < m_dims; i++)
+        res += std::pow (std::sin (5. * M_PI * x->getdbl(i)), 6.);
+    return q * res;
+}
+
+deb2::deb2 (int dims):
+    synthetic ("deb 2", dims, -1., 1., -1.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::separable,
+                properties::scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("deb 1 opt");
+    for (u_int i = 0; i < m_dims; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), 0.0796993926887));
+    this->set_opt_param (opt);
+}
+
+double
+deb2::evaluate (inst::set x)
+{
+
+    double res = 0.;
+    double q = -1. / (double) m_dims;
+    for (u_int i = 0; i < m_dims; i++)
+        res += std::pow (std::sin (
+                    5 * M_PI * (std::pow (x->getdbl(i), 0.75) - 0.05)
+                    ),
+                6.);
+    return q * res;
+}
+
 
 } // end namespace syn

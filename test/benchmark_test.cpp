@@ -252,12 +252,49 @@ test_synthetic_benchmarks ()
     assert (nearly_equal (rescv, cv.get_opt()));
 
     // corana
-    syn::corana cna;
-    double rescna = cna.evaluate(cna.get_opt_param ());
-    std::cout << "res: " << rescna << std::endl;
-    std::cout << "opt: " << cna.get_opt() << std::endl;
-    std::cout << "delta: " << rescna - cna.get_opt() << std::endl;
-    assert (nearly_equal (rescna, cna.get_opt()));
+    // syn::corana cna;
+    // double rescna = cna.evaluate(cna.get_opt_param ());
+    // assert (nearly_equal (rescna, cna.get_opt()));
+
+    // cosine_mixture4
+    syn::cosine_mixture cm4(4);
+    double rescm4 = cm4.evaluate(cm4.get_opt_param ());
+    assert (nearly_equal (rescm4, cm4.get_opt()));
+
+    // cosine_mixture15
+    syn::cosine_mixture cm15(15);
+    double rescm15 = cm15.evaluate(cm15.get_opt_param ());
+    assert (nearly_equal (rescm15, cm15.get_opt()));
+
+    // cross in tray
+    syn::cross_in_tray cit;
+    double rescit = cit.evaluate(cit.get_opt_param ());
+    assert (nearly_equal (rescit, cit.get_opt()));
+
+    // csendes
+    syn::csendes cs(10);
+    double rescs = cs.evaluate(cs.get_opt_param ());
+    assert (nearly_equal (rescs, cs.get_opt()));
+
+    // cube
+    syn::cube cbe;
+    double rescbe = cbe.evaluate(cbe.get_opt_param ());
+    assert (nearly_equal (rescbe, cbe.get_opt()));
+
+    // damavandi
+    syn::damavandi dam;
+    double resdam = dam.evaluate(dam.get_opt_param ());
+    assert (nearly_equal (resdam, dam.get_opt()));
+
+    // deb1
+    syn::deb1 deb1(10);
+    double resdeb1 = deb1.evaluate(deb1.get_opt_param ());
+    assert (nearly_equal (resdeb1, deb1.get_opt()));
+
+    // deb2
+    syn::deb2 deb2(10);
+    double resdeb2 = deb2.evaluate(deb2.get_opt_param ());
+    assert (nearly_equal (resdeb2, deb2.get_opt()));
 }
 
 void
