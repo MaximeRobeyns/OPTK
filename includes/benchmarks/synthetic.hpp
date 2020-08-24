@@ -28,6 +28,9 @@
 #include <stdexcept>
 #include <bits/stdint-intn.h>
 
+// TODO get rid of this
+#include <iostream>
+
 #include <optk/benchmark.hpp>
 #include <optk/types.hpp>
 #include <sys/types.h>
@@ -39,9 +42,11 @@ namespace syn {
  */
 enum class properties: char {
     continuous,
+    discontinuous,
     differentiable,
     non_differentiable,
     separable,
+    partially_separable,
     non_separable,
     scalable,
     non_scalable,
@@ -400,7 +405,371 @@ class biggs_exp5: public synthetic {
 class biggs_exp6: public synthetic {
     public:
         biggs_exp6 ();
-        double evaluate(inst::set x) override;
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The bird function has the following formula:
+ * \f[
+ * f(X) = \sin(x_1)e^{\bigg(1-\cos(x_2)\bigg)^2} +
+ * \cos(x_2)e^{(1-\sin(x_1))^2} +
+ * (x_1 - x_2)^2,
+ * \f]
+ * subject to the bounds \f$-2\pi \le x_i \le 2\pi\f$, with the global minimum
+ * located at either \f$\mathbf{x}^* = (4.70104,
+ * 3.15294),(-1.58214,-3.13024)\f$, with a value of \f$f(\mathbf{x}^*) =
+ * -106.764537\f$.
+ */
+class bird: public synthetic {
+    public:
+        bird ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * This is the first in the series of Bohachevsky function benchmarks. This one
+ * has formula
+ * \f[
+ * f(X) = x_1^2 + 2x_2^2 - 0.2\cos(3\pi x_1) - 0.4\cos(4\pi x_2) + 0.7,
+ * \f]
+ * subject to the bounds \f$-100 \le x_i \le 100\f$, with the global minimum
+ * located at \f$\mathbf{x}^* = (0,0)\f$ with value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class bohachevsky1: public synthetic {
+    public:
+        bohachevsky1 ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * This non-separable variation on the first Bohachevsky function has the
+ * formula:
+ * \f[
+ * f(X) = x_1^2 + 2x_2^2 - 0.3\cos(3\pi x_1) \cdot 0.4\cos(4\pi x_2) + 0.3,
+ * \f]
+ * subject to the bounds \f$-100 \le x_i \le 100\f$, with the global minimum
+ * located at \f$\mathbf{x}^* = (0,0)\f$ with value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class bohachevsky2: public synthetic {
+    public:
+        bohachevsky2 ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The final variation on the Bohachevsky function has the following formula:
+ * \f[
+ * f(X) = x_1^2 + 2x_2^2 - 0.3\cos(3\pi x_1 + 4\pi x2) + 0.3,
+ * \f]
+ * subject to the bounds \f$-100 \le x_i \le 100\f$, with the global minimum
+ * located at \f$\mathbf{x}^* = (0,0)\f$ with value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class bohachevsky3: public synthetic {
+    public:
+        bohachevsky3 ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Booth function has the formula:
+ * \f[
+ * f(\mathbf{x}) = (x_! + 2x_2 - 7)^2 + (2x_1 + x_2 - 5)^2,
+ * \f]
+ * subject to the bounds \f$-10 \le x_i \le 10\f$, with the global minimum
+ * located at \f$\mathbf{x}^* = (1,3)\f$, with \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class booth: public synthetic {
+    public:
+        booth ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Box-Betts Quadratic Sum function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \sum^{D-1}_{i=0} g(x_i)^2,
+ * \f]
+ * where
+ * \f[
+ * g(x_i) = e^{-0.1(i+1)x_1} - e^{-0.1(i+1)x_2} -
+ * e^{\left[(-0.1(i+1))-e^{-(i+1)}\right]x_3},
+ * \f]
+ * subject to \f$0.9 \le x_1 \le 1.2\f$, \f$9 \le x_2 \le 11.2\f$ and
+ * \f$0.9 \le x_3 \le 1.2\f$. The global minimum is located at
+ * \f$\mathbf{x}^*(1, 10, 1)\f$ where \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class box_betts: public synthetic {
+    public:
+        box_betts ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Branin RCOS function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \left(x_2 - \frac{5.1x_1^2}{4\pi^2} + \frac{5x_1}{\pi}
+ * - 6\right)^2 + 10 \left(1 - \frac{1}{8\pi}\right)\cos(x_1) + 10.
+ * \f]
+ * The parameters are in the domain \f$-5 \le \le 10\f$ and \f$0 \le x_2 \le
+ * 15\f$, and it has three global minima at \f$\mathbf{x}^* = \{(-\pi, 12.275),
+ * (\pi, 2.275), (3\pi, 2.425)\}\f$, with value \f$f(\mathbf{x}^*) =
+ * 0.3978873\f$.
+ */
+class branin1: public synthetic {
+    public:
+        branin1 ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Branin RCOS 2 function has the following formula
+ * \f[
+ * f(\mathbf{x}) = \left(x_2 - \frac{5.1x_1^2}{4\pi^2} + \frac{5x_1}{\pi} -
+ * 6\right)^2 + 10\left(1 - \frac{1}{8\pi}\right)\cos(x_1)\cos(x_2)
+ * \ln (x_1^2 + x_2^2 + 1) + 10.
+ * \f]
+ * The domain is \f$-5 \le x_i \le 15\f$ for both variables, and the global
+ * minimum is located at \f$\mathbf{x}^* = (-3.2, 12.53)\f$ with value
+ * \f$f(\mathbf{x}^*) = 5.559037\f$.
+ */
+class branin2: public synthetic {
+    public:
+        branin2 ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Brent function has the following formula
+ * \f[
+ * f(\mathbf{x}) = (x_1 + 10)^2 + (x_2 + 10)^2 + e^{-x_1^2-x_2^2},
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$, with the global minimum located at
+ * \f$\mathbf{x}^* = (-10,-10)\f$ with value \f$f(\mathbf{x}^* = 0\f$.
+ */
+class brent: public synthetic {
+    public:
+        brent ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Brown funcion has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \sum^{n-1}_{i=1}(x_i^2)^{x^2_{i+1}+1} +
+ * (x_{i+1}^2)^{x_i^2+1},
+ * \f]
+ * subject to \f$-1 \le x_i \le 4\f$. The global minimum is located at
+ * \f$\mathbf{x}^* = (0, \ldots, 0)\f$, with value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class brown: public synthetic {
+    public:
+        brown (int dims);
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The bukin 2 function has the formula:
+ * \f[
+ * f(\mathbf{x}) = 100 (x_2 - 0.01x_1^2 + 1) + 0.01(x_1+10)^2,
+ * \f]
+ * subject to \f$-15 \le x_1 \le -5\f$ and \f$-3 \le x_2 \le 3\f$. The global
+ * minimum is located at \f$\mathbf{x}^* = (-10, 0)\f$ with value
+ * \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class bukin2: public synthetic {
+    public:
+        bukin2 ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The bukin 4 function has the formula:
+ * \f[
+ * f(\mathbf{x}) = 100 x_2^2 + 0.01 \vert x_1 + 10 \vert,
+ * \f]
+ * subject to \f$-15 \le x_1 \le -5\f$ and \f$-3 \le x_2 \le 3\f$. The global
+ * minimum is located at \f$\mathbf{x}^* = (-10, 0)\f$ with value
+ * \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class bukin4: public synthetic {
+    public:
+        bukin4 ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The bukin 6 function has the formula:
+ * \f[
+ * f(\mathbf{x}) =  100 \sqrt{\vert x_2 -0.01x_2^2\vert} +
+ * 0.01\vert x_1 + 10 \vert,
+ * \f]
+ * subject to \f$-15 \le x_1 \le -5\f$ and \f$-3 \le x_2 \le 3\f$. The global
+ * minimum is located at \f$\mathbf{x}^* = (-10, 0)\f$ with value
+ * \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class bukin6: public synthetic {
+    public:
+        bukin6 ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The three-hump camel function has the formula:
+ * \f[
+ * f(\mathbf{x}) = 2x_1^2 - 1.05x_1^4 + x_1^6/6 + x_1x_2 + x_2^2,
+ * \f]
+ * subject to \f$-5 \le x_i \le 5\f$, with the global minimum located at
+ * \f$\mathbf{x}^* = (0,0)\f$ with value \f$f(\mathbf{x}^*) = 0\f%.
+ */
+class camel3: public synthetic {
+    public:
+        camel3 ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The six-hump camel function has the formula:
+ * \f[
+ * f(\mathbf{x}) = \bigg(4 - 2.1 x_1^2 + \frac{x_1^4}{3}\bigg)x_1^2 +
+ * x_1x_2 + (4x_2^2 - 4)x_2^2,
+ * \f]
+ * subject to \f$-5 \le x_i \le 5\f$, with two global minimum located at
+ * \f$\mathbf{x}^* = \{(0.08984201368301331, -0.7126564032704135),
+ * (-0.08984201368301331, 0.7126564032704135)\}\f$ with value
+ * \f$f(\mathbf{x}^*) = -1.031628\f%.
+ */
+class camel6: public synthetic {
+    public:
+        camel6 ();
+        double evaluate (inst::set x) override;
+};
+
+// We omit the chen* functions on the basis that they are difficult to
+// calculate leading to floating-point errors. When we are given control over
+// the experimental design, we can constrain our optimisations to values which
+// are easily represented by floating-point values; henc ethese benchmarks can
+// be considered somewhat unrealistic.
+
+/**
+ * The Chichinadze function has the following formula
+ * \f[
+ * f(\mathbf{x}) = x_1^2 - 12x_1 + 11 + 10\cos(\pi x_1/2) + 8\sin(5\pi x_1/2) -
+ * (1/5)^{1/2}\exp\bigg(-0.5(x_2 - 0.5)^2\bigg),
+ * \f]
+ * subject to \f$-30 \le x_i \le 30\f$, with two global minimum located at
+ * \f$\mathbf{x}^* = (6.189866586965680, 0.5)\f$ with value
+ * \f$f(\mathbf{x}^*) = -42.94438701899098\f%.
+ */
+class chichinadze: public synthetic {
+    public:
+        chichinadze ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Chung Reynolds functions has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \left(\sum^D_{i=1}x_i^2\right)^2,
+ * \f]
+ * subject to \f$-100 \le x_i \le 100\f$, with the global minimum located at
+ * \f$\mathbf{x}^* = (0, \ldots, 0)\f$ with value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class chung_reynolds: public synthetic {
+    public:
+        chung_reynolds (int dims);
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Cola function is a 17-dimensional function given by
+ * \f[
+ * f(\mathbf{x}, \mathbf{y}) = \sum_{j<i}\left(r_{i,j} - d_{i,j}\right)^2,
+ * \f]
+ * where
+ * \f[
+ * x_1 = y_1 = y_2 = 0,\ x_2 = u_1,\ x_i = u_{2(i-2)},\ y_i = u_{2(i-2)+1},
+ * \f]
+ * that is; \f$x_i\f$ is 0 for \f$i = 1\f$ and then is equal to all the even indicies of
+ * the input parameter vector, similarly \f$y_i\f$ is equal to 0 for the first
+ * two elements, and then the odd-indexed elements of the input vector
+ * thereafter.
+ * Further, \f$r_{i,j}\f$ is given by
+ * \f[
+ * r_{i,j} = \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2},
+ * \f]
+ * and \f$d\f$ is a symmetric matrix given by:
+ * \f[
+ * \mathbf{d} = d_{i,j} =
+ * \begin{bmatrix}
+ * 1.27 \\
+ * 1.69 & 1.43 \\
+ * 2.04 & 2.35 & 2.43 \\
+ * 3.09 & 3.18 & 3.26 & 2.85 \\
+ * 3.20 & 3.22 & 3.27 & 2.88 & 1.55 \\
+ * 2.86 & 2.56 & 2.58 & 2.59 & 3.12 & 3.06 \\
+ * 3.17 & 3.18 & 3.18 & 3.12 & 1.31 & 1.64 & 3.00 \\
+ * 3.21 & 3.18 & 3.18 & 3.17 & 1.70 & 1.36 & 2.95 & 1.32 \\
+ * 2.38 & 2.31 & 2.42 & 1.94 & 2.85 & 2.81 & 2.56 & 2.91 & 2.97
+ * \end{bmatrix}.
+ * \f]
+ * The parameters of the above are subject to \f$0 \le u_1 \le 4\f$, \f$-4 \le
+ * u_i \le 4\f$, \f$i = 2, 3, \cdots, n\f$ where \f$n = 17\f$. The global
+ * minima occurs at \f$u_i^* = (0.651906, 1.30194, 0.099242, −0.883791,
+ * −0.8796, 0.204651, −3.28414, 0.851188, −3.46245, 2.53245, −0.895246,
+ * 1.40992, −3.07367, 1.96257, −2.97872, −0.807849, −1.68978)\f$, with a vaue
+ * of \f$11.7464\f$.
+ */
+class cola: public synthetic {
+    public:
+        cola ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The colville function has the following formula:
+ * \f[
+ * \begin{align*}
+ * f(\mathbf{x}) = &100(x_1 - x_2^2)^2 + (1 - x_1)^2 + \\
+ * &90(x_4 - x_3^2)^2 + (1 - x_3)^2 + \\
+ * 10.1((x_2 - 1)^2 + (x_4-1)^2) + \\
+ * 19.8 (x_2 - 1)(x_4-1),
+ * \end{align*}
+ * subject to the bounds \f$-10 \le x_i \le 10\f$ with the global minimum
+ * located at \f$\mathbf{x}^* = (1, \ldots, 1)\f$ with value \f$f(\mathbf{x}^*)
+ * = 0\f$. \f]
+ */
+class colville: public synthetic {
+    public:
+        colville ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * Corana's parabola function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \sum^n_{i=1}
+ * \begin{cases}
+ * 0.15d_i \bigg(z_i - 0.05 \text{sign} (z_i)\bigg)^2 &\text{if } \vert x_i - z_i\vert < 0.05 \\
+ * d_ix_i^2 &\text{otherwise},
+ * \end{cases}
+ * \f]
+ * where
+ * \f[
+ * \begin{align*}
+ * z_i &= 0.2 \left\lfloor \left\vert \frac{x_i}{s_i}\right\vert + 0.49999
+ * \right\rfloor \text{sign}(x_i), \\
+ * s_i &= 0.2, \\
+ * d_i &= [1, 1000, 10, 100].
+ * \end{align*}
+ * \f]
+ * The parameters are subject to \f$-100 \le x_i \le 100\f$ for \f$i =
+ * 1,2,3,4\f$, with the global minimum occurring at \f$\mathbf{x}^* = (0,
+ * \cdots, 0)\f$ with value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class corana: public synthetic {
+    public:
+        corana ();
+        double evaluate (inst::set x) override;
 };
 
 } // end namespace syn

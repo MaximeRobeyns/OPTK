@@ -155,6 +155,109 @@ test_synthetic_benchmarks ()
     syn::biggs_exp6 bx6;
     double resbx6 = bx6.evaluate(bx6.get_opt_param ());
     assert (nearly_equal (resbx6, bx6.get_opt()));
+
+    // bird
+    syn::bird brd;
+    double resbrd = brd.evaluate(brd.get_opt_param ());
+    assert (nearly_equal (resbrd, brd.get_opt(), 1e-6));
+
+    // bohachevsky1
+    syn::bohachevsky1 bchy1;
+    double resbchy1 = bchy1.evaluate(bchy1.get_opt_param ());
+    assert (nearly_equal (resbchy1, bchy1.get_opt()));
+
+    // bohachevsky2
+    syn::bohachevsky2 bchy2;
+    double resbchy2 = bchy2.evaluate(bchy2.get_opt_param ());
+    assert (nearly_equal (resbchy2, bchy2.get_opt()));
+
+    // bohachevsky3
+    syn::bohachevsky3 bchy3;
+    double resbchy3 = bchy3.evaluate(bchy3.get_opt_param ());
+    assert (nearly_equal (resbchy3, bchy3.get_opt()));
+
+    // booth
+    syn::booth booth;
+    double resbooth = booth.evaluate(booth.get_opt_param ());
+    assert (nearly_equal (resbooth, booth.get_opt()));
+
+    // Box-Betts Quadratic Sum Function
+    syn::box_betts bb;
+    double resbb = bb.evaluate(bb.get_opt_param ());
+    assert (nearly_equal (resbb, bb.get_opt()));
+
+    // branin1
+    syn::branin1 br1;
+    double resbr1 = br1.evaluate(br1.get_opt_param ());
+    assert (nearly_equal (resbr1, br1.get_opt()));
+
+    // branin2
+    syn::branin2 br2;
+    double resbr2 = br2.evaluate(br2.get_opt_param ());
+    assert (nearly_equal (resbr2, br2.get_opt(), 1e-6));
+
+    // brent
+    syn::brent br;
+    double resbr = br.evaluate(br.get_opt_param ());
+    assert (nearly_equal (resbr, br.get_opt()));
+
+    // brown(10)
+    syn::brown brn(10);
+    double resbrn = brn.evaluate(brn.get_opt_param ());
+    assert (nearly_equal (resbrn, brn.get_opt()));
+
+    // bukin2
+    syn::bukin2 bk2;
+    double resbk2 = bk2.evaluate(bk2.get_opt_param ());
+    assert (nearly_equal (resbk2, bk2.get_opt()));
+
+    // bukin4
+    syn::bukin4 bk4;
+    double resbk4 = bk4.evaluate(bk4.get_opt_param ());
+    assert (nearly_equal (resbk4, bk4.get_opt()));
+
+    // bukin6
+    syn::bukin6 bk6;
+    double resbk6 = bk6.evaluate(bk6.get_opt_param ());
+    assert (nearly_equal (resbk6, bk6.get_opt()));
+
+    // camel3
+    syn::camel3 c3;
+    double resc3 = c3.evaluate(c3.get_opt_param ());
+    assert (nearly_equal (resc3, c3.get_opt()));
+
+    // camel6
+    syn::camel6 c6;
+    double resc6 = c6.evaluate(c6.get_opt_param ());
+    assert (nearly_equal (resc6, c6.get_opt(), 1e-6));
+
+    // chen bird
+    syn::chichinadze cz;
+    double rescz = cz.evaluate(cz.get_opt_param ());
+    assert (nearly_equal (rescz, cz.get_opt()));
+
+    // chung reynolds (10)
+    syn::chung_reynolds cr(10);
+    double rescr = cr.evaluate(cr.get_opt_param ());
+    assert (nearly_equal (rescr, cr.get_opt()));
+
+    // cola
+    syn::cola cla;
+    double rescla = cla.evaluate(cla.get_opt_param ());
+    assert (nearly_equal (rescla, cla.get_opt(), 1e-5));
+
+    // colville
+    syn::colville cv;
+    double rescv = cv.evaluate(cv.get_opt_param ());
+    assert (nearly_equal (rescv, cv.get_opt()));
+
+    // corana
+    syn::corana cna;
+    double rescna = cna.evaluate(cna.get_opt_param ());
+    std::cout << "res: " << rescna << std::endl;
+    std::cout << "opt: " << cna.get_opt() << std::endl;
+    std::cout << "delta: " << rescna - cna.get_opt() << std::endl;
+    assert (nearly_equal (rescna, cna.get_opt()));
 }
 
 void

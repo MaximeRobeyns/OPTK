@@ -581,4 +581,684 @@ biggs_exp6::evaluate (inst::set x)
     return res;
 }
 
+bird::bird ():
+    synthetic ("bird", 2, -2 * M_PI, 2 * M_PI, -106.764537)
+{
+    this->set_properties (std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    // multimodal; this is not unique
+    inst::node *opt = new inst::node ("bird opt");
+    opt->add_item (new inst::dbl_val ("0", 4.70104));
+    opt->add_item (new inst::dbl_val ("1", 3.15294));
+    this->set_opt_param (opt);
+}
+
+double
+bird::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    double e1 = std::exp (std::pow (1 - std::cos (x2), 2.));
+    double e2 = std::exp (std::pow (1 - std::sin (x1), 2.));
+    return std::sin (x1) * e1 + std::cos (x2) * e2 + std::pow (x1 - x2, 2.);
+}
+
+bohachevsky1::bohachevsky1 ():
+    synthetic ("bohachevsky1", 2, -100., 100., 0.)
+{
+    this->set_properties (std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("bohachevsky1 opt");
+    opt->add_item (new inst::dbl_val ("0", 0.));
+    opt->add_item (new inst::dbl_val ("1", 0.));
+    this->set_opt_param (opt);
+}
+
+double
+bohachevsky1::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    return std::pow (x1, 2.) + 2 * std::pow (x2, 2.)
+        - 0.3 * std::cos (3 * M_PI * x1)
+        - 0.4 * std::cos (4 * M_PI * x2)
+        + 0.7;
+}
+
+bohachevsky2::bohachevsky2 ():
+    synthetic ("bohachevsky2", 2, -100., 100., 0.)
+{
+    this->set_properties (std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("bohachevsky2 opt");
+    opt->add_item (new inst::dbl_val ("0", 0.));
+    opt->add_item (new inst::dbl_val ("1", 0.));
+    this->set_opt_param (opt);
+}
+
+double
+bohachevsky2::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    return std::pow (x1, 2.) + 2 * std::pow (x2, 2.)
+        - 0.3 * std::cos (3 * M_PI * x1) * std::cos (4 * M_PI * x2)
+        + 0.3;
+}
+
+bohachevsky3::bohachevsky3 ():
+    synthetic ("bohachevsky3", 2, -100., 100., 0.)
+{
+    this->set_properties (std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("bohachevsky3 opt");
+    opt->add_item (new inst::dbl_val ("0", 0.));
+    opt->add_item (new inst::dbl_val ("1", 0.));
+    this->set_opt_param (opt);
+}
+
+double
+bohachevsky3::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    return std::pow (x1, 2.) + 2 * std::pow (x2, 2.)
+        - 0.3 * std::cos (3 * M_PI * x1 + 4 * M_PI * x2)
+        + 0.3;
+}
+
+booth::booth ():
+    synthetic ("booth", 2, -10., 10., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+    inst::node *opt = new inst::node ("booth opt");
+    opt->add_item (new inst::dbl_val ("0", 1.));
+    opt->add_item (new inst::dbl_val ("1", 3.));
+    this->set_opt_param (opt);
+}
+
+double
+booth::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    return std::pow (x1 + 2 * x2 - 7, 2.) +
+        std::pow (2 * x1 + x2 - 5, 2.);
+}
+
+box_betts::box_betts ():
+    synthetic ("box betts", 3, 0.)
+{
+    sspace::sspace_t *ss = this->get_search_space ();
+    sspace::param_t *x1 = new sspace::uniform ("0", 0.9, 1.2);
+    sspace::param_t *x2 = new sspace::uniform ("1", 9, 11.2);
+    sspace::param_t *x3 = new sspace::uniform ("2", 0.9, 1.2);
+    ss->push_back(x1);
+    ss->push_back(x2);
+    ss->push_back(x3);
+
+    this->set_properties (std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("box betts opt");
+    opt->add_item (new inst::dbl_val ("0", 1.));
+    opt->add_item (new inst::dbl_val ("1", 10.));
+    opt->add_item (new inst::dbl_val ("2", 1.));
+    this->set_opt_param (opt);
+}
+
+static double
+box_betts_g(int i, double x1, double x2, double x3)
+{
+    double e1 = std::exp (-0.1 * (i) * x1);
+    double e2 = -std::exp (-0.1 * (i) * x2);
+    double e3 = - (std::exp (-0.1 * i) - std::exp (-i)) * x3;
+    return std::pow (e1 + e2 + e3, 2.);
+}
+
+double
+box_betts::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1), x3 = x->getdbl(2);
+    double ret = 0.;
+    for (int i = 2; i < 13; i++) {
+        ret += box_betts_g (i, x1, x2, x3);
+    }
+    return ret;
+}
+
+branin1::branin1 ():
+    synthetic("branin1", 2, 0.39788735772973816)
+{
+    sspace::sspace_t *ss = this->get_search_space ();
+    sspace::param_t *x1 = new sspace::uniform ("0", -5., 10.);
+    sspace::param_t *x2 = new sspace::uniform ("1", 0., 15.);
+    ss->push_back (x1);
+    ss->push_back (x2);
+
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("branin1 opt");
+    opt->add_item (new inst::dbl_val ("0", -M_PI));
+    opt->add_item (new inst::dbl_val ("1", 12.275));
+    this->set_opt_param (opt);
+}
+
+double
+branin1::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    return std::pow (x2 -
+                (5.1 / (4. * std::pow (M_PI, 2.))) * std::pow (x1, 2.) +
+                5. * x1 / M_PI - 6
+                , 2.) +
+                10. * (1. - 1./(8*M_PI)) * std::cos (x1)
+                + 10;
+}
+
+branin2::branin2 ():
+    synthetic("branin2", 2, -5., 15., 5.559037)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("branin2 opt");
+    opt->add_item (new inst::dbl_val ("0", -3.2));
+    opt->add_item (new inst::dbl_val ("1", 12.53));
+    this->set_opt_param (opt);
+}
+
+double
+branin2::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    double x12 = std::pow (x1, 2.), x22 = std::pow (x2, 2.);
+    return std::pow (x2 -
+                     (5.1 / (4 * std::pow (M_PI, 2.))) *
+                     x12 + 5 * x1 / M_PI -
+                     6, 2.) +
+            10 * (1. - 1. / (8 * M_PI)) *
+            std::cos (x1) * std::cos (x2) +
+            std::log (x12 + x22 + 1) +
+            10;
+}
+
+brent::brent ():
+    synthetic ("brent", 2, -10., 10., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+
+    inst::node *opt = new inst::node ("brent opt");
+    opt->add_item (new inst::dbl_val ("0", -10.));
+    opt->add_item (new inst::dbl_val ("1", -10.));
+    this->set_opt_param (opt);
+}
+
+double
+brent::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    double e1 = std::exp (-std::pow (x1, 2.) - std::pow (x2, 2.));
+    return std::pow(x1 + 10, 2.) + std::pow (x2 + 10, 2.) + e1;
+}
+
+brown::brown (int dims):
+    synthetic ("brown", dims, -1., 4., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::scalable,
+                properties::unimodal
+                }));
+
+    inst::node *opt = new inst::node ("brent opt");
+    for (int i = 0; i < dims; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), 0.));
+    this->set_opt_param (opt);
+}
+
+double
+brown::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double ret = 0.;
+    for (u_int i = 0; i < m_dims-1; i++) {
+        double xi2 = std::pow (x->getdbl(i), 2.);
+        double xii2 = std::pow (x->getdbl(i+1), 2.);
+        ret += std::pow (xi2, xii2 + 1) + std::pow (xii2, xi2 + 1);
+    }
+    return ret;
+}
+
+bukin2::bukin2 ():
+    synthetic ("bukin2", 2, 0.)
+{
+    sspace::sspace_t *ss = this->get_search_space ();
+    sspace::param_t *x1 = new sspace::uniform ("0", -15., -5.);
+    sspace::param_t *x2 = new sspace::uniform ("1", -3., 3.);
+    ss->push_back (x1);
+    ss->push_back (x2);
+
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("bukin2 opt");
+    opt->add_item (new inst::dbl_val ("0", -10.));
+    opt->add_item (new inst::dbl_val ("1", 0.));
+    this->set_opt_param (opt);
+}
+
+double
+bukin2::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    return 100 * (x2 - 0.01 * std::pow (x1, 2.) + 1.) +
+        0.01 * std::pow(x1 + 10, 2.);
+}
+
+bukin4::bukin4 ():
+    synthetic ("bukin4", 2, 0.)
+{
+    sspace::sspace_t *ss = this->get_search_space ();
+    sspace::param_t *x1 = new sspace::uniform ("0", -15., -5.);
+    sspace::param_t *x2 = new sspace::uniform ("1", -3., 3.);
+    ss->push_back (x1);
+    ss->push_back (x2);
+
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::non_differentiable,
+                properties::separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("bukin4 opt");
+    opt->add_item (new inst::dbl_val ("0", -10.));
+    opt->add_item (new inst::dbl_val ("1", 0.));
+    this->set_opt_param (opt);
+}
+
+double
+bukin4::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x22 = std::pow (x->getdbl(1), 2.);
+    return 100 * x22 + 0.01 * std::fabs (x1 + 10);
+}
+
+bukin6::bukin6 ():
+    synthetic ("bukin6", 2, 0.)
+{
+    sspace::sspace_t *ss = this->get_search_space ();
+    sspace::param_t *x1 = new sspace::uniform ("0", -15., -5.);
+    sspace::param_t *x2 = new sspace::uniform ("1", -3., 3.);
+    ss->push_back (x1);
+    ss->push_back (x2);
+
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::non_differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("bukin6 opt");
+    opt->add_item (new inst::dbl_val ("0", -10.));
+    opt->add_item (new inst::dbl_val ("1", 1.));
+    this->set_opt_param (opt);
+}
+
+double
+bukin6::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    return 100 * std::sqrt (std::fabs (x2 - 0.01 * std::pow (x1, 2.))) +
+            0.01 * std::fabs (x1 + 10);
+}
+
+camel3::camel3 ():
+    synthetic ("camel3", 2, -5., 5., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("camel3 opt");
+    opt->add_item (new inst::dbl_val ("0", 0.));
+    opt->add_item (new inst::dbl_val ("1", 0.));
+    this->set_opt_param (opt);
+}
+
+double
+camel3::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    return 2 * std::pow (x1, 2.) -
+           1.05 * std::pow (x1, 4.) +
+           std::pow (x1, 6.)/6. +
+           x1 * x2 +
+           std::pow (x2, 2.);
+}
+
+camel6::camel6 ():
+    synthetic ("camel6", 2, -5., 5., -1.031628)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("camel6 opt");
+    opt->add_item (new inst::dbl_val ("0", 0.08984201368301331));
+    opt->add_item (new inst::dbl_val ("1", -0.7126564032704135));
+    this->set_opt_param (opt);
+}
+
+double
+camel6::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    return (4 - 2.1 * std::pow (x1, 2.) +
+        std::pow (x1, 4.) / 3.) * std::pow (x1, 2.) +
+        x1 * x2 +
+        (4 * std::pow (x2, 2.) - 4) * std::pow (x2, 2.);
+}
+
+chichinadze::chichinadze ():
+    synthetic ("chichinadze", 2, -30., 30., -42.94438701899098)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("chichinadze opt");
+    opt->add_item (new inst::dbl_val ("0", 6.189866586965680));
+    opt->add_item (new inst::dbl_val ("1", 0.5));
+    this->set_opt_param (opt);
+}
+
+double
+chichinadze::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    return std::pow (x1, 2.) -
+        12 * x1 +
+        11 +
+        10 * std::cos ((M_PI * x1)/2.) +
+        8 * std::sin ((5 * M_PI * x1)/2.) -
+        std::pow((1./5.), 0.5) * std::exp (-0.5 * std::pow(x2 - 0.5, 2.));
+}
+
+chung_reynolds::chung_reynolds (int dims):
+    synthetic ("chung reynolds", dims, -100., 100., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::partially_separable,
+                properties::scalable,
+                properties::unimodal
+                }));
+
+    inst::node *opt = new inst::node ("chung reynolds opt");
+    for (int i = 0; i < dims; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), 0.));
+    this->set_opt_param (opt);
+}
+
+double
+chung_reynolds::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double res = 0.;
+    for (u_int i = 0; i < m_dims; i++) {
+        res += std::pow (x->getdbl(i), 2.);
+    }
+    return std::pow (res, 2.);
+}
+
+cola::cola ():
+    synthetic ("cola", 17, 11.7464)
+{
+    sspace::sspace_t *ss = this->get_search_space ();
+    sspace::param_t *x0 = new sspace::uniform ("0", 0., 4.);
+    ss->push_back (x0);
+    for (int i = 1; i < 17; i++) {
+        sspace::param_t *tmp = new sspace::uniform (std::to_string(i), -4., 4.);
+        ss->push_back (tmp);
+    }
+
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("cola opt");
+    double values[17] = {
+        0.651906, 1.30194, 0.099242, -0.883791, -0.8796, 0.204651, -3.28414,
+        0.851188, -3.46245, 2.53245, -0.895246, 1.40992, -3.07367, 1.96257,
+        -2.97872, -0.807849, -1.68978 };
+    for (int i = 0; i < 17; i++)
+        opt->add_item (new inst::dbl_val (std::to_string (i), values[i]));
+    this->set_opt_param (opt);
+}
+
+double
+cola::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double d[10][9] = {
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {1.27, 0, 0, 0, 0, 0, 0, 0, 0},
+        {1.69, 1.43, 0, 0, 0, 0, 0, 0, 0},
+        {2.04, 2.35, 2.43, 0, 0, 0, 0, 0, 0},
+        {3.09, 3.18, 3.26, 2.85, 0, 0, 0, 0, 0},
+        {3.20, 3.22, 3.27, 2.88, 1.55, 0, 0, 0, 0},
+        {2.86, 2.56, 2.58, 2.59, 3.12, 3.06, 0, 0, 0},
+        {3.17, 3.18, 3.18, 3.12, 1.31, 1.64, 3., 0, 0},
+        {3.21, 3.18, 3.18, 3.17, 1.7, 1.36, 2.95, 1.32, 0},
+        {2.38, 2.31, 2.42, 1.94, 2.85, 2.81, 2.56, 2.91, 2.97}
+    };
+
+    int idx = 2;
+    double x1[10] = {0, x->getdbl(0)};
+    for (int i = 1; i < 17; i+=2)
+        x1[idx++] = x->getdbl(i);
+
+    idx = 2;
+    double x2[10] = {0, 0};
+    for (int i = 2; i < 17; i+=2)
+        x2[idx++] = x->getdbl(i);
+
+    double res = 0.;
+    for (int i = 1; i < 10; i++) {
+        for (int j = 0; j < i; j++) {
+            res += std::pow (
+                std::sqrt(
+                        std::pow (x1[i] - x1[j], 2.) +
+                        std::pow (x2[i] - x2[j], 2.)
+                        ) -
+                    d[i][j],
+                    2.);
+        }
+    }
+    return res;
+}
+
+colville::colville ():
+    synthetic ("colville", 4, -10., 10., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("colville opt");
+    for (int i = 0; i < 4; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), 1.));
+    this->set_opt_param (opt);
+}
+
+double
+colville::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    double x3 = x->getdbl(2), x4 = x->getdbl(3);
+
+    return 100 * std::pow (x1 - std::pow (x2, 2.), 2.) +
+           std::pow (1 - x1, 2.) +
+           90 * std::pow (x4 - std::pow (x3, 2.), 2.) +
+           std::pow (1 - x3, 2.) +
+           10.1 * (std::pow (x2 - 1, 2.) + std::pow (x4 - 1, 2.)) +
+           19.8 * (x2 - 1) * (x4 - 1);
+}
+
+corana::corana ():
+    synthetic ("corana", 4, -100., 100., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::non_differentiable,
+                properties::separable,
+                properties::scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("corana opt");
+    for (int i = 0; i < 4; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), 0.));
+    this->set_opt_param (opt);
+}
+
+double
+corana::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double xs[4] = {x->getdbl(0), x->getdbl(1), x->getdbl(2), x->getdbl(3)};
+    double ds[4] = {1., 1000., 10., 100.};
+
+    double res = 0.;
+    for (int i = 0; i < 4; i++) {
+        double sgnx = xs[i] < 0. ? -1. : 1.;
+        double z = 0.2 * std::floor (std::fabs (xs[i] / 0.2) + 0.49999) * sgnx;
+        std::cout << "zi: " << z << std::endl;
+        double sgnz = z < 0. ? -1. : 1.;
+        if (std::fabs (xs[i] - z) < 0.05) {
+            std::cout << "here: " << std::pow(z - 0.05 * sgnz, 2.) << std::endl;
+            res += 0.15 * ds[i] * std::pow(z - 0.05 * sgnz, 2.);
+        } else {
+            res += ds[i] * std::pow (xs[i], 2.);
+        }
+    }
+    return res;
+}
+
 } // end namespace syn
