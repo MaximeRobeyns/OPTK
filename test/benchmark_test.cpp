@@ -410,6 +410,31 @@ test_synthetic_benchmarks ()
     syn::hartman3 hrt3;
     double reshrt3 = hrt3.evaluate(hrt3.get_opt_param ());
     assert (nearly_equal (reshrt3, hrt3.get_opt(), 1e-3));
+
+    // hartman6
+    syn::hartman6 hrt6;
+    double reshrt6 = hrt6.evaluate(hrt6.get_opt_param ());
+    assert (nearly_equal (reshrt6, hrt6.get_opt(), 1e-3));
+
+    // helical valley
+    syn::helical_valley hv;
+    double reshv = hv.evaluate(hv.get_opt_param ());
+    assert (nearly_equal (reshv, hv.get_opt()));
+
+    // himmelblau
+    syn::himmelblau hb;
+    double reshb = hb.evaluate(hb.get_opt_param ());
+    assert (nearly_equal (reshb, hb.get_opt()));
+
+    // holder table
+    syn::holder_table ht;
+    double resht = ht.evaluate(ht.get_opt_param ());
+    assert (nearly_equal (resht, ht.get_opt()));
+
+    // hosaki
+    syn::hosaki hki;
+    double reshki = hki.evaluate(hki.get_opt_param ());
+    assert (nearly_equal (reshki, hki.get_opt(), 1e-4));
 }
 
 void

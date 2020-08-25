@@ -1332,6 +1332,122 @@ class hartman3: public synthetic {
         double evaluate (inst::set x) override;
 };
 
+/**
+ * The Hartman 6 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = -\sum^4_{i=1}c_i \exp \left[
+ * \sum^6_{j=1}a_{ij} (x_j - p_{ij})^2
+ * \right],
+ * \f]
+ * where
+ * \f[
+ * \begin{align*}
+ * \mathbf{A} = [a_{ij}] &= \begin{bmatrix}
+ * 10 & 3 & 17 & 3.5 & 17 & 8 \\
+ * 0.05 & 10 & 17 & 0.1 & 8 & 14 \\
+ * 3 & 3.5 & 1.7 & 10 & 17 & 8 \\
+ * 17 & 8 & 0.05 & 10 & 0.1 & 14
+ * \end{bmatrix} \\
+ * \mathbf{c} = c_i &= \begin{bmatrix}1 & 1.2 & 3 & 3.2 \end{bmatrix} \\
+ * \mathbf{p} = p_{ij} &= \begin{bmatrix}
+ *
+ * \end{bmatrix}
+ * 0.1312 & 0.1696 & 0.5569 & 0.0124 & 0.8283 & 0.5886 \\
+ * 0.2329 & 0.4135 & 0.8307 & 0.3736 & 0.1004 & 0.9991 \\
+ * 0.2348 & 0.1451 & 0.3522 & 0.2883 & 0.3047 & 0.665 \\
+ * 0.4047 & 0.8828 & 0.8732 & 0.5743 & 0.1091 & 0.0381
+ * \end{bmatrix}
+ * \end{align*}
+ * \f]
+ * subject to \f$0\le x_i \le 1\f$ for \f$i\in [1, 6]\f$. The global minimum is
+ * located at \f$\mathbf{x}^* = (0.20168952, 0.15001069, 0.47687398,
+ * 0.27533243, 0.31165162, 0.65730054)\f$ with value \f$f(\mathbf{x}^*) =
+ * -3.32236801141551\f$.
+ */
+class hartman6: public synthetic {
+    public:
+        hartman6 ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Helical Valley function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = 100\left[(x_2 - 10\theta)^2 + \left(\sqrt{x_1^2 + x_2^2}
+ * -1\right) \right] + x_3^2,
+ * \f]
+ * where
+ * \f[
+ * \theta = \begin{cases}
+ * \frac{1}{2\pi}\tan^{-1}\left(\frac{x_1}{x_2}\right), &\text{if } x_1 \ge 0\\
+ * \frac{1}{2\pi}\tan^{-1}\left(\frac{x_1}{x_2} + 0.5\right) & \text{if } x_1 < 0.
+ * \end{cases}
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$ with the global minimum located at
+ * \f$\mathbf{x}^* = (1,0,0)\f$ with value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class helical_valley: public synthetic {
+    public:
+        helical_valley ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Himmelblau function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \big(x_1^2 + x_2 - 11\big)^2 +
+ * \big(x_1 + x_2^2 - 7\big)^2,
+ * \f]
+ * subject to \f$-5 \le x_i \le 5\f$ with the global minimum located at
+ * \f$\mathbf{x}^* = (3, 2)\f$ with value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class himmelblau: public synthetic {
+    public:
+        himmelblau ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Holder-Table function has the following equation:
+ * \f[
+ * f(\mathbf{x}) = - \left\vert \sin(x_1) \cos(x_2)\exp \left\vert
+ * 1 - \frac{\sqrt{x_1^2 + x_2^2}}{\pi}
+ * \right\vert\right\vert,
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$ with four global minima, one of which is
+ * at \f$\mathbf{x}^* = (8.055023472141116, 9.664590028909654)\f$ with value
+ * \f$f(\mathbf{x}^*) = -19.20850256788675\f$.
+ */
+class holder_table: public synthetic {
+    public:
+        holder_table ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Hosaki function has the following equation:
+ * \f[
+ * f(\mathbf{x}) = \bigg(
+ * 1 - 8x_1 + 7x_1^2 - \frac{7}{3}x_1^3 + \frac{1}{4}x_1^4
+ * \bigg) x_2^2 e^{-x_2},
+ * \f]
+ * subject to \f$0 \le x_1 \le 5\f$ and \f$0 \le
+ * x_2 \le 6\f$ with a global minimum located at
+ * \f$\mathbf{x}^* = (4,2)\f$ with value
+ * \f$f(\mathbf{x}^*) = -2.3458\f$.
+ */
+class hosaki: public synthetic {
+    public:
+        hosaki ();
+        double evaluate (inst::set x) override;
+};
+
+
+
+
+
+
+
 } // end namespace syn
 
 #endif // __SYNTHETIC_H_

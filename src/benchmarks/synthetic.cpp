@@ -2287,10 +2287,203 @@ hartman3::evaluate (inst::set x)
         for (int j = 0; j < 3; j++) {
             s1 += a[i][j] * std::pow (xs[j] - p[i][j], 2.);
         }
-
         res += c[i] * std::exp (- s1);
     }
     return -res;
+}
+
+hartman6::hartman6 ():
+    synthetic ("hartman6", 6, 0., 1., -3.32236801141551)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("hartman6 opt");
+    opt->add_item (new inst::dbl_val ("0", 0.20168952));
+    opt->add_item (new inst::dbl_val ("1", 0.15001069));
+    opt->add_item (new inst::dbl_val ("2", 0.47687398));
+    opt->add_item (new inst::dbl_val ("3", 0.27533243));
+    opt->add_item (new inst::dbl_val ("4", 0.31165162));
+    opt->add_item (new inst::dbl_val ("5", 0.65730054));
+    this->set_opt_param (opt);
+}
+
+double
+hartman6::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double xs[6];
+    for (int i = 0; i < 6; i++) xs[i] = x->getdbl(i);
+
+    double a[4][6] = {{10., 3., 17., 3.5, 1.7, 8. },
+                      { 0.05,10., 17., 0.1, 8., 14.},
+                      { 3., 3.5, 1.7, 10., 17., 8.},
+                      {17., 8. , 0.05, 10., 0.1, 14.}};
+
+    double c[4] = {1, 1.2, 3, 3.2};
+    double p[4][6] = {{0.1312, 0.1696, 0.5569, 0.0124, 0.8283, 0.5886},
+                      {0.2329, 0.4135, 0.8307, 0.3736, 0.1004, 0.9991},
+                      {0.2348, 0.1451, 0.3522, 0.2883, 0.3047, 0.665 },
+                      {0.4047, 0.8828, 0.8732, 0.5743, 0.1091, 0.0381}};
+
+    double res = 0.;
+    for (int i = 0; i < 4; i++) {
+        double s1 = 0.;
+        for (int j = 0; j < 6; j++) {
+            s1 += a[i][j] * std::pow (xs[j] - p[i][j], 2.);
+        }
+        res += c[i] * std::exp (- s1);
+    }
+    return -res;
+}
+
+helical_valley::helical_valley ():
+    synthetic ("helical_valley", 3, -1., 2., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("helical valley opt");
+    opt->add_item (new inst::dbl_val ("0", 1.));
+    opt->add_item (new inst::dbl_val ("1", 0.));
+    opt->add_item (new inst::dbl_val ("2", 0.));
+    this->set_opt_param (opt);
+}
+
+double
+helical_valley::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1), x3 = x->getdbl(2);
+
+    return 100. * (
+            std::pow (x3 - 10 * (std::atan2 (x2, x1) / (2 * M_PI)), 2.) +
+            std::pow (
+                std::sqrt (
+                    std::pow (x1, 2.) +
+                    std::pow (x2, 2.)
+                    ) -
+                1, 2.)
+            ) +
+            std::pow (x3, 2.);
+}
+
+himmelblau::himmelblau ():
+    synthetic ("himmelblau", 2, -5., 5., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("himmelblau opt");
+    opt->add_item (new inst::dbl_val ("0", 3.));
+    opt->add_item (new inst::dbl_val ("1", 2.));
+    this->set_opt_param (opt);
+}
+
+double
+himmelblau::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    return std::pow(
+            std::pow (x1, 2.) + x2 - 11,
+           2.) +
+           std::pow (
+            x1 + std::pow (x2, 2.) - 7,
+            2.);
+}
+
+holder_table::holder_table ():
+    synthetic ("holder_table", 2, -10., 10., -19.20850256788675)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::non_differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("holder_table opt");
+    opt->add_item (new inst::dbl_val ("0", 8.055023472141116));
+    opt->add_item (new inst::dbl_val ("1", 9.664590028909654));
+    this->set_opt_param (opt);
+}
+
+double
+holder_table::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    return - std::fabs (
+            std::sin (x1) *
+            std::cos (x2) *
+            std::exp (
+                std::fabs (
+                    1 - std::sqrt (
+                            std::pow (x1, 2.) +
+                            std::pow (x2, 2.)
+                        ) / M_PI
+                    )
+                )
+            );
+}
+
+hosaki::hosaki ():
+    synthetic ("hosaki", 2, -2.3458)
+{
+    sspace::sspace_t *ss = this->get_search_space ();
+    sspace::param_t *x0 = new sspace::uniform ("0", 0., 5.);
+    sspace::param_t *x1 = new sspace::uniform ("1", 0., 6.);
+    ss->push_back (x0);
+    ss->push_back (x1);
+
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("hosaki opt");
+    opt->add_item (new inst::dbl_val ("0", 4.));
+    opt->add_item (new inst::dbl_val ("1", 2.));
+    this->set_opt_param (opt);
+}
+
+double
+hosaki::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    return (1 + x1 * (-8 + x1 * (7 + x1 * (-7./3. + x1 * 1./4.))))
+        * x2
+        * x2
+        * std::exp (-x2);
 }
 
 } // end namespace syn
