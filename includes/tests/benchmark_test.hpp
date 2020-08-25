@@ -28,6 +28,8 @@
 
 // TODO get rid of this
 #include <iostream>
+#include <optimisers/gridsearch.hpp>
+// end
 
 #include <optk/types.hpp>
 #include <tests/testutils.hpp>

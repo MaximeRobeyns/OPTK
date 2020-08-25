@@ -435,11 +435,57 @@ test_synthetic_benchmarks ()
     syn::hosaki hki;
     double reshki = hki.evaluate(hki.get_opt_param ());
     assert (nearly_equal (reshki, hki.get_opt(), 1e-4));
+
+    // jennrich_sampson
+    syn::jennrich_sampson js;
+    double resjs = js.evaluate(js.get_opt_param ());
+    assert (nearly_equal (resjs, js.get_opt(), 1e-7));
+
+    // judge
+    syn::judge jd;
+    double resjd = jd.evaluate(jd.get_opt_param ());
+    assert (nearly_equal (resjd, jd.get_opt(), 1e-6));
+}
+
+static void
+test_unknown_benchmarks ()
+{
+    // ackley1
+    syn::langermann5 lm5;
+    assert (lm5.get_name() == std::string ("langermann5"));
+    sspace::sspace_t *space = lm5.get_search_space ();
+    u_int dims = lm5.get_dims();
+    assert (dims == 10u);
+
+    // iterate through all 10 paramteers
+    for (uint i = 0; i < lm5.get_dims(); i++) {
+        sspace::param_t *tmp = space->at(i);
+        assert (tmp->get_type () == pt::uniform);
+        sspace::uniform *tmp_uni = static_cast<sspace::uniform *>(tmp);
+        assert (tutils::dbleq (tmp_uni->m_lower, 0));
+        assert (tutils::dbleq (tmp_uni->m_upper, 10));
+        assert (tmp_uni->get_name () == std::to_string (i));
+    }
+
+    gridsearch gs = gridsearch ();
+    // ridiculously course grid just for testing...
+    sspace::sspace_t *lmss = lm5.get_gridsearch_ss(5);
+    gs.update_search_space(lmss);
+    lm5.free_ss (lmss); delete lmss;
+    uint idx = 0;
+    inst::set params = gs.generate_parameters(idx++);
+    double res = lm5.evaluate (params);
+    while (params != NULL) {
+        res = lm5.evaluate (params);
+        gs.receive_trial_results(idx-1, params, res);
+        params = gs.generate_parameters (idx++);
+    }
 }
 
 void
 run_benchmark_tests()
 {
-    test_synthetic_benchmarks();
+    test_synthetic_benchmarks ();
+    test_unknown_benchmarks ();
     std::cout << "All gridsearch tests pass" << std::endl;
 }

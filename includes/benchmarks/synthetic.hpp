@@ -104,6 +104,15 @@ class synthetic: public optk::benchmark {
          */
         sspace::sspace_t * get_search_space() { return &m_sspace; }
 
+        /**
+         * A convenience method which returns a search space which is
+         * comparible with the built-in gridsearch algorithm.
+         * @param The quantisation for uniform parameters.
+         * @returns A search space made up of quniform parameters.
+         */
+        sspace::sspace_t *get_gridsearch_ss (double q);
+
+
         /** This is specific to synthetic benchmarks, and sets the properties
          * of the derived benchmark function (e.g. non-separable, scalable
          * etc...)
@@ -139,6 +148,11 @@ class synthetic: public optk::benchmark {
          * invalid.
          */
         void validate_param_set (inst::set x);
+
+        /**
+         * Used in destructor and convenience methods; deletes a search space description.
+         */
+        void free_ss (sspace::sspace_t *);
 
     protected:
         /**
@@ -1439,6 +1453,83 @@ class holder_table: public synthetic {
 class hosaki: public synthetic {
     public:
         hosaki ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Jennrich-Sampson function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \sum^{10}_{i=1}\bigg(2 + 2i -\big(e^{ix_1}+e^{ix_2}\big)\bigg)^2,
+ * \f]
+ * subject to \f$-1 \le x_i \le 1\f$ with the global minimum located at
+ * \f$\mathbf{x}^* = (0.257825, 0.257825)\f$ with value \f$f(\mathbf{x}^*) =
+ * 124.3621824\f$.
+ */
+class jennrich_sampson: public synthetic {
+    public:
+        jennrich_sampson ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * Judge's function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \sum^{20}_{i=1}\left(
+ * (x_1 + B_ix_2 + C_ix_2^2) - A_i
+ * \right)^2
+ * \f],
+ * where the vectors A, B and C are given by:
+ * \f[
+ * \begin{align*}
+ * A &= \begin{bmatrix} 4.284 & 4.149 & 3.877 & 0.533 & 2.211 & 2.389 & 2.145 &
+ * 3.231 & 1.998 & 1.379 & 2.106 & 1.428 & 1.011 & 2.179 & 2.858 & 1.388 &
+ * 1.651 & 1.593 & 1.046 & 2.152 \end{bmatrix} \\
+ * B &= \begin{bmatrix} 0.286 & 0.973 & 0.384 & 0.276 & 0.973 & 0.543 & 0.957 &
+ * 0.948 & 0.543 & 0.797 & 0.936 & 0.889 & 0.006 & 0.828 & 0.399 & 0.617 &
+ * 0.939 & 0.784 & 0.072 & 0.889 \end{bmatrix} \\
+ * C &= \begin{bmatrix} 0.645 & 0.585 & 0.310 & 0.058 & 0.455 & 0.779 & 0.259 &
+ * 0.202 & 0.028 & 0.099 & 0.142 & 0.296 & 0.175 & 0.180 & 0.842 & 0.039 &
+ * 0.103 & 0.620 & 0.158 & 0.704 \end{bmatrix}
+ * \end{align*}
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$ for \f$i = 1,2\$, with a global minimum
+ * located at \f$\mathbf{x}^* = (0.86479, 1.2357)\f$ with value
+ * \f$f(\mathbf{x}^*) = 16.0817307\f$.
+ */
+class judge: public synthetic {
+    public:
+        judge ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Langerman-5 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = -\sum^m_{i=1}c_i e^{-\frac{1}{\pi} \sum^D_{j=1}(x_j-a_{ij})^2}
+ * \cos\left(\pi\sum^D_{j=1}(x_j-a_{ij})^2\right),
+ * \f]
+ * where the matrix \f$\mathbf{A}\f$ and the column vector \f$\mathbf{c}\f$ are
+ * given by
+ * \f[
+ * \begin{align*}
+ * \mathbf{A} = [A_{ij}] &= \begin{bmatrix}
+ * 9.681 & 0.667 & 4.783 & 9.095 & 3.517 & 9.325 & 6.544 & 0.211 & 5.122 & 2.020 //
+ * 9.400 & 2.041 & 3.788 & 7.931 & 2.882 & 2.672 & 3.568 & 1.284 & 7.033 & 7.374 //
+ * 8.025 & 9.152 & 5.114 & 7.621 & 4.564 & 4.711 & 2.996 & 6.126 & 0.734 & 4.982 //
+ * 2.196 & 0.415 & 5.649 & 6.979 & 9.510 & 9.166 & 6.304 & 6.054 & 9.377 & 1.426 //
+ * 8.074 & 8.777 & 3.467 & 1.863 & 6.708 & 6.349 & 4.534 & 0.276 & 7.633 & 1.5
+ * \end{bmatrix} \\
+ * \mathbf{c} = c_i &= \begin{bmatrix} 0.806 \\ 0.517 \\ 1.5 \\ 0.908 \\ 0.9 \end{bmatrix}
+ * \end{align*}
+ * \f]
+ * subject to \f$0 \le x_i \le 10\f$ for \f$i \in [0, D-1]\f$ with \f$m = 5\f$.
+ * The global mimimum is at \f$f(\mathbf{x}^*) = -1.4\f$.
+ *
+ * @todo find location of global minimum.
+ */
+class langermann5: public synthetic {
+    public:
+        langermann5 ();
         double evaluate (inst::set x) override;
 };
 

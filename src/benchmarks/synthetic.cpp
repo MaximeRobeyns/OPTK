@@ -52,11 +52,12 @@ synthetic::synthetic (const std::string &n, u_int dims, double opt):
     break; \
     }
 
-synthetic::~synthetic()
+void
+synthetic::free_ss (sspace::sspace_t *ss)
 {
     // free the search space description
     sspace::sspace_t::iterator it;
-    for (it = m_sspace.begin (); it != m_sspace.end (); it++) {
+    for (it = ss->begin (); it != ss->end (); it++) {
         sspace::param_t *tmp = (*it);
         pt t = tmp->get_type();
         switch (t) {
@@ -88,8 +89,15 @@ synthetic::~synthetic()
                 deltype(sspace::randint, tmp);
         }
     }
+}
+
+synthetic::~synthetic()
+{
+    free_ss (&m_sspace);
+
     // free the optimal parameters
-    inst::free_node (opt_params);
+    if (opt_params != NULL)
+        inst::free_node (opt_params);
 }
 
 void
@@ -103,6 +111,26 @@ void
 synthetic::set_opt_param(inst::set op)
 {
     opt_params = op;
+}
+
+sspace::sspace_t *
+synthetic::get_gridsearch_ss (double q)
+{
+    sspace::sspace_t *newspace = new sspace::sspace_t();
+    sspace::sspace_t::iterator it;
+    int idx = 0;
+    for (it = m_sspace.begin (); it != m_sspace.end (); it++) {
+        sspace::uniform *prev = static_cast<sspace::uniform *>(*it);
+        sspace::quniform *newparam =
+            new sspace::quniform(
+                    std::to_string (idx++),
+                    prev->m_lower,
+                    prev->m_upper,
+                    q
+                    );
+        newspace->push_back (newparam);
+    }
+    return newspace;
 }
 
 ackley1::ackley1 (int d) :
@@ -2484,6 +2512,126 @@ hosaki::evaluate (inst::set x)
         * x2
         * x2
         * std::exp (-x2);
+}
+
+jennrich_sampson::jennrich_sampson ():
+    synthetic ("jennrich_sampson", 2, -1., 1., 124.3621824)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("jennrich sampson opt");
+    opt->add_item (new inst::dbl_val ("0", 0.257825));
+    opt->add_item (new inst::dbl_val ("1", 0.257825));
+    this->set_opt_param (opt);
+}
+
+double
+jennrich_sampson::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    double res = 0.;
+    for (int i = 0; i < 11; i++) {
+        res += std::pow (
+                2. +
+                2. * i -
+                (std::exp (i * x1) + std::exp (i * x2)),
+                2.);
+    }
+    return res;
+}
+
+judge::judge ():
+    synthetic ("judge", 2, -10., 10., 16.0817307)
+{
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::non_differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+
+    inst::node *opt = new inst::node ("judge sampson opt");
+    opt->add_item (new inst::dbl_val ("0", 0.86479));
+    opt->add_item (new inst::dbl_val ("1", 1.2357));
+    this->set_opt_param (opt);
+}
+
+double
+judge::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+
+    double A[20] = { 4.284, 4.149, 3.877, 0.533, 2.211, 2.389, 2.145, 3.231,
+        1.998, 1.379, 2.106, 1.428, 1.011, 2.179, 2.858, 1.388, 1.651, 1.593,
+        1.046, 2.152 };
+    double B[20] = { 0.286, 0.973, 0.384, 0.276, 0.973, 0.543, 0.957, 0.948,
+        0.543, 0.797, 0.936, 0.889, 0.006, 0.828, 0.399, 0.617, 0.939, 0.784,
+        0.072, 0.889, };
+    double C[20] = { 0.645, 0.585, 0.310, 0.058, 0.455, 0.779, 0.259, 0.202,
+        0.028, 0.099, 0.142, 0.296, 0.175, 0.180, 0.842, 0.039, 0.103, 0.620,
+        0.158, 0.704 };
+
+    double res = 0.;
+    for (int i = 0; i < 20; i++)
+        res += std::pow (
+                (x1 + B[i] * x2 + C[i] * std::pow (x2, 2.)) - A[i],
+                2.);
+    return res;
+}
+
+langermann5::langermann5 ():
+    synthetic ("langermann5", 10, 0., 10., -1.4)
+{
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::non_differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+
+    /* TODO come back to this */
+    inst::node *opt = new inst::node ("langermann5 opt");
+    this->set_opt_param (opt);
+}
+
+double
+langermann5::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double a[5][10] = {
+        {9.681, 0.667, 4.783, 9.095, 3.517, 9.325, 6.544, 0.211, 5.122, 2.020},
+        {9.400, 2.041, 3.788, 7.931, 2.882, 2.672, 3.568, 1.284, 7.033, 7.374},
+        {8.025, 9.152, 5.114, 7.621, 4.564, 4.711, 2.996, 6.126, 0.734, 4.982},
+        {2.196, 0.415, 5.649, 6.979, 9.510, 9.166, 6.304, 6.054, 9.377, 1.426},
+        {8.074, 8.777, 3.467, 1.863, 6.708, 6.349, 4.534, 0.276, 7.633, 1.5  }};
+
+    double c[5] = { 0.806, 0.517, 1.5, 0.908, 0.9 };
+
+    double res = 0.;
+    for (int i = 0; i < 5; i++) {
+        double s1 = 0.;
+        for (int j = 0; j < 10; j++)
+            s1 += std::pow (x->getdbl(i) - a[i][j], 2.);
+        res += c[i] *
+            std::exp ((-1./M_PI) * s1) *
+            std::cos (M_PI * s1);
+    }
+    return -res;
 }
 
 } // end namespace syn
