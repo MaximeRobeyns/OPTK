@@ -1157,7 +1157,7 @@ class exp2: public synthetic {
  * \f[
  * f(\mathbf{x}) = \frac{3}{4} \exp \left( -\frac{(9x_1 - 2)^2}{4} -
  * \frac{(9x_2 - 2)^2}{4}\right) +
- * \frac{3}{4} \exp \left(-\frac{(9x_1 + 1)^2}{49} - \frac{(9x_2 + 1)^2}{10}
+ * \frac{3}{4} \exp \left(-\frac{(9x_1 + 1)^2}{49} - \frac{9x_2 + 1}{10}
  * \right) +
  * \frac{1}{2} \exp \left(-\frac{(9x_1 - 7)^2}{4} - \frac{(9x_2 - 3)^2}{4}
  * \right) -
@@ -1173,6 +1173,164 @@ class franke: public synthetic {
         double evaluate (inst::set x) override;
 };
 
+/**
+ * The Freudenstein Roth function has the following equation
+ * \f[
+ * f(\mathbf{x}) = \Big(x_1 - 13 + \big((5 - x_2)x_2 - 2\big)x_2\Big)^2 +
+ * \Big(x_1 - 29 + \big((x_2 + 1)x_2 - 14\big)x_2\Big)^2,
+ * \f]
+ * subject to \f$-10\le x_i \le 10\f$, with the global minimum located at
+ * \f$\mathbf{x}^* = (5,4)\f$ with value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class freudenstein_roth: public synthetic {
+    public:
+        freudenstein_roth ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The gear function has the following equation:
+ * \f[
+ * f(\mathbf{x}) = \left(
+ * \frac{1}{6.931} - \frac{\lfloor x_1 \rfloor \cdot \lfloor x_2 \rfloor}
+ * {\lfloor x_3 \rfloor \cdot \lfloor x_4\rfloor}
+ * \right)^2,
+ * \f]
+ * subject to \f$12 \le x_i \le 60\f$. There are many global minima, one being
+ * at \f$\mathbf{x}^* = (16, 19, 43, 49)\f$ with value \f$f(\mathbf{x}^*) =
+ * 2.700857148886513\times 10^{−12}\f$.
+ */
+class gear: public synthetic {
+    public:
+        gear ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Giunta function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = 0.6 + \sum^2_{i=1}\left(
+ * \sin\Big(\frac{16}{15}x_i - 1\Big) +
+ * \sin^2\Big(\frac{16}{15}x_i - 1\Big) +
+ * \frac{1}{15}\sin\Big(4\big(\frac{16}{15}x_i - 1\big)\Big)\right),
+ * \f]
+ * subject to \f$-1 \le x_i \le 1\f$, with the global minimum located at
+ * \f$\mathbf{x}^* = (0.4673200277395354, 0.4673200169591304)\f$ with value
+ * \f$f(\mathbf{x}^*) = 0.06447042053690566)\f$.
+ */
+class giunta: public synthetic {
+    public:
+        giunta ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Goldstein-Price function consists of a product of two factors
+ * \f[
+ * f(\mathbf{x}) = f_1(\mathbf{x}) \cdot f_2(\mathbf{x}),
+ * \f]
+ * where
+ * \f[
+ * \begin{align*}
+ * f_1 &= 1 + (x_1 + x_2 + 1)^2\cdot(19 - 14x_1 + 2x_1^2 - 14x_2 + 6x_1x_2 +
+ * 3x_2^2) \\
+ * f_2 &= 30 + (2x_1 - 3x_2)^2\cdot(18 - 32x_1 + 12x_1^2 + 48x_2 - 36x_1x_2 +
+ * 27x_2^2),
+ * \end{align*}
+ * \f]
+ * subject to \f$-2 \le x_i \le 2\f$, with the global minimum located at
+ * \f$\mathbf{x}^* = (0. -1)\f$, with \f$f(\mathbf{x}^*) = 3\f$.
+ */
+class goldstein_price: public synthetic {
+    public:
+        goldstein_price ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Griewank function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \sum^n_{i=1}\frac{x_i^2}{4000} -
+ * \prod\cos\Big(\frac{x_i}{\sqrt{i}}\Big)+1,
+ * \f]
+ * subject to \f$-50\le x_i \le 20\f$, with the global minima located at
+ * \f$\mathbf{x}^* = (0, \ldots, 0)\f$ with value \f$f(\mathbf{x}^* = 0\f$.
+ */
+class griewank: public synthetic {
+    public:
+        griewank (int dims);
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Gulf Research Problem is given the following formula:
+ * \f[
+ * f(\mathbf{x}) = \sum^{99}_{i=1}\left(
+ * \exp \bigg(-\frac{(u_1 - x_2)^{x_3}}{x_1} \bigg) - \frac{i}{100}
+ * \right)^2,
+ * \f]
+ * where
+ * \f[
+ * u_i = 25 + \sqrt{\left(-50 \ln 'left(\frac{i}{100}\right)\right)},
+ * \f]
+ * subject to
+ * \f$0.1\le x_1 \le 100\f$, \f$0 \le x_2 \le 25.6\f$ and \f$0\le x_3 \le
+ * 5\f\f$ with the global minimum located at \f$\mathbf{x}^* = (50, 25, 1.5)\f$
+ * with value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class gulf: public synthetic {
+    public:
+        gulf ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Hansen function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \sum^4_{i=1}(i+1)\cos (ix_1 + i + 1) \cdot \sum^4_{j=1}(j +
+ * 1)\cos\big((j+1)x_2 + j + 1\big),
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$, with multiple global minima, one of
+ * them being located at \f$\mathbf{x}^* = (-7.58989583, -7.70831466)\f$, with
+ * value \f$f(\mathbf{x}^*) = -176.54\f$.
+ */
+class hansen: public synthetic {
+    public:
+        hansen ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Hartman 3 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = - \sum^4_{i=1} c_i \exp \left[
+ * -\sum^3_{j=1}a_{ij}(x_j - p_{ij})^2
+ * \right],
+ * \f]
+ * where
+ * \f[
+ * \begin{align*}
+ * \mathbf{A} = [A_{ij}] &= \begin{bmatrix}
+ * 3 & 10 & 30 \\ 0.1 & 10 & 35 \\ 3 & 10 & 30 \\ 0.1 & 10 & 35
+ * \end{bmatrix} \\
+ * \mathbf{c} = c_i &= \begin{bmatrix} 1 \\ 1.2 \\ 3 \\ 3.2 \end{bmatrix} \\
+ * \mathbf{P} = p_i &= \begin{bmatrix}
+ * 0.36890 & 0.11700 & 0.26730 \\
+ * 0.46990 & 0.43870 & 0.74700 \\
+ * 0.10910 & 0.87320 & 0.55470 \\
+ * 0.03815 & 0.57430 & 0.88280
+ * \end{bmatrix}
+ * \end{align*}
+ * \f]
+ * subject to \f$0 \le x_i \le 1\f$ for \f$j \in \{1,2,3\}\f$. The global
+ * minimum is located at \f$\mathbf{x}^* = (0.1, 0.55592003, 0.85218259)\f$
+ * with value \f$f(\mathbf{x}^*) = -3.86278214782076\f$.
+ */
+class hartman3: public synthetic {
+    public:
+        hartman3 ();
+        double evaluate (inst::set x) override;
+};
 
 } // end namespace syn
 

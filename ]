@@ -409,7 +409,9 @@ test_synthetic_benchmarks ()
     // hartman3
     syn::hartman3 hrt3;
     double reshrt3 = hrt3.evaluate(hrt3.get_opt_param ());
-    assert (nearly_equal (reshrt3, hrt3.get_opt(), 1e-3));
+    std::cout << reshrt3 << std::endl;
+    std::cout << hrt3.get_opt() << std::endl;
+    assert (nearly_equal (reshrt3, hrt3.get_opt()));
 }
 
 void

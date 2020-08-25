@@ -1995,4 +1995,302 @@ franke::evaluate (inst::set x)
         0.2 * std::exp (-std::pow(9*x1-4, 2.) - std::pow (8*x2-7, 2.));
 }
 
+freudenstein_roth::freudenstein_roth ():
+    synthetic ("freudenstein_roth", 2, -10., 10., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("freudenstein_roth opt");
+    opt->add_item (new inst::dbl_val ("0", 5.));
+    opt->add_item (new inst::dbl_val ("1", 4.));
+    this->set_opt_param (opt);
+}
+
+double
+freudenstein_roth::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    return
+        std::pow ((x1 - 13 + ((5 - x2) * x2 - 2)*x2) ,2.) +
+        std::pow ((x1 - 29 + ((x2 + 1) * x2 - 14)*x2), 2.);
+}
+
+gear::gear ():
+    synthetic ("gear", 4, 12., 60., 2.700857148886513e-12)
+{
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::non_differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("gear opt");
+    opt->add_item (new inst::dbl_val ("0", 16.));
+    opt->add_item (new inst::dbl_val ("1", 19.));
+    opt->add_item (new inst::dbl_val ("2", 43.));
+    opt->add_item (new inst::dbl_val ("3", 49.));
+    this->set_opt_param (opt);
+}
+
+double
+gear::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    double x3 = x->getdbl(2), x4 = x->getdbl(3);
+
+    return std::min(
+            std::pow ( 1./6.931 -
+                (std::floor (x1) * std::floor (x2))/
+                (std::floor (x3) * std::floor (x4))
+                , 2.),
+            std::numeric_limits<double>::max()
+            );
+}
+
+giunta::giunta ():
+    synthetic ("giunta", 2, -1., 1., 0.06447042053690566)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("giunta opt");
+    opt->add_item (new inst::dbl_val ("0", 0.4673200277395354));
+    opt->add_item (new inst::dbl_val ("1", 0.4673200169591304));
+    this->set_opt_param (opt);
+}
+
+double
+giunta::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double xs[2] = {x->getdbl(0), x->getdbl(1)};
+
+    double res = 0.;
+    for (int i = 0; i < 2; i++)
+        res += std::sin (16./15. * xs[i] - 1) +
+            std::pow (std::sin (16./15. * xs[i] - 1) , 2.) +
+            1./50. * std::sin (4. * (16./15. * xs[i] - 1));
+    return 0.6 + res;
+}
+
+goldstein_price::goldstein_price ():
+    synthetic ("goldstein_price", 2, -2., 2., 3.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("goldstein_price opt");
+    opt->add_item (new inst::dbl_val ("0", 0));
+    opt->add_item (new inst::dbl_val ("1", -1));
+    this->set_opt_param (opt);
+}
+
+double
+goldstein_price::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    double f1 = 1 + std::pow(x1 + x2 + 1, 2.) *
+                (19 -
+                 14 * x1 +
+                 2 * std::pow (x1, 2.) -
+                 14 * x2 +
+                 6 * x1 * x2 +
+                 3 * std::pow (x2, 2.));
+    double f2 = 30 + std::pow (2 * x1 - 3 * x2, 2.) *
+                (18 -
+                 32 * x1 +
+                 12 * std::pow (x1, 2.) +
+                 48 * x2 -
+                 36 * x1 * x2 +
+                 27 * std::pow (x2, 2.));
+
+    return f1 * f2;
+}
+
+griewank::griewank (int dims):
+    synthetic ("griewank", dims, -50., 20., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("griewank opt");
+    for (uint i = 0; i < m_dims; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), 0));
+    this->set_opt_param (opt);
+}
+
+double
+griewank::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double sum = 0., prod = 1.;
+    for (uint i = 1; i < m_dims+1; i++) {
+        double xi = x->getdbl(i-1);
+        sum += std::pow (xi, 2.);
+        prod *= std::cos (xi / std::sqrt((double) i));
+    }
+
+    return 1./4000. * sum - prod + 1;
+}
+
+gulf::gulf ():
+    synthetic ("gulf", 3, 0.)
+{
+    sspace::sspace_t *ss = this->get_search_space ();
+    sspace::param_t *x0 = new sspace::uniform ("0", 0.1, 100.);
+    sspace::param_t *x1 = new sspace::uniform ("1", 0., 25.6);
+    sspace::param_t *x2 = new sspace::uniform ("2", 0., 5.);
+    ss->push_back (x0);
+    ss->push_back (x1);
+    ss->push_back (x2);
+
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("gulf opt");
+    opt->add_item (new inst::dbl_val ("0", 50.));
+    opt->add_item (new inst::dbl_val ("1", 25.));
+    opt->add_item (new inst::dbl_val ("2", 1.5));
+    this->set_opt_param (opt);
+}
+
+double
+gulf::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1), x3 = x->getdbl(2);
+
+    double sum = 0.;
+    for (int i = 1; i < 99; i++) {
+        double ti = (double) i / 100.;
+        double ui = 25. + std::pow ( -50. * std::log (ti), 2./3.);
+        sum += std::pow (
+                std::exp (
+                    - (std::pow (ui - x2, x3)/x1)
+                    ) - ti
+                ,2.);
+    }
+    return sum;
+}
+
+hansen::hansen ():
+    synthetic ("hansen", 2, -10., 10., -176.54)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("hansen opt");
+    opt->add_item (new inst::dbl_val ("0", -7.58989583));
+    opt->add_item (new inst::dbl_val ("1", -7.70831466));
+    this->set_opt_param (opt);
+}
+
+double
+hansen::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    double sum1 = 0., sum2 = 0.;
+    for (int i = 0; i < 5; i++) {
+        sum1 += ((double)i + 1.) *
+            std::cos (((double) i * x1) + (double)i + 1.);
+        sum2 += ((double)i + 1.) *
+            std::cos (((double)i + 2.) * x2 + (double)i + 1.);
+    }
+    return sum1 * sum2;
+}
+
+hartman3::hartman3 ():
+    synthetic ("hartman3", 3, 0., 1., -3.86278214782076)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("hartman3 opt");
+    opt->add_item (new inst::dbl_val ("0", 0.1));
+    opt->add_item (new inst::dbl_val ("1", 0.55592003));
+    opt->add_item (new inst::dbl_val ("2", 0.85218259));
+    this->set_opt_param (opt);
+}
+
+double
+hartman3::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double xs[3] = {x->getdbl(0), x->getdbl(1), x->getdbl(2)};
+
+    double a[4][3] = {{3., 10., 30.},
+                      {0.1, 10., 35.},
+                      {3., 10., 30.},
+                      {0.1, 10., 35.}};
+    double c[4] = {1, 1.2, 3, 3.2};
+    double p[4][3] = {{0.36890, 0.11700, 0.26730},
+                      {0.46990, 0.43870, 0.74700},
+                      {0.10910, 0.87320, 0.55470},
+                      {0.03815, 0.57430, 0.88280}};
+
+    double res = 0.;
+    for (int i = 0; i < 4; i++) {
+        double s1 = 0.;
+        for (int j = 0; j < 3; j++) {
+            s1 += a[i][j] * std::pow (xs[j] - p[i][j], 2.);
+        }
+
+        res += c[i] * std::exp (- s1);
+    }
+    return -res;
+}
+
 } // end namespace syn
