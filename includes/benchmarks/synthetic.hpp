@@ -1695,6 +1695,118 @@ class mccormick: public synthetic {
         double evaluate (inst::set x) override;
 };
 
+/** This is a more compact way of passing the regression problem dimensions. */
+typedef struct {
+    /** prob is the dimensions of the problem (number of parameters to
+     * optimise), as well as being the number of columns in the e_mat and
+     * centres matrices. */
+    int prob;
+    /** coef is the size of the list of coefficients, which must be equal to
+     * the number of rows in the e_mat and centres matrices. */
+    int coef;
+} rdims;
+
+/**
+ * This is the base class for implementing a set of functions devised by
+ * Michael McCourt working at SigOpt, (a commercial function optimisation
+ * service).
+ * The derived functions all fit into the framework of a linear combination of
+ * functions, many of which are positive definite kernels.
+ * TODO is regression the correct name?
+ */
+class regression: public synthetic {
+    public:
+        enum class dist_type: char {
+            one,        /** For calculating the l1 norm */
+            squared,    /** For calculating the l2 norm */
+            inf         /** For claculating the infinity norm */
+        };
+
+        /**
+         * The constructor for the regression-type problems.
+         * @param dims The number of dimensions of the problem
+         * @param e_mat TODO come back to this
+         * @param centers TODO come back to this
+         * @param coefs The regression coefficients
+         * @param n The benchmark name
+         * @param fmin The known global minimum.
+         * @param minloc The position of a/the global minimum
+         */
+        regression (
+            rdims dims,
+            double *e_mat,
+            double *centres,
+            double *coefs,
+            const std::string &n,
+            double fmin,
+            double *minloc
+            );
+
+        virtual void kernel (double *xs, double *ret) = 0;
+
+        double evaluate (inst::set x) override;
+
+    protected:
+        /**
+         * The dist_sq(1) function
+         * @param xs The input parameters
+         * @param ret A double[dims.coef][dims.prob] array to return values.
+         */
+        void dist_sq_1 (double *xs, double *ret);
+
+        /**
+         * The dist_sq(2) function
+         * @param xs The input parameters
+         * @param ret A double[dims.coef][dims.prob] array to return values.
+         */
+        void dist_sq_2 (double *xs, double *ret);
+
+        /**
+         * The dist_sq(inf) function
+         * @param xs The input parameters
+         * @param ret A double[dims.coef][dims.prob] array to return values.
+         */
+        void dist_sq_inf (double *xs, double *ret);
+
+    private:
+
+        double *m_e_mat;
+        double *m_centres;
+        double *m_coefs;
+        rdims m_dims;
+};
+
+class court01: public regression {
+    public:
+        court01 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 7, coef = 6 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = -0.0859426686096;
+        static constexpr double minloc[prob] =
+        {0.6241, 0.7688, 0.8793, 0.2739, 0.7351, 0.8499, 0.6196};
+
+        static constexpr double centres[coef * prob] = {
+            0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+            0.3, 0.1, 0.5, 0.1, 0.8, 0.8, 0.6,
+            0.6, 0.7, 0.8, 0.3, 0.7, 0.8, 0.6,
+            0.4, 0.7, 0.4, 0.9, 0.4, 0.1, 0.9,
+            0.9, 0.3, 0.3, 0.5, 0.2, 0.7, 0.2,
+            0.5, 0.5, 0.2, 0.8, 0.5, 0.3, 0.4};
+
+        static constexpr double e_mat[coef * prob] = {
+                5, 5, 5, 5, 5, 5, 5,
+                5, 5, 5, 5, 5, 5, 5,
+                5, 5, 5, 5, 5, 5, 5,
+                5, 5, 5, 5, 5, 5, 5,
+                5, 5, 5, 5, 5, 5, 5,
+                5, 5, 5, 5, 5, 5, 5};
+
+        static constexpr double coefs[coef] = {1, 1, -2, 1, 1, 1};
+};
+
 } // end namespace syn
 
 #endif // __SYNTHETIC_H_

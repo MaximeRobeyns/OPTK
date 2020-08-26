@@ -2956,4 +2956,111 @@ mccormick::evaluate (inst::set x)
         1;
 }
 
+// Regression-type functions --------------------------------------------------
+
+regression::regression (
+        rdims dims,
+        double *e_mat,
+        double *centres,
+        double *coefs,
+        const std::string &n,
+        double fmin,
+        double *minloc
+        ) :
+    synthetic (n, dims.prob, 0., 1., fmin),
+    m_e_mat(e_mat), m_centres(centres), m_coefs(coefs), m_dims(dims)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node (n + " opt");
+    for (int i = 0; i < dims.prob; i++) {
+        opt->add_item (new inst::dbl_val (std::to_string(i), minloc[i]));
+    }
+    this->set_opt_param (opt);
+}
+
+double
+regression::evaluate (inst::set x) {
+    validate_param_set (x);
+
+    double *ret = (double *) calloc (sizeof (double), m_dims.coef);
+    double xs[m_dims.prob];
+    for (int i = 0; i < m_dims.prob; i++) xs[i] = x->getdbl(i);
+
+    kernel (xs, ret);
+    double res = 0.;
+    for (int i = 0; i < m_dims.coef; i++)
+        res += m_coefs[i] * ret[i];
+    free (ret);
+    return res;
+}
+
+void
+regression::dist_sq_1 (double *xs, double *ret)
+{
+    for (int i = 0; i < m_dims.prob; i++)
+        for (int j = 0; j < m_dims.coef; j++)
+            for (int k = 0; k < m_dims.prob; k++)
+                ret[i] += std::fabs (xs[i] - m_centres[j*m_dims.prob+k]) *
+                          std::sqrt (m_e_mat[j*m_dims.prob+k]);
+}
+
+void
+regression::dist_sq_2 (double *xs, double *ret)
+{
+    for (int i = 0; i < m_dims.coef; i++)
+        for (int j = 0; j < m_dims.prob; j++)
+            ret[i] +=
+                std::pow (xs[j] - m_centres[i*m_dims.prob+j], 2.) *
+                m_e_mat[i*m_dims.prob+j];
+}
+
+
+void
+regression::dist_sq_inf (double *xs, double *ret)
+{
+    for (int i = 0; i < m_dims.prob; i++)
+        for (int j = 0; j < m_dims.coef; j++)
+            for (int k = 0; k < m_dims.prob; k++) {
+                double nval = std::fabs (
+                        (xs[i] - m_centres[j*m_dims.prob+k]) *
+                        std::sqrt (m_e_mat[j*m_dims.prob+k])
+                        );
+                if (nval > ret[i]) ret[i] = nval;
+        }
+}
+
+court01::court01 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court01",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+}
+
+void
+court01::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = 1 / std::sqrt (1 + ret[i]);
+}
+
 } // end namespace syn

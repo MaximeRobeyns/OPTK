@@ -493,6 +493,28 @@ test_synthetic_benchmarks ()
 }
 
 static void
+test_regression_benchmarks ()
+{
+    syn::court01 c1;
+    assert (c1.get_name() == std::string("mc_court01"));
+
+    sspace::sspace_t *tmp_space = c1.get_search_space ();
+    u_int dims = c1.get_dims();
+    assert (dims == 7u);
+
+    for (u_int i = 0; i < dims; i++) {
+        sspace::param_t *tmp = tmp_space->at(i);
+        assert (tmp->get_type () == pt::uniform);
+        sspace::uniform *tmp_uni = static_cast<sspace::uniform *>(tmp);
+        assert (tutils::dbleq (tmp_uni->m_lower, 0.));
+        assert (tutils::dbleq (tmp_uni->m_upper, 1.));
+        assert (tmp_uni->get_name () == std::to_string (i));
+    }
+    double resc1 = c1.evaluate(c1.get_opt_param ());
+    assert (nearly_equal (resc1, c1.get_opt(), 1e-7));
+}
+
+static void
 test_unknown_benchmarks ()
 {
     // ackley1
@@ -525,12 +547,14 @@ test_unknown_benchmarks ()
         gs.receive_trial_results(idx-1, params, res);
         params = gs.generate_parameters (idx++);
     }
+
 }
 
 void
 run_benchmark_tests()
 {
     test_synthetic_benchmarks ();
+    test_regression_benchmarks ();
     test_unknown_benchmarks ();
     std::cout << "All gridsearch tests pass" << std::endl;
 }
