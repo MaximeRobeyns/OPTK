@@ -2592,6 +2592,44 @@ judge::evaluate (inst::set x)
     return res;
 }
 
+langermann2::langermann2 ():
+    synthetic ("langermann2", 2, 0., 10., -5.1621259)
+{
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::non_differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+
+    inst::node *opt = new inst::node ("langermann5 opt");
+    opt->add_item (new inst::dbl_val ("0", 2.00299219));
+    opt->add_item (new inst::dbl_val ("1", 1.006096));
+    this->set_opt_param (opt);
+}
+
+double
+langermann2::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    double a[5] = {3, 5, 2, 1, 7};
+    double b[5] = {5, 2, 1, 4, 9};
+    double c[5] = {1, 2, 5, 2, 3};
+
+    double res = 0.;
+    for (int i = 0; i < 5; i++) {
+        double s1 = std::pow (x1 - a[i], 2.) + std::pow (x2 - b[i], 2.);
+        res += c[i] *
+            std::exp ((-1./M_PI) * s1) *
+            std::cos (M_PI * s1);
+    }
+    return -res;
+}
+
 langermann5::langermann5 ():
     synthetic ("langermann5", 10, 0., 10., -1.4)
 {
@@ -2632,6 +2670,290 @@ langermann5::evaluate (inst::set x)
             std::cos (M_PI * s1);
     }
     return -res;
+}
+
+lennard_jones::lennard_jones ():
+    synthetic ("lennard_jones", 6, -3., 3., -1.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::non_differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("lennard_jones opt");
+    double opts[6] = {-2.66666470373, 2.73904387714, 1.42304625988,
+        -1.95553276732, 2.81714839844, 2.12175295546};
+    for (int i = 0; i < 6; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), opts[i]));
+    this->set_opt_param (opt);
+}
+
+double
+lennard_jones::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    int k = m_dims/3;
+    double res = 0.;
+    for (int i = 0; i < k-1; i++) {
+        for (int j = i+1; j < k; j++) {
+            int a = 3 * i;
+            int b = 3 * j;
+            double xd = x->getdbl(a) - x->getdbl(b);
+            double yd = x->getdbl(a+1) - x->getdbl(b+1);
+            double zd = x->getdbl(a+2) - x->getdbl(b+2);
+            double ed = xd*xd + yd*yd + zd*zd;
+            double ud = std::pow (ed, 3.) + 1e-8;
+            if (ed > 0)
+                res += (1. / ud - 2.) / ud;
+        }
+    }
+    return res < std::numeric_limits<float>::max() ?
+        res :
+        std::numeric_limits<float>::max();
+}
+
+keane::keane ():
+    synthetic ("keane", 2, 0., 10., 0.673668)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("keane opt");
+    opt->add_item (new inst::dbl_val ("0", 0));
+    opt->add_item (new inst::dbl_val ("1", 1.39325));
+    this->set_opt_param (opt);
+}
+
+double
+keane::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    return (std::pow (std::sin (x1 - x2), 2.) *
+            std::pow (std::sin (x1 + x2), 2.)) /
+           std::sqrt (
+               std::pow (x1, 2.) +
+               std::pow (x2, 2.)
+               );
+}
+
+leon::leon ():
+    synthetic ("leon", 2, -1.2, 1.2, 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+
+    inst::node *opt = new inst::node ("leon opt");
+    opt->add_item (new inst::dbl_val ("0", 1.));
+    opt->add_item (new inst::dbl_val ("1", 1.));
+    this->set_opt_param (opt);
+}
+
+double
+leon::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    return 100. *
+        std::pow (x2 - std::pow (x1, 2.), 2.) +
+        std::pow (1 - x1, 2.);
+}
+
+levy3::levy3 (int dims):
+    synthetic ("levy3", dims, -10, 10, 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::separable,
+                properties::scalable,
+                properties::unimodal
+                }));
+
+    inst::node *opt = new inst::node ("levy3 opt");
+    for (int i = 0; i < dims; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), 1.));
+    this->set_opt_param (opt);
+}
+
+static double
+levy3_w (int i, inst::set x)
+{
+    return 1 + (x->getdbl(i)-1.)/4.;
+}
+
+double
+levy3::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double res = std::pow (std::sin (M_PI * levy3_w(0, x)), 2.);
+    for (uint i = 0; i < m_dims-1; i++)
+        res += std::pow ( levy3_w(i, x) - 1, 2.) *
+            ( 1. +
+              10. * std::pow (
+                  std::sin ( M_PI * levy3_w(i, x) + 1),
+                  2.)
+              );
+
+    return res +
+        std::pow (levy3_w(m_dims-1,x)-1, 2.) *
+        (1 +
+         std::pow (
+             std::sin (
+                 2 * M_PI * levy3_w(m_dims-1, x)
+                 ),
+             2.)
+         );
+}
+
+levy5::levy5 ():
+    synthetic ("levy5", 2, -2, 2, -135.27125929718)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("levy5 opt");
+    opt->add_item (new inst::dbl_val ("0", -0.34893137569));
+    opt->add_item (new inst::dbl_val ("1", -0.79113519694));
+    this->set_opt_param (opt);
+}
+
+double
+levy5::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    double s1 = 0., s2 = 0.;
+    for (int i = 1; i < 6; i++) {
+        s1 += i * std::cos ((i-1) * x1 + i);
+        s2 += i * std::cos ((i+1) * x2 + i);
+    }
+
+    return s1 * s2 +
+        std::pow (x1 * 5 + 1.42513, 2.) +
+        std::pow (x2 * 5 + 0.80032, 2.);
+}
+
+levy13::levy13 ():
+    synthetic ("levy13", 2, -10, 10, 0)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("levy13 opt");
+    opt->add_item (new inst::dbl_val ("0", 1.));
+    opt->add_item (new inst::dbl_val ("1", 1.));
+    this->set_opt_param (opt);
+}
+
+double
+levy13::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    return
+        std::pow (std::sin (3 * M_PI * x1), 2.) +
+        std::pow (x1 - 1, 2.) * std::pow (1 + std::sin (3 * M_PI * x2), 2.) +
+        std::pow (x2 - 1, 2.) * std::pow (1 + std::sin (2 * M_PI * x2), 2.);
+}
+
+matyas::matyas ():
+    synthetic ("matyas", 2, -10, 10, 0)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+
+    inst::node *opt = new inst::node ("matyas opt");
+    opt->add_item (new inst::dbl_val ("0", 0.));
+    opt->add_item (new inst::dbl_val ("1", 0.));
+    this->set_opt_param (opt);
+}
+
+double
+matyas::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    return 0.26 * (std::pow (x1, 2.) + std::pow (x2, 2.)) -
+        0.48 * x1 * x2;
+}
+
+mccormick::mccormick():
+    synthetic ("mccormick", 2, -1.913222954981037)
+{
+    sspace::sspace_t *ss = this->get_search_space ();
+    sspace::param_t *x0 = new sspace::uniform ("0", -1.5, 4.);
+    sspace::param_t *x1 = new sspace::uniform ("1", -3., 3.);
+    ss->push_back (x0);
+    ss->push_back (x1);
+
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("mccormick opt");
+    opt->add_item (new inst::dbl_val ("0", -0.5471975602214493));
+    opt->add_item (new inst::dbl_val ("1", -1.547197559268372));
+    this->set_opt_param (opt);
+}
+
+double
+mccormick::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    return
+        std::sin (x1 + x2) +
+        std::pow (x1 - x2, 2.) -
+        1.5 * x1 +
+        2.5 * x2 +
+        1;
 }
 
 } // end namespace syn

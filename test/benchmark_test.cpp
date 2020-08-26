@@ -445,6 +445,51 @@ test_synthetic_benchmarks ()
     syn::judge jd;
     double resjd = jd.evaluate(jd.get_opt_param ());
     assert (nearly_equal (resjd, jd.get_opt(), 1e-6));
+
+    // langermann 2
+    syn::langermann2 l2;
+    double resl2 = l2.evaluate(l2.get_opt_param ());
+    assert (nearly_equal (resl2, l2.get_opt(), 1e-6));
+
+    // lennard jones
+    syn::lennard_jones lj;
+    double reslj = lj.evaluate(lj.get_opt_param ());
+    assert (nearly_equal (reslj, lj.get_opt()));
+
+    // keane jones
+    syn::keane kn;
+    double reskn = kn.evaluate(kn.get_opt_param ());
+    assert (nearly_equal (reskn, kn.get_opt(), 1e-6));
+
+    // leon jones
+    syn::keane ln;
+    double resln = ln.evaluate(ln.get_opt_param ());
+    assert (nearly_equal (resln, ln.get_opt(), 1e-6));
+
+    // levy3
+    syn::levy3 lv3(10);
+    double reslv3 = lv3.evaluate(lv3.get_opt_param ());
+    assert (nearly_equal (reslv3, lv3.get_opt()));
+
+    // levy5
+    syn::levy5 lv5;
+    double reslv5 = lv5.evaluate(lv5.get_opt_param ());
+    assert (nearly_equal (reslv5, lv5.get_opt()));
+
+    // levy13
+    syn::levy13 lv13;
+    double reslv13 = lv13.evaluate(lv13.get_opt_param ());
+    assert (nearly_equal (reslv13, lv13.get_opt()));
+
+    // matyas
+    syn::matyas mts;
+    double reslmts = mts.evaluate(mts.get_opt_param ());
+    assert (nearly_equal (reslmts, mts.get_opt()));
+
+    // mccormick
+    syn::mccormick mck;
+    double resmck = mck.evaluate(mck.get_opt_param ());
+    assert (nearly_equal (resmck, mck.get_opt()));
 }
 
 static void

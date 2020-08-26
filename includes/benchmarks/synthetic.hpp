@@ -1503,6 +1503,30 @@ class judge: public synthetic {
 };
 
 /**
+ * The Langermann 2 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = -\sum^m_{i=1}c_i e^{-\frac{1}{\pi} \sum^D_{j=1}(x_j-a_{ij})^2}
+ * \cos\left(\pi\sum^D_{j=1}(x_j-a_{ij})^2\right),
+ * \f]
+ * where \f$\mathbf{a}\f$, \f$\mathbf{b}\f$ and \f$\mathbf{c}\f$ are the
+ * following vectors:
+ * \f[
+ * \begin{align*}
+ * \mathbf{a} &= \begin{bmatrix} 3 & 5 & 2 & 1 & 7 \end{bmatrix} \\
+ * \mathbf{b} &= \begin{bmatrix} 5 & 2 & 1 & 4 & 9 \end{bmatrix} \\
+ * \mathbf{c} &= \begin{bmatrix} 1 & 2 & 5 & 2 & 3 \end{bmatrix}.
+ * \f]
+ * The parameters are subject to \f$0 \le x_i \le 10\f$ and there is a global
+ * minimum located at \f$\mathbf{x}^* = (2.00299219, 1.006096)\f$ with value
+ * \f$f(\mathbf{x}^*) = -5.1621259\f$.
+ */
+class langermann2: public synthetic {
+    public:
+        langermann2 ();
+        double evaluate (inst::set x) override;
+};
+
+/**
  * The Langerman-5 function has the following formula:
  * \f[
  * f(\mathbf{x}) = -\sum^m_{i=1}c_i e^{-\frac{1}{\pi} \sum^D_{j=1}(x_j-a_{ij})^2}
@@ -1533,11 +1557,143 @@ class langermann5: public synthetic {
         double evaluate (inst::set x) override;
 };
 
+/**
+ * The Lennard Jones 6 benchmark function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \sum^{n/3-1}_{i=1} \sum^{n/3}_{i=1}
+ * \delta_{e_{ij}} (e_{ij}^{-3} - 2)e_{ij}^{-3}
+ * \f]
+ * where
+ * \f[
+ * \begin{align*}
+ * \delta_{e_{ij}} &= \begin{cases} 0 &\text{if } e_{ij} \le 0 \\ 1 &\text{othersise,} \\
+ * e_{ij} &= (x_{3i} - x_{3j})^2 + (x_{3i+1} - x_{3j+1})^2 + (x_{3i+2} - x_{3i+2})^2
+ * \end{align*}
+ * \f]
+ * subject to \f$-3 \le x_i \le 3\f$ with a global minimum located at
+ * \f$\mathbf{x}^* = (-2.66666470373, 2.73904387714, 1.42304625988,
+ * -1.95553276732, 2.81714839844, 2.12175295546)\f$, with value
+ *  \f$f(\mathbf{x}^*) = -1\f$.
+ */
+class lennard_jones: public synthetic {
+    public:
+        lennard_jones ();
+        double evaluate (inst::set x) override;
+};
 
+/**
+ * The keane function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \frac{\sin^2(x_1-x_2)\sin^2(x_1+x_2)}
+ * {\sqrt{x_1^2 + x_2^2}},
+ * \f]
+ * subject to \f$0 \le x_i \le 10\f$, with one global minimum located at
+ * \f$\mathbf{x}^* = (0, 1.39325)\f$ with value \f$f(\mathbf{x}^*) =
+ * 0.673668\f$.
+ */
+class keane: public synthetic {
+    public:
+        keane ();
+        double evaluate (inst::set x) override;
+};
 
+/**
+ * The Leon function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = 100\big(x_2 - x_1^2\big)^2 + (1 - x_1)^2,
+ * \f]
+ * subject to \f$-1.2 \le x_i \le 1.2\f$ with a global minimum located at
+ * \f$\mathbf{x}^* = (1,1)\f$ wiht value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class leon: public synthetic {
+    public:
+        leon ();
+        double evaluate (inst::set x) override;
+};
 
+/**
+ * The Levy 03 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \sin^2(\pi w_1) + \sum^{d-1}_{i=1}(w_i-1)^2\left(
+ * 1 + 10\sin^2(\pi w_i+1)\right) +
+ * (w_d - 1)^2 \left(1 + \sin^2(2\pi w_d)\right),
+ * \f]
+ * where
+ * \f[
+ * w_i = 1 + \frac{x_i - 1}{4}, \forall i \in \{1, \ldots, d\}.
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$. The global minimum is located at
+ * \f$\mathbf{x}^* = (1, \ldots, 1)\f$ with a value of \f$f(\mathbf{x}^* =
+ * 0\f$.
+ */
+class levy3: public synthetic {
+    public:
+        levy3 (int dims);
+        double evaluate (inst::set x) override;
+};
 
+/**
+ * The Levy 5 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \sum^5_{i=1} \big(i\cos(i-1)x_1 + i\big)
+ * \sum^5_{i=1} \big(i\cos(i + 1)x_2 + i\big) +
+ * (5x_1 + 1.42513)^2 + (5x2 + 0.80032)^2,
+ * \f]
+ * subject to \f$-2 \le x_i \le 2\f$ with a global minimum located at
+ * \f$\mathbf{x}^* = (-0.34893137569, -0.79113519694)\f$ with a value of
+ * \f$f(\mathbf{x}^*) = -135.27125929718\f$.
+ */
+class levy5: public synthetic {
+    public:
+        levy5 ();
+        double evaluate (inst::set x) override;
+};
 
+/**
+ * The Levy 13 benchmark function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \sin^2(3\pi x_1) +
+ * \big((x_1-1)^2\cdot (1 + \sin^2(3\pi x_2))\big) +
+ * \big((x_2-1)^2\cdot (1 + \sin^2(2\pi x_2))\big),
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$ with a global minimum located at
+ * \f$\mathbf{x}^* = (1,1)\f$ with a value of \f$f(\mathbf{x}) = 0\f$.
+ */
+class levy13: public synthetic {
+    public:
+        levy13 ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Matyas benchmark function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = 0.26\big(x_1^2 + x_2^2\big) - 0.48 x_1x_2,
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$ with a global minimum located at
+ * \f$\mathbf{Px}^* = (0,0)\f$ with value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class matyas: public synthetic {
+    public:
+        matyas ();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The McCormick benchmark function is given as
+ * \f[
+ * f(\mathbf{x}) = \sin(x_1 + x_2) + (x_1 + x_2)^2 - (3/2)x_1 + (5/2)x_2 + 1,
+ * \f]
+ * which is subject to \f$-1.5 \le x_1 \le 4\f$ and \f$-3 \le x_2 \le 3\f$ with
+ * a global minimum located at \f$\mathbf{x}^* = (-0.5471975602214493,
+ * -1.547197559268372)\f$, with value \f$f(\mathbf{x}^*) =
+ *  -1.913222954981037\f$.
+ */
+class mccormick: public synthetic {
+    public:
+        mccormick ();
+        double evaluate (inst::set x) override;
+};
 
 } // end namespace syn
 
