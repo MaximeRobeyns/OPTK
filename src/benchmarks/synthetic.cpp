@@ -3859,4 +3859,275 @@ michalewicz12::evaluate (inst::set x)
     return -res;
 }
 
+miele_cantrell::miele_cantrell():
+    synthetic ("miele_cantrell", 4, -1., 1., 0)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("miele_cantrell opt");
+    opt->add_item (new inst::dbl_val ("0", 0.));
+    opt->add_item (new inst::dbl_val ("1", 1.));
+    opt->add_item (new inst::dbl_val ("2", 1.));
+    opt->add_item (new inst::dbl_val ("3", 1.));
+    this->set_opt_param (opt);
+}
+
+double
+miele_cantrell::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+    double x3 = x->getdbl(2), x4 = x->getdbl(3);
+
+    return
+        std::pow (std::exp (-x1) - x2, 4.) +
+        100 * std::pow (x2 - x3, 6.) +
+        std::pow (std::tan (x3 - x4), 4.) +
+        std::pow (x1, 8.);
+
+}
+
+mishra01::mishra01(int dims):
+    synthetic ("mishra01", dims, -0., 1., 2)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("mishra01 opt");
+    for (int i = 0; i < dims; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), 1.));
+    this->set_opt_param (opt);
+}
+
+double
+mishra01::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double sx = 0.;
+    for (uint i = 0; i < m_dims-1; i++)
+        sx += x->getdbl(i);
+    double gn = m_dims - sx;
+    return std::pow (1 + gn, gn);
+}
+
+mishra02::mishra02(int dims):
+    synthetic ("mishra02", dims, -0., 1., 2)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("mishra02 opt");
+    for (int i = 0; i < dims; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), 1.));
+    this->set_opt_param (opt);
+}
+
+double
+mishra02::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double sx = 0.;
+    for (uint i = 0; i < m_dims-1; i++)
+        sx += (x->getdbl(i) + x->getdbl(i+1)) / 2.;
+    double gn = m_dims - sx;
+    return std::pow (1 + gn, gn);
+}
+
+mishra03::mishra03():
+    synthetic ("mishra03", 2, -10., 10., -0.184651333342989)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("mishra03 opt");
+    opt->add_item (new inst::dbl_val ("0", -8.466613775046579));
+    opt->add_item (new inst::dbl_val ("1", -9.998521308999999));
+    this->set_opt_param (opt);
+}
+
+double
+mishra03::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    return std::pow (
+            std::fabs(
+                std::cos (
+                    std::fabs (
+                        std::pow (x1, 2.) + std::pow (x2, 2.)
+                        )
+                    )
+                )
+            , 0.5) +
+        (x1 + x2) / 100.;
+}
+
+mishra04::mishra04():
+    synthetic ("mishra04", 2, -10., 10., -0.199406970088833)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("mishra04 opt");
+    opt->add_item (new inst::dbl_val ("0", -9.941127263635860));
+    opt->add_item (new inst::dbl_val ("1", -9.999571661999983));
+    this->set_opt_param (opt);
+}
+
+double
+mishra04::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    return std::pow (
+            std::fabs(
+                std::sin (
+                    std::fabs (
+                        std::pow (x1, 2.) + std::pow (x2, 2.)
+                        )
+                    )
+                )
+            , 0.5) +
+        (x1 + x2) / 100.;
+}
+
+mishra05::mishra05():
+    synthetic ("mishra05", 2, -10., 10., -1.019829519930943)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("mishra05 opt");
+    opt->add_item (new inst::dbl_val ("0", -1.986820662153768));
+    opt->add_item (new inst::dbl_val ("1", -10.));
+    this->set_opt_param (opt);
+}
+
+double
+mishra05::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    double f1 =
+        std::pow (std::sin (std::pow(std::cos(x1) + std::cos(x2), 2.)), 2.);
+    double f2 =
+        std::pow (std::sin (std::pow(std::cos(x1) + std::cos(x2), 2.)), 2.);
+
+    return std::pow (f1 + f2 + x1, 2.) + 0.01 * x1 + 0.1 * x2;
+}
+
+mishra06::mishra06():
+    synthetic ("mishra06", 2, -10., 10., -2.283949838474759)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("mishra06 opt");
+    opt->add_item (new inst::dbl_val ("0", 2.886307215440481));
+    opt->add_item (new inst::dbl_val ("1", 1.823260331422321));
+    this->set_opt_param (opt);
+}
+
+double
+mishra06::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    double f1 =
+        std::pow (std::sin (std::pow (std::cos (x1) + std::cos (x2), 2.)), 2.);
+    double f2 =
+        std::pow (std::cos (std::pow (std::sin (x1) + std::sin (x2), 2.)), 2.);
+
+    double f3 =
+        0.1 * (std::pow (x1-1, 2.) + std::pow (x2 - 1, 2.));
+
+    return - std::log (std::pow (f1 - f2 + x1, 2.)) + f3;
+}
+
+mishra08::mishra08():
+    synthetic ("mishra08", 2, -10., 10., 0)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("mishra08 opt");
+    opt->add_item (new inst::dbl_val ("0", 2.));
+    opt->add_item (new inst::dbl_val ("1", -3.));
+    this->set_opt_param (opt);
+}
+
+double
+mishra08::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    double gc[11] =
+        {1, -20, 180, -960, 3360, -8064, 11340, -15360, 11520, -5120, 2624};
+    double hc[5] = {1, 12, 54, 108, 81};
+
+    double g = 0.;
+    for (int i = 0; i < 11; i++)
+        g += gc[i] * std::pow (x1, 10 - i);
+    std::cout << g << std::endl;
+    double h = 0.;
+    for (int i = 0; i < 5; i++)
+        g += hc[i] * std::pow (x2, 4 - i);
+    std::cout << h << std::endl;
+    return 0.001 * std::pow (std::fabs (g) + std::fabs (h), 2.);
+}
+
 } // end namespace syn

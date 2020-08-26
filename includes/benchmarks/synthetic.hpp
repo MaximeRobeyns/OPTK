@@ -2716,6 +2716,154 @@ class michalewicz12: public synthetic {
         double evaluate (inst::set x) override;
 };
 
+/**
+ * The Miele Cantrell function has the following formula
+ * \f[
+ * f(\mathbf{x}) = (e^{-x1} - x_2)^4 + 100(x_2 - x_3)^6 +
+ * \big(\tan(x_3 - x_4)\big)^4 + x_1^8,
+ * \f]
+ * subject to \f$-1 \le x_i \le 1\f$, with the global minmum located at
+ * \f$\mathbf{x}^* = (0,1,1,1)\f$ with value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class miele_cantrell: public synthetic {
+    public:
+        miele_cantrell();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Mishra 01 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = (1 + g_n)^{g_n},
+ * \f]
+ * where
+ * \f[
+ * g_n = n - \sum^{n-1}_{i=1}x_i
+ * \f]
+ * subject to \f$0 \le x_i \le 1\f$ with a global minimum located at
+ * \f$\mathbf{x}^* = (1, \ldots, 1)\f$ with value \f$f(\mathbf{x}^*) = 2\f$.
+ */
+class mishra01: public synthetic {
+    public:
+        mishra01(int dims);
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Mishra 02 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = (1 + g_n)^{g_n},
+ * \f]
+ * where
+ * \f[
+ * g_n = n - \sum^{n-1}_{i=1} \frac{x_i + x_{i+1}}{2}
+ * \f]
+ * subject to \f$0 \le x_i \le 1\f$ with a global minimum located at
+ * \f$\mathbf{x}^* = (1, \ldots, 1)\f$ with value \f$f(\mathbf{x}^*) = 2\f$.
+ */
+class mishra02: public synthetic {
+    public:
+        mishra02(int dims);
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Mishra 03 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \left\vert \cos\left(\sqrt{\vert x_1^2 +
+ * x_2\vert}\right)\right\vert^0.5 + \frac{x_1 + x_2}{100},
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$ for \f$i = 1,2\f$ with a global minimum
+ * located at \f$\mathbf{x}^* = (-8.466613775046579,-9.998521308999999)\f$ with
+ * value \f$f(\mathbf{x}^*) = -0.184651333342989\f$.
+ */
+class mishra03: public synthetic {
+    public:
+        mishra03();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Mishra 04 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \left\vert \sin\left(\sqrt{\vert x_1^2 +
+ * x_2^2\vert}\right)\right\vert^0.5 + \frac{x_1 + x_2}{100},
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$ for \f$i = 1,2\f$ with a global minimum
+ * located at \f$\mathbf{x}^* = (-9.941127263635860, -9.999571661999983)\f$ with
+ * value \f$f(\mathbf{x}^*) = -0.199406970088833\f$.
+ */
+class mishra04: public synthetic {
+    public:
+        mishra04();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Mishra 05 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \left[
+ * \sin^2\bigg(\big(\cos(x1) + \cos(x2)\big)^2\bigg) +
+ * \cos^2\bigg(\big(\sin(x1) + \sin(x2)\big)^2\bigg) +
+ * 0.01x_1 + 0.1x_2
+ * \right]^2
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$ for \f$i = 1,2\f$ with a global minimum
+ * located at \f$\mathbf{x}^* = (-1.986820662153768, -10)\f$ with
+ * value \f$f(\mathbf{x}^*) = - 1.019829519930943 \f$.
+ */
+class mishra05: public synthetic {
+    public:
+        mishra05();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Mishra 06 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = -\log \left[ (
+ * \sin^2\bigg(\big(\cos(x_1) + \cos(x_2)\big)^2\bigg) -
+ * \cos^2\bigg(\big(\sin(x_1) + \sin(x_2)\big)^2\bigg) +
+ * x1 )^2
+ * \right] +
+ * 0.1\left((x_1 - 1)^2 + (x_2 - 1)^2\right)
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$ for \f$i = 1,2\f$ with a global minimum
+ * located at \f$\mathbf{x}^* = (2.886307215440481, 1.823260331422321)\f$ with
+ * value \f$f(\mathbf{x}^*) = -2.283949838474759\f$.
+ */
+class mishra06: public synthetic {
+    public:
+        mishra06();
+        double evaluate (inst::set x) override;
+};
+
+// We exclude the mishra 07 (factorial function) for reasons of computational
+// unwieldiness; it is more of a computational hassle than useful or
+// challenging function to optimise over.
+
+/**
+ * The Mishra 08 (decanomial) function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \frac{1}{1000}(\vert g(x_1)\vert + \vert h(x_2)\vert)^2,
+ * \f]
+ * where
+ * \f[
+ * \begin{align*}
+ * g(x_1) &= x_1^{10} - 20x_1^9 + 180x_2^8 - 960x_1^7 + 3360x_1^6 - 8064x_1^5 +
+ * 11340x_1^4 - 15360x_1^3 + 11520x_1^2 - 5120x_1 + 2624 \\ \end{align*}
+ * h(x_2) = x_2^4 + 12x_2^3 + 54x_2^2 + 108x_2 + 81,
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$ for \f$i = 1,2\f$ with a global minimum
+ * located at \f$\mathbf{x}^* = (2, -3)\f$ with
+ * value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class mishra08: public synthetic {
+    public:
+        mishra08();
+        double evaluate (inst::set x) override;
+};
+
 } // end namespace syn
 
 #endif // __SYNTHETIC_H_

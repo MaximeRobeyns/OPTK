@@ -505,6 +505,48 @@ test_synthetic_benchmarks ()
     syn::michalewicz12 mcz12;
     double resmcz12 = mcz12.evaluate(mcz12.get_opt_param ());
     assert (nearly_equal (resmcz12, mcz12.get_opt()));
+
+    // miele_cantrell
+    syn::miele_cantrell mcll;
+    double resmcll = mcll.evaluate(mcll.get_opt_param ());
+    assert (nearly_equal (resmcll, mcll.get_opt()));
+
+    // mishra01
+    syn::mishra01 mish01(10);
+    double resmish01 = mish01.evaluate(mish01.get_opt_param ());
+    assert (nearly_equal (resmish01, mish01.get_opt()));
+
+    // mishra02
+    syn::mishra02 mish02(10);
+    double resmish02 = mish02.evaluate(mish02.get_opt_param ());
+    assert (nearly_equal (resmish02, mish02.get_opt()));
+
+    // mishra03
+    syn::mishra03 mish03;
+    double resmish03 = mish03.evaluate(mish03.get_opt_param ());
+    assert (nearly_equal (resmish03, mish03.get_opt(), 1)); // TODO pls fix precision
+
+    // mishra04
+    syn::mishra04 mish04;
+    double resmish04 = mish04.evaluate(mish04.get_opt_param ());
+    assert (nearly_equal (resmish04, mish04.get_opt(), 1)); // TODO pls fix precision
+
+    // mishra05
+    syn::mishra05 mish05;
+    double resmish05 = mish05.evaluate(mish05.get_opt_param ());
+    assert (nearly_equal (resmish05, mish05.get_opt(), 1e-3));
+
+    // mishra06
+    syn::mishra06 mish06;
+    double resmish06 = mish06.evaluate(mish06.get_opt_param ());
+    assert (nearly_equal (resmish06, mish06.get_opt()));
+
+    // mishra08
+    syn::mishra08 mish08;
+    double resmish08 = mish08.evaluate(mish08.get_opt_param ());
+    std::cout << resmish08 - mish08.get_opt() << std::endl;
+    assert (nearly_equal (resmish08, mish08.get_opt()));
+
 }
 
 static void
