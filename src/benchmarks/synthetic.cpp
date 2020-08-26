@@ -3024,14 +3024,15 @@ regression::dist_sq_2 (double *xs, double *ret)
 void
 regression::dist_sq_inf (double *xs, double *ret)
 {
-    for (int i = 0; i < m_dims.prob; i++)
-        for (int j = 0; j < m_dims.coef; j++)
-            for (int k = 0; k < m_dims.prob; k++) {
-                double nval = std::fabs (
-                        (xs[i] - m_centres[j*m_dims.prob+k]) *
-                        std::sqrt (m_e_mat[j*m_dims.prob+k])
-                        );
-                if (nval > ret[i]) ret[i] = nval;
+
+    for (int i = 0; i < m_dims.coef; i++)
+        for (int j = 0; j < m_dims.prob; j++) {
+            double nval = std::fabs (
+                    (xs[j] - m_centres[i*m_dims.prob+j]) *
+                    std::sqrt (m_e_mat[i*m_dims.prob+j])
+                    );
+            if (nval > ret[i])
+                ret[i] = nval;
         }
 }
 
@@ -3519,6 +3520,343 @@ court19::court19 ():
 void
 court19::kernel (double *xs, double *ret) {
     dist_sq_1 (xs, ret);
+}
+
+court20::court20 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court20",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+}
+
+void
+court20::kernel (double *xs, double *ret) {
+    dist_sq_1 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = std::exp (-ret[i]);
+}
+
+court21::court21 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court21",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+}
+
+void
+court21::kernel (double *xs, double *ret) {
+    dist_sq_inf (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = std::exp (-ret[i]);
+}
+
+court22::court22 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court22",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+}
+
+void
+court22::kernel (double *xs, double *ret) {
+    dist_sq_inf (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = std::exp (-ret[i]);
+}
+
+court24::court24 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court24",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+}
+
+void
+court24::kernel (double *xs, double *ret) {
+    dist_sq_1 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = 1. / (1. + ret[i]);
+}
+
+court25::court25 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court25",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+}
+
+void
+court25::kernel (double *xs, double *ret) {
+    dist_sq_1 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = 1. / (1. + ret[i]);
+}
+
+court26::court26 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court26",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+}
+
+void
+court26::kernel (double *xs, double *ret) {
+    dist_sq_1 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = std::exp (-ret[i]);
+}
+
+court27::court27 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court27",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+}
+
+void
+court27::kernel (double *xs, double *ret) {
+    dist_sq_1 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = std::exp (-ret[i]);
+}
+
+court28::court28 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court28",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+}
+
+void
+court28::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = std::exp (-ret[i]);
+}
+
+michalewicz02::michalewicz02():
+    synthetic ("michalewicz02", 2, 0., M_PI, -1.8013034100985499)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("michalewicz02 opt");
+    opt->add_item (new inst::dbl_val ("0", 2.202905513296628));
+    opt->add_item (new inst::dbl_val ("1", 1.570796322320509));
+    this->set_opt_param (opt);
+}
+
+double
+michalewicz02::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double xs[2];
+    xs[0] = x->getdbl(0), xs[1] = x->getdbl(1);
+
+    double res = 0.;
+    for (int i = 0; i < 2; i++) {
+        res += std::sin (xs[i]) *
+            std::pow (
+                    std::sin (((i+1) * std::pow(xs[i], 2.)) / M_PI)
+                    , 20);
+    }
+    return -res;
+}
+
+michalewicz06::michalewicz06():
+    synthetic ("michalewicz06", 6, 0., M_PI, -5.687658179087978)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("michalewicz06 opt");
+    opt->add_item (new inst::dbl_val ("0", 2.202905513296628));
+    opt->add_item (new inst::dbl_val ("1", 1.570796322320509));
+    opt->add_item (new inst::dbl_val ("2", 1.284991564577549));
+    opt->add_item (new inst::dbl_val ("3", 1.923058467505610));
+    opt->add_item (new inst::dbl_val ("4", 1.720469766517768));
+    opt->add_item (new inst::dbl_val ("5", 1.570796319218113));
+    this->set_opt_param (opt);
+}
+
+double
+michalewicz06::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double xs[6];
+    for (int i = 0; i < 6; i++)
+        xs[i] = x->getdbl(i);
+
+    double res = 0.;
+    for (int i = 0; i < 6; i++) {
+        res += std::sin (xs[i]) *
+            std::pow (
+                    std::sin (((i+1) * std::pow(xs[i], 2.)) / M_PI)
+                    , 20);
+    }
+    return -res;
+}
+
+michalewicz12::michalewicz12():
+    synthetic ("michalewicz12", 12, 0., M_PI, -11.595826967415329)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("michalewicz12 opt");
+    opt->add_item (new inst::dbl_val ("0",  2.202905513296628));
+    opt->add_item (new inst::dbl_val ("1",  1.570796322320509));
+    opt->add_item (new inst::dbl_val ("2",  1.284991564577549));
+    opt->add_item (new inst::dbl_val ("3",  1.923058467505610));
+    opt->add_item (new inst::dbl_val ("4",  1.720469766517768));
+    opt->add_item (new inst::dbl_val ("5",  1.570796319218113));
+    opt->add_item (new inst::dbl_val ("6",  1.454413962081172));
+    opt->add_item (new inst::dbl_val ("7",  1.756086513575824));
+    opt->add_item (new inst::dbl_val ("8",  1.655717409323190));
+    opt->add_item (new inst::dbl_val ("9",  1.570796319387859));
+    opt->add_item (new inst::dbl_val ("10", 1.497728796097675));
+    opt->add_item (new inst::dbl_val ("11", 1.923739461688219));
+    this->set_opt_param (opt);
+}
+
+double
+michalewicz12::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double xs[12];
+    for (int i = 0; i < 12; i++)
+        xs[i] = x->getdbl(i);
+
+    double res = 0.;
+    for (int i = 0; i < 12; i++) {
+        res += std::sin (xs[i]) *
+            std::pow (
+                    std::sin (((i+1) * std::pow(xs[i], 2.)) / M_PI)
+                    , 20);
+    }
+    return -res;
 }
 
 } // end namespace syn
