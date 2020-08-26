@@ -512,6 +512,93 @@ test_regression_benchmarks ()
     }
     double resc1 = c1.evaluate(c1.get_opt_param ());
     assert (nearly_equal (resc1, c1.get_opt(), 1e-7));
+
+    // court02
+    syn::court02 c2;
+    double resc2 = c2.evaluate(c2.get_opt_param ());
+    assert (nearly_equal (resc2, c2.get_opt(), 1e-8));
+
+    // court03
+    syn::court03 c3;
+    double resc3 = c3.evaluate(c3.get_opt_param ());
+    assert (nearly_equal (resc3, c3.get_opt(), 1e-7));
+
+    // court04
+    syn::court04 c4;
+    double resc4 = c4.evaluate(c4.get_opt_param ());
+    assert (nearly_equal (resc4, c4.get_opt(), 1e-7));
+
+    // court05
+    syn::court05 c5;
+    double resc5 = c5.evaluate(c5.get_opt_param ());
+    assert (nearly_equal (resc5, c5.get_opt(), 1e-5));
+
+    // court06
+    syn::court06 c6;
+    double resc6 = c6.evaluate(c6.get_opt_param ());
+    assert (nearly_equal (resc6, c6.get_opt(), 1e-5));
+
+    // court07
+    syn::court07 c7;
+    double resc7 = c7.evaluate(c7.get_opt_param ());
+    assert (nearly_equal (resc7, c7.get_opt(), 5e-1));
+
+    // court08
+    syn::court08 c8;
+    double resc8 = c8.evaluate(c8.get_opt_param ());
+    assert (nearly_equal (resc8, c8.get_opt(), 5e-1));
+
+    // court09
+    syn::court09 c9;
+    double resc9 = c9.evaluate(c9.get_opt_param ());
+    assert (nearly_equal (resc9, c9.get_opt(),1e-7));
+
+    // court10
+    syn::court10 c10;
+    double resc10 = c10.evaluate(c10.get_opt_param ());
+    assert (nearly_equal (resc10, c10.get_opt(),1e-7));
+
+    // court11
+    syn::court11 c11;
+    double resc11 = c11.evaluate(c11.get_opt_param ());
+    assert (nearly_equal (resc11, c11.get_opt(),2));
+
+    // court13
+    syn::court13 c13;
+    double resc13 = c13.evaluate(c13.get_opt_param ());
+    assert (nearly_equal (resc13, c13.get_opt()));
+
+    // court14
+    syn::court14 c14;
+    double resc14 = c14.evaluate(c14.get_opt_param ());
+    assert (nearly_equal (resc14, c14.get_opt()));
+
+    // court15
+    syn::court15 c15;
+    double resc15 = c15.evaluate(c15.get_opt_param ());
+    assert (nearly_equal (resc15, c15.get_opt()));
+
+    // court16
+    syn::court16 c16;
+    double resc16 = c16.evaluate(c16.get_opt_param ());
+    assert (nearly_equal (resc16, c16.get_opt(),1e-9));
+
+    // court17
+    syn::court17 c17;
+    double resc17 = c17.evaluate(c17.get_opt_param ());
+    assert (nearly_equal (resc17, c17.get_opt(), 1));
+
+    // court18
+    syn::court18 c18;
+    double resc18 = c18.evaluate(c18.get_opt_param ());
+    assert (nearly_equal (resc18, c18.get_opt(),1e-7));
+
+    // court19
+    syn::court19 c19;
+    double resc19 = c19.evaluate(c19.get_opt_param ());
+    std::cout << resc19 - c19.get_opt() << std::endl;
+    assert (nearly_equal (resc19, c19.get_opt()));
+
 }
 
 static void

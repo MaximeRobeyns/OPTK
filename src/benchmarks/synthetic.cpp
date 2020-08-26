@@ -3004,11 +3004,10 @@ regression::evaluate (inst::set x) {
 void
 regression::dist_sq_1 (double *xs, double *ret)
 {
-    for (int i = 0; i < m_dims.prob; i++)
-        for (int j = 0; j < m_dims.coef; j++)
-            for (int k = 0; k < m_dims.prob; k++)
-                ret[i] += std::fabs (xs[i] - m_centres[j*m_dims.prob+k]) *
-                          std::sqrt (m_e_mat[j*m_dims.prob+k]);
+    for (int i = 0; i < m_dims.coef; i++)
+        for (int j = 0; j < m_dims.prob; j++)
+            ret[i] += std::fabs ((xs[j] - m_centres[i*m_dims.prob+j]) *
+                      std::sqrt (m_e_mat[i*m_dims.prob+j]));
 }
 
 void
@@ -3048,7 +3047,7 @@ court01::court01 ():
             ) {
 
     this->set_properties(std::vector<properties>({
-                properties::continuous,
+                properties::discontinuous,
                 properties::differentiable,
                 properties::non_separable,
                 properties::non_scalable,
@@ -3061,6 +3060,465 @@ court01::kernel (double *xs, double *ret) {
     dist_sq_2 (xs, ret);
     for (int i = 0; i < dims.coef; i++)
         ret[i] = 1 / std::sqrt (1 + ret[i]);
+}
+
+court02::court02 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court02",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+}
+
+void
+court02::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = 1 / std::sqrt (1 + ret[i]);
+}
+
+court03::court03 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court03",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+}
+
+void
+court03::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = std::exp (-ret[i]);
+}
+
+court04::court04 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court04",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+}
+
+void
+court04::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = std::cos (M_PI * std::sqrt (ret[i])) * std::exp (-ret[i]);
+}
+
+court05::court05 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court05",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+}
+
+void
+court05::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = std::exp (-ret[i]);
+}
+
+court06::court06 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court06",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+}
+
+void
+court06::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = std::sqrt (1 + ret[i]);
+}
+
+court07::court07 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court07",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+}
+
+void
+court07::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = (1 + ret[i]) * std::exp (-ret[i]);
+}
+
+court08::court08 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court08",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+}
+
+void
+court08::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = (1 + ret[i] + 0.333 * std::pow (ret[i], 2.)) *
+                std::exp (-ret[i]);
+}
+
+court09::court09 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court09",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+}
+
+void
+court09::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = std::cos (M_PI * std::sqrt (ret[i])) *
+            std::exp (-ret[i]);
+}
+
+court10::court10 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court10",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+}
+
+void
+court10::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = 1. / std::sqrt (1 + ret[i]);
+}
+
+court11::court11 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court11",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+}
+
+void
+court11::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = std::exp (-ret[i]);
+}
+
+court13::court13 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court13",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+}
+
+void
+court13::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = std::exp (-ret[i]);
+}
+
+court14::court14 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court14",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+}
+
+void
+court14::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = std::exp (-ret[i]);
+}
+
+court15::court15 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court15",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+}
+
+void
+court15::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = std::exp (-std::sqrt (ret[i]));
+}
+
+court16::court16 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court16",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+}
+
+void
+court16::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = 1. / std::sqrt (1 + ret[i]);
+}
+
+court17::court17 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court17",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+}
+
+void
+court17::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = 1. / std::sqrt (1 + ret[i]);
+}
+
+court18::court18 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court18",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+}
+
+void
+court18::kernel (double *xs, double *ret) {
+    dist_sq_2 (xs, ret);
+    for (int i = 0; i < dims.coef; i++)
+        ret[i] = (1. + std::sqrt(ret[i])) * std::exp (-std::sqrt(ret[i]));
+}
+
+court19::court19 ():
+    regression (
+            dims,
+            (double *)e_mat,
+            (double *)centres,
+            (double *)coefs,
+            "mc_court19",
+            fmin,
+            (double *)minloc
+            ) {
+
+    this->set_properties(std::vector<properties>({
+                properties::discontinuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::unimodal
+                }));
+}
+
+void
+court19::kernel (double *xs, double *ret) {
+    dist_sq_1 (xs, ret);
 }
 
 } // end namespace syn

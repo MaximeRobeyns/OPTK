@@ -1807,6 +1807,553 @@ class court01: public regression {
         static constexpr double coefs[coef] = {1, 1, -2, 1, 1, 1};
 };
 
+class court02: public regression {
+    public:
+        court02 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 7, coef = 6 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = -2.74162116801;
+        static constexpr double minloc[prob] =
+        {0.4068, 0.4432, 0.6479, 0.1978, 0.7660, 0.7553, 0.5640};
+
+        static constexpr double centres[coef * prob] = {
+            0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+            0.3, 0.1, 0.5, 0.1, 0.8, 0.8, 0.6,
+            0.6, 0.7, 0.8, 0.3, 0.7, 0.8, 0.6,
+            0.4, 0.7, 0.4, 0.9, 0.4, 0.1, 0.9,
+            0.9, 0.3, 0.3, 0.5, 0.2, 0.7, 0.2,
+            0.5, 0.5, 0.2, 0.8, 0.5, 0.3, 0.4};
+
+        static constexpr double e_mat[coef * prob] = {
+            5. , 5. , 5. , 5. , 5. , 5. , 5. ,
+            1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5,
+            1. , 1. , 1. , 1. , 1. , 1. , 1. ,
+            5. , 5. , 5. , 5. , 5. , 5. , 5. ,
+            5. , 5. , 5. , 5. , 5. , 5. , 5. ,
+            5. , 5. , 5. , 5. , 5. , 5. , 5.};
+
+        static constexpr double coefs[coef] = {-1, -1, -2, 1, 1, -1};
+};
+
+class court03: public regression {
+    public:
+        court03 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 9, coef = 9 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = -3.02379637466;
+        static constexpr double minloc[prob] =
+        { 0.9317, 0.1891, 0.2503, 0.3646, 0.1603, 0.9829, 0.0392, 0.3263,
+            0.6523 };
+
+        static constexpr double centres[coef * prob] = {
+            0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+            0.3, 0.1, 0.5, 0.1, 0.8, 0.8, 0.6, 0.4, 0.2,
+            0.6, 0.7, 0.8, 0.3, 0.7, 0.8, 0.6, 0.9, 0.1,
+            0.7, 0.2, 0.7, 0.7, 0.3, 0.3, 0.8, 0.6, 0.4,
+            0.4, 0.6, 0.4, 0.9, 0.4, 0.1, 0.9, 0.3, 0.3,
+            0.5, 0.5, 0.2, 0.8, 0.5, 0.3, 0.4, 0.5, 0.8,
+            0.8, 0.3, 0.3, 0.5, 0.2, 0.7, 0.2, 0.4, 0.6,
+            0.8, 0.3, 0.3, 0.5, 0.2, 0.7, 0.2, 0.4, 0.6,
+            0.8, 0.3, 0.3, 0.5, 0.2, 0.7, 0.2, 0.4, 0.6};
+
+        static constexpr double e_mat[coef * prob] = {
+                1, 1, 1, 1, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 1, 1, 1, 1, 1,
+                0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+                0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
+                1, 1, 1, 1, 1, 1, 1, 1, 1};
+
+        static constexpr double coefs[coef] = {1, -1, 1, 1, 1, 1, -1, -2, -1};
+};
+
+class court04: public regression {
+    public:
+        court04 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 10, coef = 9 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = -4.631135472012;
+        static constexpr double minloc[prob] =
+        { 0.8286, 0.3562, 0.3487, 0.4623, 0.1549,
+          0.7182, 0.2218, 0.3919, 0.5394, 0.441};
+
+        static constexpr double centres[coef * prob] = {
+                0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+                0.3, 0.1, 0.5, 0.1, 0.8, 0.8, 0.6, 0.4, 0.2, 0.9,
+                0.6, 0.7, 0.8, 0.3, 0.7, 0.8, 0.6, 0.9, 0.1, 0.2,
+                0.7, 0.2, 0.7, 0.7, 0.3, 0.3, 0.8, 0.6, 0.4, 0.1,
+                0.4, 0.6, 0.4, 0.9, 0.4, 0.1, 0.9, 0.3, 0.3, 0.2,
+                0.5, 0.5, 0.2, 0.8, 0.5, 0.3, 0.4, 0.5, 0.8, 0.6,
+                0.8, 0.4, 0.3, 0.5, 0.2, 0.7, 0.2, 0.4, 0.6, 0.5,
+                0.8, 0.4, 0.3, 0.5, 0.2, 0.7, 0.2, 0.4, 0.6, 0.5,
+                0.8, 0.4, 0.3, 0.5, 0.2, 0.7, 0.2, 0.4, 0.6, 0.5};
+
+        static constexpr double e_mat[coef * prob] = {
+                0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5,
+                0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5,
+                0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5,
+                0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5,
+                0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5,
+                0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5,
+                0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
+                0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,
+                0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5};
+
+        static constexpr double coefs[coef] = {1, -1, 1, -1, 1, 1, -2, -1, -1};
+};
+
+class court05: public regression {
+    public:
+        court05 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 12, coef = 10 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = -11.89842508364;
+        static constexpr double minloc[prob] =
+        { 0.636, 0.622, 0.39, 0.622, 0.29, 0.047,
+          0.97, 0.26, 0.311, 0.247, 0.794, 0.189 };
+
+        static constexpr double centres[coef * prob] = {
+                0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+                0.3, 0.1, 0.5, 0.1, 0.8, 0.8, 0.6, 0.4, 0.2, 0.9, 0.3, 0.7,
+                0.6, 0.7, 0.8, 0.3, 0.7, 0.8, 0.6, 0.9, 0.1, 0.2, 0.5, 0.2,
+                0.7, 0.2, 0.7, 0.7, 0.3, 0.3, 0.8, 0.6, 0.4, 0.1, 0.9, 0.9,
+                0.4, 0.6, 0.4, 0.5, 0.4, 0.2, 0.8, 0.3, 0.3, 0.2, 0.5, 0.1,
+                0.5, 0.5, 0.2, 0.8, 0.5, 0.3, 0.4, 0.5, 0.8, 0.6, 0.9, 0.1,
+                0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0, 0.1, 0.2,
+                0.8, 0.4, 0.3, 0.5, 0.2, 0.7, 0.2, 0.4, 0.6, 0.5, 0.3, 0.8,
+                0.9, 0.5, 0.3, 0.2, 0.1, 0.9, 0.3, 0.7, 0.7, 0.7, 0.4, 0.4,
+                0.2, 0.8, 0.6, 0.4, 0.6, 0.6, 0.5, 0, 0.2, 0.8, 0.2, 0.3};
+
+        static constexpr double e_mat[coef * prob] = {
+                0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,
+                0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,
+                0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,
+                0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,
+                0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,
+                0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08,0.08,
+                0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,
+                0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,0.2 ,
+                0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,
+                0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 ,0.4 };
+
+
+        static constexpr double coefs[coef] =
+            {5, -2, 5, -5, -20, -2, 10, 2, -5, 5};
+};
+
+class court06: public regression {
+    public:
+        court06 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 5, coef = 7 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = 2.80720263234;
+        static constexpr double minloc[prob] = {1, 1, 0.7636, 0.5268, 1};
+
+        static constexpr double centres[coef * prob] = {
+                0.1, 0.1, 0.1, 0.1, 0.1,
+                0.3, 0.8, 0.8, 0.6, 0.9,
+                0.6, 0.1, 0.2, 0.5, 0.2,
+                0.7, 0.2, 0.1, 0.8, 0.9,
+                0.4, 0.6, 0.5, 0.3, 0.8,
+                0.9, 0.5, 0.3, 0.2, 0.4,
+                0.2, 0.8, 0.6, 0.4, 0.6};
+
+        static constexpr double e_mat[coef * prob] = {
+                0.4 , 0.4 , 0.4 , 0.4 , 0.4 ,
+                0.2 , 0.2 , 0.2 , 0.2 , 0.2 ,
+                0.4 , 0.4 , 0.4 , 0.4 , 0.4 ,
+                0.08, 0.08, 0.08, 0.08, 0.08,
+                0.2 , 0.2 , 0.2 , 0.2 , 0.2 ,
+                0.4 , 0.4 , 0.4 , 0.4 , 0.4 ,
+                0.4 , 0.4 , 0.4 , 0.4 , 0.4};
+
+        static constexpr double coefs[coef] = {-3, 2, -2, 4, -1, 5, -1};
+};
+
+class court07: public regression {
+    public:
+        court07 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 6, coef = 7 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = -0.36321372933;
+        static constexpr double minloc[prob] = {0.3811, 1, 0.2312, 0, 1, 0.1403};
+
+        static constexpr double centres[coef * prob] = {
+                0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+                0.3, 0.8, 0.8, 0.6, 0.9, 0.4,
+                0.6, 1, 0.2, 0, 1, 0.3,
+                0.7, 0.2, 0.1, 0.8, 0.9, 0.2,
+                0.4, 0.6, 0.5, 0.3, 0.8, 0.3,
+                0.9, 0.5, 0.3, 0.2, 0.4, 0.8,
+                0.2, 0.8, 0.6, 0.4, 0.6, 0.9};
+
+        static constexpr double e_mat[coef * prob] = {
+                0.7 , 0.7 , 0.7 , 0.7 , 0.7 , 0.7 ,
+                0.35, 0.35, 0.35, 0.35, 0.35, 0.35,
+                0.7 , 0.7 , 0.7 , 0.7 , 0.7 , 0.7 ,
+                0.14, 0.14, 0.14, 0.14, 0.14, 0.14,
+                0.35, 0.35, 0.35, 0.35, 0.35, 0.35,
+                0.7 , 0.7 , 0.7 , 0.7 , 0.7 , 0.7 ,
+                0.49, 0.49, 0.49, 0.49, 0.49, 0.49};
+
+        static constexpr double coefs[coef] = {2, 2, -4, 1, -2, 4, -2};
+};
+
+class court08: public regression {
+    public:
+        court08 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 4, coef = 7 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = -3.45224058874;
+        static constexpr double minloc[prob] = {0.5067, 1, 0.5591, 0.0823};
+
+        static constexpr double centres[coef * prob] = {
+                0.1, 0.1, 0.1, 0.1,
+                0.3, 0.8, 0.9, 0.4,
+                0.6, 1, 0.2, 0,
+                0.7, 0.2, 0.1, 0.8,
+                0.4, 0, 0.8, 1,
+                0.9, 0.5, 0.3, 0.2,
+                0.2, 0.8, 0.6, 0.4};
+
+        static constexpr double e_mat[coef * prob] = {
+                0.7 , 0.7 , 0.7 , 0.7 ,
+                0.35, 0.35, 0.35, 0.35,
+                0.7 , 2.1 , 0.7 , 2.1 ,
+                0.35, 0.35, 0.35, 0.35,
+                1.4 , 0.7 , 1.4 , 0.7 ,
+                0.7 , 0.7 , 0.7 , 0.7 ,
+                0.49, 0.49, 0.49, 0.49};
+
+        static constexpr double coefs[coef] = {2, 1, -8, 1, -5, 3, 2};
+};
+
+class court09: public regression {
+    public:
+        court09 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 3, coef = 8 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = -10.17146707797;
+        static constexpr double minloc[prob] = {0.594, 1, 0.205};
+
+        static constexpr double centres[coef * prob] = {
+                0.1, 0.1, 0.1,
+                0.3, 0.8, 0.9,
+                0.6, 1, 0.2,
+                0.6, 1, 0.2,
+                0.7, 0.2, 0.1,
+                0.4, 0, 0.8,
+                0.9, 0.5, 1,
+                0, 0.8, 0.6};
+
+        static constexpr double e_mat[coef * prob] = {
+                0.6 , 0.6 , 0.6 ,
+                0.36, 0.36, 0.36,
+                0.6 , 0.3 , 0.6 ,
+                2.4 , 6.  , 2.4 ,
+                0.3 , 0.3 , 0.3 ,
+                0.3 , 0.6 , 0.3 ,
+                0.6 , 0.6 , 0.6 ,
+                0.18, 0.3 , 0.3};
+
+        static constexpr double coefs[coef] = {4, -3, -6, -2, 1, -3, 6, 2};
+};
+
+class court10: public regression {
+    public:
+        court10 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 8, coef = 10 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = -2.51939597030;
+        static constexpr double minloc[prob] =
+            {0.5085, 0.5433, 0.2273, 1, 0.3381, 0.0255, 1, 0.5038};
+
+        static constexpr double centres[coef * prob] = {
+                0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+                0.3, 0.1, 0.5, 0.1, 0.8, 0.8, 0.6, 0.4,
+                0.6, 0.7, 0.8, 0.3, 0.7, 0.8, 0.6, 0.9,
+                0.7, 0, 0.7, 1, 0.3, 0, 0.8, 0.6,
+                0.4, 0.6, 0.4, 1, 0.4, 0.2, 1, 0.3,
+                0.5, 0.5, 0.2, 0.8, 0.5, 0.3, 0.4, 0.5,
+                0.1, 0.2, 1, 0.4, 0.5, 0.6, 0.7, 0,
+                0.9, 0.4, 0.3, 0.5, 0.2, 0.7, 0.2, 0.4,
+                0, 0.5, 0.3, 0.2, 0.1, 0.9, 0.3, 0.7,
+                0.2, 0.8, 0.6, 0.4, 0.6, 0.6, 0.5, 0};
+
+        static constexpr double e_mat[coef * prob] = {
+                0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
+                0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
+                0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
+                0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4,
+                0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
+                2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4,
+                0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4,
+                0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8,
+                1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
+                0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8};
+
+        static constexpr double coefs[coef] =
+            {5, -2, 5, -5, -12, -2, 10, 2, -5, 5};
+};
+
+class court11: public regression {
+    public:
+        court11 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 8, coef = 10 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = -0.39045528652;
+        static constexpr double minloc[prob] =
+            {0.4, 0.6, 0.4, 1, 0.4, 0.2, 1, 0.3};
+
+        static constexpr double centres[coef * prob] = {
+                0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+                0.3, 0.1, 0.5, 0.1, 0.8, 0.8, 0.6, 0.4,
+                0.6, 0.7, 0.8, 0.3, 0.7, 0.8, 0.6, 0.9,
+                0.7, 0, 0.7, 1, 0.3, 0, 0.8, 0.6,
+                0.4, 0.6, 0.4, 1, 0.4, 0.2, 1, 0.3,
+                0.5, 0.5, 0.2, 0.8, 0.5, 0.3, 0.4, 0.5,
+                0.1, 0.2, 1, 0.4, 0.5, 0.6, 0.7, 0,
+                0.9, 0.4, 0.3, 0.5, 0.2, 0.7, 0.2, 0.4,
+                0, 0.5, 0.3, 0.2, 0.1, 0.9, 0.3, 0.7,
+                0.2, 0.8, 0.6, 0.4, 0.6, 0.6, 0.5, 0};
+
+        static constexpr double e_mat[coef * prob] = {
+                0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 ,
+                0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 ,
+                0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 ,
+                0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,
+                0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 ,
+                1.5 , 1.5 , 1.5 , 1.5 , 1.5 , 1.5 , 1.5 , 1.5 ,
+                0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,
+                0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 ,
+                1.  , 1.  , 1.  , 1.  , 1.  , 1.  , 1.  , 1.  ,
+                0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 , 0.5 };
+
+        static constexpr double coefs[coef] =
+            {5, -2, 5, -5, -7, -2, 10, 2, -5, 5};
+};
+
+// skip 12 because of bessel function (imported from scipy in evalse). TODO for
+// completeness, implement scipy.special.jv).
+
+class court13: public regression {
+    public:
+        court13 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 3, coef = 15 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = 1.49048296359;
+        static constexpr double minloc[prob] = {1,1,1};
+
+        static constexpr double centres[coef * prob] = {
+                0.9, 0.9, 0.9,
+                0.9, 0.9, 1,
+                0.9, 1, 0.9,
+                1, 0.9, 0.9,
+                1, 1, 1,
+                1, 0, 0,
+                0.5, 0, 0,
+                0, 1, 0,
+                0, 0.7, 0,
+                0, 0, 0,
+                0.4, 0.3, 0.6,
+                0.7, 0.7, 0.7,
+                0.7, 0.7, 1,
+                1, 0.7, 0.7,
+                0.7, 1, 0.7};
+
+        static constexpr double e_mat[coef * prob] = {
+                7.6, 7.6, 7.6,
+                7.6, 7.6, 7.6,
+                7.6, 7.6, 7.6,
+                7.6, 7.6, 7.6,
+                7.6, 7.6, 7.6,
+                0.8, 0.4, 0.8,
+                1.6, 0.4, 0.8,
+                0.4, 0.4, 0.4,
+                0.4, 0.8, 0.4,
+                0.8, 0.8, 0.8,
+                1.6, 1.6, 2.8,
+                6.8, 6.8, 6.8,
+                6.8, 6.8, 6.8,
+                6.8, 6.8, 6.8,
+                6.8, 6.8, 6.8};
+
+        static constexpr double coefs[coef] =
+            {4, 4, 4, 4, -12, 1, 3, -2, 5, -2, 1, -2, -2, -2, -2};
+};
+
+class court14: public regression {
+    public:
+        court14 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 3, coef = 1 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = -5;
+        static constexpr double minloc[prob] = {0.1, 0.8, 0.3};
+        static constexpr double centres[coef * prob] = {0.1, 0.8, 0.3};
+        static constexpr double e_mat[coef * prob] = {5, 5, 5};
+        static constexpr double coefs[coef] = {-5};
+};
+
+class court15: public regression {
+    public:
+        court15 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 3, coef = 1 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = -5;
+        static constexpr double minloc[prob] = {0.1, 0.8, 0.3};
+        static constexpr double centres[coef * prob] = {0.1, 0.8, 0.3};
+        static constexpr double e_mat[coef * prob] = {7, 7, 7};
+        static constexpr double coefs[coef] = {-5};
+};
+
+class court16: public regression {
+    public:
+        court16 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 4, coef = 2 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = -0.84221700966;
+        static constexpr double minloc[prob] = {0.1858, 0.6858, 0.1858, 0.4858};
+        static constexpr double centres[coef * prob] =
+            {0.3, 0.8, 0.3, 0.6, 0.4, 0.9, 0.4, 0.7};
+        static constexpr double e_mat[coef * prob] = {5, 5, 5, 5, 5, 5, 5, 5};
+        static constexpr double coefs[coef] = {-5, 5};
+};
+
+class court17: public regression {
+    public:
+        court17 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 7, coef = 3 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = -0.47089199032;
+        static constexpr double minloc[prob] = {
+            0.3125, 0.9166, 0.3125, 0.7062, 0.0397, 0.9270, 0.5979};
+        static constexpr double centres[coef * prob] = {
+                0.3, 0.8, 0.3, 0.6, 0.2, 0.8, 0.5,
+                0.8, 0.3, 0.8, 0.2, 0.5, 0.2, 0.8,
+                0.2, 0.7, 0.2, 0.5, 0.4, 0.7, 0.3};
+
+        static constexpr double e_mat[coef * prob] = {
+            4, 4, 4, 4, 4, 4, 4,
+             4, 4, 4, 4, 4, 4, 4,
+             4, 4, 4, 4, 4, 4, 4};
+
+        static constexpr double coefs[coef] = {-5, 5, 5};
+};
+
+class court18: public regression {
+    public:
+        court18 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 8, coef = 5 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = -1.42906223657;
+        static constexpr double minloc[prob] =
+            {0.2677, 0.8696, 0.2677, 0.6594, 0.1322, 0.9543, 0.0577, 0.295};
+        static constexpr double centres[coef * prob] = {
+                0.3, 0.8, 0.3, 0.6, 0.2, 0.8, 0.2, 0.4,
+                0.3, 0.8, 0.3, 0.6, 0.2, 0.8, 0.2, 0.4,
+                0.3, 0.8, 0.3, 0.6, 0.2, 0.8, 0.2, 0.4,
+                0.8, 0.3, 0.8, 0.2, 0.5, 0.2, 0.5, 0.7,
+                0.2, 0.7, 0.2, 0.5, 0.4, 0.3, 0.8, 0.8};
+
+        static constexpr double e_mat[coef * prob] = {
+                0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
+                1, 1, 1, 1, 1, 1, 1, 1,
+                4, 4, 4, 4, 4, 4, 4, 4,
+                4, 4, 4, 4, 4, 4, 4, 4,
+                4, 4, 4, 4, 4, 4, 4, 4};
+
+        static constexpr double coefs[coef] = {-1, 2, -5, 4, 4};
+};
+
+class court19: public regression {
+    public:
+        court19 ();
+        void kernel (double *xs, double *ret) override;
+        enum { prob = 2, coef = 10 };
+
+    private:
+        static constexpr rdims dims = { .prob = prob, .coef = coef };
+        static constexpr double fmin = -8.67263950474;
+        static constexpr double minloc[prob] = {0.4, 0.8};
+        static constexpr double centres[coef * prob] = {
+                0.1, 0.1,
+                0.3, 0.8,
+                0.6, 0.7,
+                0.7, 0.1,
+                0.4, 0.3,
+                0.2, 0.8,
+                0.1, 0.2,
+                0.9, 0.4,
+                0.5, 0.5,
+                0, 0.8};
+
+        static constexpr double e_mat[coef * prob] = {
+                3. , 3. ,
+                3. , 3. ,
+                3. , 3. ,
+                1.5, 1.5,
+                3. , 3. ,
+                9. , 9. ,
+                1.5, 1.5,
+                3. , 3. ,
+                6. , 6. ,
+                3. , 3. };
+
+        static constexpr double coefs[coef] =
+            {5, -4, 5, -5, -4, -2, 10, 4, -5, -5};
+};
+
 } // end namespace syn
 
 #endif // __SYNTHETIC_H_
