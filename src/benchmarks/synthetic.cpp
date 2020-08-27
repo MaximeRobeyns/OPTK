@@ -4122,12 +4122,127 @@ mishra08::evaluate (inst::set x)
     double g = 0.;
     for (int i = 0; i < 11; i++)
         g += gc[i] * std::pow (x1, 10 - i);
-    std::cout << g << std::endl;
     double h = 0.;
     for (int i = 0; i < 5; i++)
         g += hc[i] * std::pow (x2, 4 - i);
-    std::cout << h << std::endl;
-    return 0.001 * std::pow (std::fabs (g) + std::fabs (h), 2.);
+    return 0.001 * std::pow (std::fabs (g) * std::fabs (h), 2.);
+}
+
+mishra09::mishra09():
+    synthetic ("mishra09", 3, -10., 10., 0)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("mishra09 opt");
+    opt->add_item (new inst::dbl_val ("0", 1.));
+    opt->add_item (new inst::dbl_val ("1", 2.));
+    opt->add_item (new inst::dbl_val ("2", 3.));
+    this->set_opt_param (opt);
+}
+
+double
+mishra09::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1), x3 = x->getdbl(2);
+
+    double a =
+        2. * std::pow (x1, 3.) +
+        5. * x1 * std::pow (x2, 2.) +
+        4. * x3 -
+        2. * std::pow (x1, 2.) * x3 -
+        18.;
+    double b =
+        x1 +
+        std::pow (x2, 3.) +
+        x1 * std::pow (x2, 2.) +
+        x1 * std::pow (x3, 2.) -
+        22.;
+    double c = 8 * std::pow (x1, 2.) +
+        2. * x2 * x3 +
+        2. * std::pow (x2, 2.) +
+        3. * std::pow (x2, 3.) -
+        52.;
+
+    return std::pow (
+            a * std::pow (b, 2.) * c +
+            a * b * std::pow (c, 2.) +
+            std::pow (b, 2.) +
+            std::pow (x1 + x2 - x3, 2.)
+            , 2.);
+}
+
+mishra10::mishra10():
+    synthetic ("mishra10", 2, -10., 10., 0)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::non_scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("mishra10 opt");
+    opt->add_item (new inst::dbl_val ("0", 2));
+    opt->add_item (new inst::dbl_val ("1", 2.));
+    this->set_opt_param (opt);
+}
+
+double
+mishra10::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl(0), x2 = x->getdbl(1);
+
+    return std::pow (
+                (std::floor (x1) * std::floor(x2)) -
+                std::floor (x1) -
+                std::floor (x2)
+            , 2.);
+}
+
+mishra11::mishra11(int dims):
+    synthetic ("mishra11", dims, 0., 10., 0)
+{
+    this->set_properties(std::vector<properties>({
+                properties::continuous,
+                properties::differentiable,
+                properties::non_separable,
+                properties::scalable,
+                properties::multimodal
+                }));
+
+    inst::node *opt = new inst::node ("mishra11 opt");
+    for (int i = 0; i < dims; i++)
+        opt->add_item (new inst::dbl_val (std::to_string(i), 5));
+    this->set_opt_param (opt);
+}
+
+double
+mishra11::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double sx = 0., px = 1.;
+    for (uint i = 0; i < m_dims; i++) {
+        double xi = std::fabs (x->getdbl(i));
+        sx += xi;
+        px *= xi;
+    }
+
+    return std::pow (
+            (1./(double) m_dims) * sx -
+            std::pow (px, 1./(double) m_dims)
+            , 2.);
 }
 
 } // end namespace syn

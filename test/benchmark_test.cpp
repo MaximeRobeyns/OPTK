@@ -544,9 +544,23 @@ test_synthetic_benchmarks ()
     // mishra08
     syn::mishra08 mish08;
     double resmish08 = mish08.evaluate(mish08.get_opt_param ());
-    std::cout << resmish08 - mish08.get_opt() << std::endl;
     assert (nearly_equal (resmish08, mish08.get_opt()));
 
+    // mishra09
+    syn::mishra09 mish09;
+    double resmish09 = mish09.evaluate(mish09.get_opt_param ());
+    assert (nearly_equal (resmish09, mish09.get_opt()));
+
+    // mishra10
+    syn::mishra10 mish10;
+    double resmish10 = mish10.evaluate(mish10.get_opt_param ());
+    assert (nearly_equal (resmish10, mish10.get_opt()));
+
+    // mishra11
+    syn::mishra11 mish11(10);
+    double resmish11 = mish11.evaluate(mish11.get_opt_param ());
+    assert (nearly_equal (resmish11, mish11.get_opt()));
+    // std::cout << resmish09 - mish09.get_opt() << std::endl;
 }
 
 static void

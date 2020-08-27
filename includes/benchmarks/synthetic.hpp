@@ -2864,6 +2864,65 @@ class mishra08: public synthetic {
         double evaluate (inst::set x) override;
 };
 
+/**
+ * The Mishra 09 (decanomial) function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \left(ab^2c + abc^2 + b^2 + (x_1 + x_2 - x_3)^2 \right)^2
+ * \f]
+ * where
+ * \f[
+ * \begin{align*}
+ * a &= 2x_1^3 + 5x_1x_2 + 4x_3 - 2x_1^2x_3 - 18 \\
+ * b &= x_1 + x_2^3 + x_1x_3^2 - 22 \\
+ * c &= 8x_1^2 + 2x_3x_3 + 2x_2^2 + 3x_2^3 - 52,
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$ for \f$i = 1,2,3\f$ with a global minimum
+ * located at \f$\mathbf{x}^* = (1,2,3)\f$ with
+ * value \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class mishra09: public synthetic {
+    public:
+        mishra09();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Mishra 10 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \left( \lfloor x_1 \perp x_2 \rfloor - \lfloor x_1 \rfloor -
+ * \lfloor x_2 \rfloor \right)^2
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$ for \f$i = 1,2\f$ with two global minima
+ * located at \f$\mathbf{x}^* = \{(0,0), (2,2)\f}\f$ with value
+ * \f$(\mathbf{x}^*) = 0\f$.
+ */
+class mishra10: public synthetic {
+    public:
+        mishra10();
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The Mishra 11 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \left(
+ * \frac{1}{n}\sum^n_{i=1}\vert x_i \vert - \left(\prod^n_{i=1}\vert
+ * x_i\vert\right^{\frac{1}{N}} \right)^2
+ * \f],
+ * subject to \f$0 \le x_i \le 10\f$ for \f$i = 1,2, \ldots n\f$. There are an
+ * infinite number of global minima located at \f$\mathbf{x} = (x, \ldots,
+ * x)\f$ (that is, \f$x_1 = x_2 = \cdots = x_n\f$, with value
+ * \f$f(\mathbf{x}^*) = 0\f$.
+ */
+class mishra11: public synthetic {
+    public:
+        mishra11(int dims);
+        double evaluate (inst::set x) override;
+};
+
+// pick up from f85. in jamil et al
+// from l.3035 in evalset:test_funcs
+
 } // end namespace syn
 
 #endif // __SYNTHETIC_H_

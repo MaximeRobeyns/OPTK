@@ -26,13 +26,9 @@
 #include <iostream>
 #include <limits>
 
-// TODO get rid of this
-#include <iostream>
-#include <optimisers/gridsearch.hpp>
-// end
-
 #include <optk/types.hpp>
 #include <tests/testutils.hpp>
+ #include <optimisers/gridsearch.hpp>
 
 /**
  * Runs correctness tests for the gridsearch default benchmarks
