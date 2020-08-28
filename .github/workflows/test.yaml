@@ -1,16 +1,20 @@
 # Copyright (C) 2020 Maxime Robeyns <maximerobeyns@gmail.com>
 
 name: Project build and test
-on: [push, pull_request]
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
 
 jobs:
   tests:
     runs-on: ubuntu-latest
-    name: Compile and test the project
+    name: Compile and test
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Build
+    - uses: actions/checkout@v2
+    - name: compile tests
       run: make test
-    - name: Test
+    - name: run tests
       run: ./bin/optk_tests
