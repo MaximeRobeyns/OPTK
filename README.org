@@ -1,7 +1,6 @@
 #+TITLE: Optimisation Toolkit, /OPTK/
 
-[[Tests][https://github.com/MaximeRobeyns/OPTK/workflows/Project%20build%20and%20test/badge.svg] [[Documentation
-Build][https://github.com/MaximeRobeyns/OPTK/workflows/Compile%20and%20re-deploy%20documentation/badge.svg]
+[[Tests][https://github.com/MaximeRobeyns/OPTK/workflows/Project%20build%20and%20test/badge.svg]] [[Documentation Build][https://github.com/MaximeRobeyns/OPTK/workflows/Compile%20and%20re-deploy%20documentation/badge.svg]]
 
 /Warning/: This library is not yet finished. Please only expect useful output
 when this warning message has been removed and replaced with a usage guide.
