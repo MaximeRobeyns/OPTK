@@ -732,9 +732,11 @@ test_unknown_benchmarks ()
 
     gridsearch gs = gridsearch ();
     // ridiculously course grid just for testing...
-    sspace::sspace_t *lmss = lm5.get_gridsearch_ss(5);
+    sspace::sspace_t *lmss = gs.convert_synthetic_ss(lm5.get_search_space(), 5);
     gs.update_search_space(lmss);
-    lm5.free_ss (lmss); delete lmss;
+
+    // equivalent: gs.update_search_space_s(lm5.get_search_space(), 5);
+
     uint idx = 0;
     inst::set params = gs.generate_parameters(idx++);
     double res = lm5.evaluate (params);
@@ -743,7 +745,6 @@ test_unknown_benchmarks ()
         gs.receive_trial_results(idx-1, params, res);
         params = gs.generate_parameters (idx++);
     }
-
 }
 
 void

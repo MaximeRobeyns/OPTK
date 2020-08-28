@@ -763,6 +763,13 @@ class qlognormal: public lognormal {
  */
 void validate_param_values (inst::value_map *vals, sspace::sspace_t *sspace);
 
+/**
+ * A convenience method to delete a search space description which was
+ * allocated on the heap. This function is often used in class destructors.
+ * @param ss The heap-allocated search space description to free.
+ */
+void free_ss (sspace_t *ss);
+
 } // namespace sspace
 
 #endif // __TYPES_H_

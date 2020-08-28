@@ -643,3 +643,49 @@ sspace::validate_param_values (inst::value_map *vals, sspace::sspace_t *sspace)
     }
 }
 
+#define deltype(type, src) \
+    { \
+    type *tmp_type = static_cast<type *>(src); \
+    delete tmp_type; \
+    break; \
+    }
+
+void
+sspace::free_ss (sspace::sspace_t *ss)
+{
+    sspace::sspace_t::iterator it;
+    for (it = ss->begin (); it != ss->end (); it++) {
+        sspace::param_t *tmp = (*it);
+        pt t = tmp->get_type();
+        switch (t) {
+            case pt::categorical_int:
+                deltype(sspace::categorical<int>, tmp);
+            case pt::categorical_dbl:
+                deltype(sspace::categorical<double>, tmp);
+            case pt::categorical_str:
+                deltype(sspace::categorical<std::string>, tmp);
+            case pt::choice:
+                deltype(sspace::choice, tmp);
+            case pt::normal:
+                deltype(sspace::normal, tmp);
+            case pt::qnormal:
+                deltype(sspace::qnormal, tmp);
+            case pt::lognormal:
+                deltype(sspace::lognormal, tmp);
+            case pt::qlognormal:
+                deltype(sspace::qlognormal, tmp);
+            case pt::uniform:
+                deltype(sspace::uniform, tmp);
+            case pt::quniform:
+                deltype(sspace::quniform, tmp);
+            case pt::loguniform:
+                deltype(sspace::loguniform, tmp);
+            case pt::qloguniform:
+                deltype(sspace::qloguniform, tmp);
+            case pt::randint:
+                deltype(sspace::randint, tmp);
+        }
+    }
+    // delete ss;
+}
+

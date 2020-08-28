@@ -82,6 +82,29 @@ class gridsearch: public optk::optimiser {
         void update_search_space (sspace::sspace_t *space);
 
         /**
+         * Converts the search space for synthetic benchmarks (defined as
+         * uniformly distributed variables) into sspace::quniform parameters.
+         * @param ss The original search space.
+         * @param q The quantisation for uniform parameters.
+         * @returns A search space made up of quniform parameters.
+         */
+        sspace::sspace_t *convert_synthetic_ss (sspace::sspace_t *ss, double q);
+
+        /**
+         * A convenience method for accepting a search space from a synthetic
+         * benchmark. This is equivalent to calling
+         * @code{.cpp}
+         * sspace::sspace_t *ss =
+         *      gridsearch.convert_synthetic_ss (
+         *          benchmark.get_search_space(), q
+         *      );
+         * @endcode
+         * @param space The search space returned from synthetic::get_search_space.
+         * @param q The quantisation for uniform parameters.
+         */
+        void update_search_space_s (sspace::sspace_t *space, double q);
+
+        /**
          * Returns the next unique parameter configuration.
          * @param param_id The identifier which will be matched with the
          * selected parameter combination.
@@ -132,6 +155,12 @@ class gridsearch: public optk::optimiser {
         /** Indicates whether this is the first call to generate_parameters */
         bool fst_gen;
 
+        /**
+         * A list of pointers to converted synthetic benchmark search spaces
+         * allocated through convert_synthetic_ss; used in destructor to avoid
+         * memory leaks.
+         */
+        std::vector<sspace::sspace_t *> m_syn_spaces;
 };
 
 #ifdef __OPTK_TESTING

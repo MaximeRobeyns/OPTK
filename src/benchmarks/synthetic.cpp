@@ -45,55 +45,9 @@ synthetic::synthetic (const std::string &n, u_int dims, double opt):
     benchmark(n), m_dims(dims), m_opt(opt)
 { }
 
-#define deltype(type, src) \
-    { \
-    type *tmp_type = static_cast<type *>(src); \
-    delete tmp_type; \
-    break; \
-    }
-
-void
-synthetic::free_ss (sspace::sspace_t *ss)
-{
-    // free the search space description
-    sspace::sspace_t::iterator it;
-    for (it = ss->begin (); it != ss->end (); it++) {
-        sspace::param_t *tmp = (*it);
-        pt t = tmp->get_type();
-        switch (t) {
-            case pt::categorical_int:
-                deltype(sspace::categorical<int>, tmp);
-            case pt::categorical_dbl:
-                deltype(sspace::categorical<double>, tmp);
-            case pt::categorical_str:
-                deltype(sspace::categorical<std::string>, tmp);
-            case pt::choice:
-                deltype(sspace::choice, tmp);
-            case pt::normal:
-                deltype(sspace::normal, tmp);
-            case pt::qnormal:
-                deltype(sspace::qnormal, tmp);
-            case pt::lognormal:
-                deltype(sspace::lognormal, tmp);
-            case pt::qlognormal:
-                deltype(sspace::qlognormal, tmp);
-            case pt::uniform:
-                deltype(sspace::uniform, tmp);
-            case pt::quniform:
-                deltype(sspace::quniform, tmp);
-            case pt::loguniform:
-                deltype(sspace::loguniform, tmp);
-            case pt::qloguniform:
-                deltype(sspace::qloguniform, tmp);
-            case pt::randint:
-                deltype(sspace::randint, tmp);
-        }
-    }
-}
-
 synthetic::~synthetic()
 {
-    free_ss (&m_sspace);
+    sspace::free_ss (&m_sspace);
 
     // free the optimal parameters
     if (opt_params != NULL)
@@ -111,26 +65,6 @@ void
 synthetic::set_opt_param(inst::set op)
 {
     opt_params = op;
-}
-
-sspace::sspace_t *
-synthetic::get_gridsearch_ss (double q)
-{
-    sspace::sspace_t *newspace = new sspace::sspace_t();
-    sspace::sspace_t::iterator it;
-    int idx = 0;
-    for (it = m_sspace.begin (); it != m_sspace.end (); it++) {
-        sspace::uniform *prev = static_cast<sspace::uniform *>(*it);
-        sspace::quniform *newparam =
-            new sspace::quniform(
-                    std::to_string (idx++),
-                    prev->m_lower,
-                    prev->m_upper,
-                    q
-                    );
-        newspace->push_back (newparam);
-    }
-    return newspace;
 }
 
 ackley1::ackley1 (int d) :

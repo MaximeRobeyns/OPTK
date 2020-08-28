@@ -22,7 +22,31 @@
 #include <optimisers/gridsearch.hpp>
 
 #include <tests/optimiser_test.hpp>
+#include <benchmarks/synthetic.hpp>
 
+void
+test_gridsearch_functionality ()
+{
+    // instantiate an example benchmark (alpine1)
+    syn::alpine1 a1(3);
+
+    // instantiate the gridsearch algorithm
+    gridsearch test = gridsearch ();
+
+    // setup the search space
+    test.update_search_space_s(a1.get_search_space(), 0.1);
+
+    // bool end = false;
+    // while (!end)
+    //     test.step();
+
+    // test.get_best();
+
+    // uint idx = 0;
+    // inst::set params = test.generate_parameters(idx++)
+
+    // while there are still parameters to be generated, evaluate them
+}
 // TODO run general functionality-, rather than implementation-focused, tests
 // here.
 
@@ -31,6 +55,8 @@ run_gridsearch_tests()
 {
     run_static_gridsearch_tests ();
     test_update_search_space ();
+
+    test_gridsearch_functionality  ();
     std::cout << "All gridsearch tests pass" << std::endl;
 }
 

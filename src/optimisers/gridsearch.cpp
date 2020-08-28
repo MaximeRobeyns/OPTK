@@ -530,6 +530,13 @@ gridsearch::~gridsearch ()
     for (it = trials.begin (); it != trials.end (); it++) {
         inst::free_node(std::get<1>(*it));
     }
+
+    // delete converted search spaces
+    std::vector<sspace::sspace_t *>::iterator sit;
+    for (sit = m_syn_spaces.begin (); sit != m_syn_spaces.end (); sit++) {
+        sspace::free_ss (*sit);
+        delete *sit;
+    }
 }
 
 
@@ -548,6 +555,36 @@ gridsearch::update_search_space (sspace::sspace_t *space)
         unpack_param (*it, new_root);
 
     m_root = new_root;
+}
+
+sspace::sspace_t *
+gridsearch::convert_synthetic_ss (sspace::sspace_t *ss, double q)
+{
+    sspace::sspace_t *newspace = new sspace::sspace_t ();
+    sspace::sspace_t::iterator it;
+    int idx = 0;
+    for (it = ss->begin (); it != ss->end (); it++) {
+        sspace::uniform *prev = static_cast<sspace::uniform *>(*it);
+        sspace::quniform *newparam =
+            new sspace::quniform (
+                    std::to_string (idx++),
+                    prev->m_lower,
+                    prev->m_upper,
+                    q
+                    );
+        newspace->push_back (newparam);
+    }
+    m_syn_spaces.push_back (newspace);
+
+    return newspace;
+}
+
+void
+gridsearch::update_search_space_s (sspace::sspace_t *space, double q)
+{
+    this->update_search_space(
+            convert_synthetic_ss(space, q)
+        );
 }
 
 void
@@ -787,7 +824,6 @@ run_static_gridsearch_tests ()
 {
     test_update_search_space ();
     test_generate_parameters ();
-    std::cout << "gridsearch tests pass" << std::endl;
 }
 
 #endif // __OPTK_TESTING

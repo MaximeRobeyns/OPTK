@@ -104,15 +104,6 @@ class synthetic: public optk::benchmark {
          */
         sspace::sspace_t * get_search_space() { return &m_sspace; }
 
-        /**
-         * A convenience method which returns a search space which is
-         * comparible with the built-in gridsearch algorithm.
-         * @param The quantisation for uniform parameters.
-         * @returns A search space made up of quniform parameters.
-         */
-        sspace::sspace_t *get_gridsearch_ss (double q);
-
-
         /** This is specific to synthetic benchmarks, and sets the properties
          * of the derived benchmark function (e.g. non-separable, scalable
          * etc...)
@@ -148,11 +139,6 @@ class synthetic: public optk::benchmark {
          * invalid.
          */
         void validate_param_set (inst::set x);
-
-        /**
-         * Used in destructor and convenience methods; deletes a search space description.
-         */
-        void free_ss (sspace::sspace_t *);
 
     protected:
         /**
