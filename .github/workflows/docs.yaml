@@ -1,0 +1,19 @@
+# Copyright (C) 2020 Maxime Robeyns <maximerobeyns@gmail.com>
+
+name: Compile and re-deploy documentation
+
+on: [push, pull_request]
+
+jobs:
+  docs:
+    - uses: actions/checkout@master
+    - name: setup
+      run: apt-get install doxygen
+    - name: build docs
+      run: make docs
+    - name: deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/html
+        publish_branch: master
