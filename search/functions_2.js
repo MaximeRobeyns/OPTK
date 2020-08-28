@@ -4,5 +4,6 @@ var searchData=
   ['choice',['choice',['../classsspace_1_1choice.html#a5bb07a7bf9e02f126e3ba5d38268d386',1,'sspace::choice']]],
   ['clone',['clone',['../class____gs_1_1node.html#af3bd9c1693d8884dbc8c72546832d9db',1,'__gs::node']]],
   ['collection',['collection',['../classoptk_1_1benchmarks.html#a3a9dd1ed6120d0aab3a0258b482b86e4',1,'optk::benchmarks::collection()'],['../classoptk_1_1optimisers.html#a99200a4823f3fc7e5e0ba278d9598241',1,'optk::optimisers::collection()']]],
+  ['convert_5fsynthetic_5fss',['convert_synthetic_ss',['../classgridsearch.html#a79186d84c0d13fd2ee6f5e8320b0a8c1',1,'gridsearch']]],
   ['count',['count',['../classsspace_1_1categorical.html#ac347c32beddb473ffa401266fd432e15',1,'sspace::categorical::count()'],['../classsspace_1_1choice.html#ac471e6d15cb48748b5732902b408b85a',1,'sspace::choice::count()']]]
 ];

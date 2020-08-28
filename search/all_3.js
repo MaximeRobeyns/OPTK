@@ -11,6 +11,7 @@ var searchData=
   ['cola',['cola',['../classsyn_1_1cola.html',1,'syn']]],
   ['collection',['collection',['../classoptk_1_1benchmarks.html#a3a9dd1ed6120d0aab3a0258b482b86e4',1,'optk::benchmarks::collection()'],['../classoptk_1_1optimisers.html#a99200a4823f3fc7e5e0ba278d9598241',1,'optk::optimisers::collection()']]],
   ['colville',['colville',['../classsyn_1_1colville.html',1,'syn']]],
+  ['convert_5fsynthetic_5fss',['convert_synthetic_ss',['../classgridsearch.html#a79186d84c0d13fd2ee6f5e8320b0a8c1',1,'gridsearch']]],
   ['corana',['corana',['../classsyn_1_1corana.html',1,'syn']]],
   ['cosine_5fmixture',['cosine_mixture',['../classsyn_1_1cosine__mixture.html',1,'syn']]],
   ['cosine_5fmixture2',['cosine_mixture2',['../classsyn_1_1cosine__mixture2.html',1,'syn']]],

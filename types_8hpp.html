@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">OPTK
-   &#160;<span id="projectnumber">0.0.1</span>
+   &#160;<span id="projectnumber">0.1.2</span>
    </div>
    <div id="projectbrief">Toolkit for global optimisation algorithms</div>
   </td>
@@ -201,6 +201,8 @@ Functions</h2></td></tr>
 <tr class="separator:a16501a02e7715f673df916bed005cc5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af236c19752d77ebd3c4ae1ed534573df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="types_8hpp.html#af236c19752d77ebd3c4ae1ed534573df">sspace::validate_param_values</a> (<a class="el" href="namespaceinst.html#a82f6358a0239162cb46ee4ef32c79b88">inst::value_map</a> *vals, <a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *sspace)</td></tr>
 <tr class="separator:af236c19752d77ebd3c4ae1ed534573df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3a7cef9fb261798688ec7cf9ec5fb76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="types_8hpp.html#af3a7cef9fb261798688ec7cf9ec5fb76">sspace::free_ss</a> (sspace_t *ss)</td></tr>
+<tr class="separator:af3a7cef9fb261798688ec7cf9ec5fb76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Defines the main types used in the program. </p>
@@ -279,6 +281,30 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="file_af3a7cef9fb261798688ec7cf9ec5fb76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_af3a7cef9fb261798688ec7cf9ec5fb76">&#9670;&nbsp;</a></span>free_ss()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sspace::free_ss </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *&#160;</td>
+          <td class="paramname"><em>ss</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A convenience method to delete a search space description which was allocated on the heap. This function is often used in class destructors. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ss</td><td>The heap-allocated search space description to free. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="file_af236c19752d77ebd3c4ae1ed534573df"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#file_af236c19752d77ebd3c4ae1ed534573df">&#9670;&nbsp;</a></span>validate_param_values()</h2>
 

@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">OPTK
-   &#160;<span id="projectnumber">0.0.1</span>
+   &#160;<span id="projectnumber">0.1.2</span>
    </div>
    <div id="projectbrief">Toolkit for global optimisation algorithms</div>
   </td>
@@ -71,6 +71,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">types.cpp File Reference</div>  </div>
@@ -81,6 +82,11 @@ $(function() {
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;<a class="el" href="types_8hpp_source.html">optk/types.hpp</a>&gt;</code><br />
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ae0c6f11ca2793ca549b51658cc06ef08"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>deltype</b>(type,  src)</td></tr>
+<tr class="separator:ae0c6f11ca2793ca549b51658cc06ef08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a0ff56190b9d2ec9a9d2d38aacedf1183"><td class="memItemLeft" align="right" valign="top"><a id="a0ff56190b9d2ec9a9d2d38aacedf1183"></a>
@@ -102,7 +108,36 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>dbleq</b> (dou
 <p>Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
 <p><a href="http://www.osedu.org/licenses/ECL-2.0">http://www.osedu.org/licenses/ECL-2.0</a></p>
 <p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the LIcense For The Specific Language Governing permissions and limitations under the License. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ae0c6f11ca2793ca549b51658cc06ef08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0c6f11ca2793ca549b51658cc06ef08">&#9670;&nbsp;</a></span>deltype</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define deltype</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">type, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">src&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">{ \</div><div class="line">    type *tmp_type = <span class="keyword">static_cast&lt;</span>type *<span class="keyword">&gt;</span>(src); \</div><div class="line">    delete tmp_type; \</div><div class="line">    break; \</div><div class="line">    }</div></div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="a73c2b4190e69dcf99b499d8e1b5d50b7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a73c2b4190e69dcf99b499d8e1b5d50b7">&#9670;&nbsp;</a></span>find_key()</h2>
 

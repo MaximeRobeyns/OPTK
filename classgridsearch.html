@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">OPTK
-   &#160;<span id="projectnumber">0.0.1</span>
+   &#160;<span id="projectnumber">0.1.2</span>
    </div>
    <div id="projectbrief">Toolkit for global optimisation algorithms</div>
   </td>
@@ -93,6 +93,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a24040cd21bd1a2da211d74b2b72beaa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4d55b9a943b871caf89c9becfe2b74f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgridsearch.html#ac4d55b9a943b871caf89c9becfe2b74f">update_search_space</a> (<a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *space)</td></tr>
 <tr class="separator:ac4d55b9a943b871caf89c9becfe2b74f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79186d84c0d13fd2ee6f5e8320b0a8c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgridsearch.html#a79186d84c0d13fd2ee6f5e8320b0a8c1">convert_synthetic_ss</a> (<a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *ss, double q)</td></tr>
+<tr class="separator:a79186d84c0d13fd2ee6f5e8320b0a8c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20e7f6f4de6648c4fbce2559393652c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgridsearch.html#a20e7f6f4de6648c4fbce2559393652c7">update_search_space_s</a> (<a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *space, double q)</td></tr>
+<tr class="separator:a20e7f6f4de6648c4fbce2559393652c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aead0d0d7ed89f78564ffd3398adabfcb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceinst.html#a8a739cafbd67eef1072544b9673a4bb9">inst::set</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgridsearch.html#aead0d0d7ed89f78564ffd3398adabfcb">generate_parameters</a> (int param_id)</td></tr>
 <tr class="separator:aead0d0d7ed89f78564ffd3398adabfcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b341eb8cc966066a31e109e984c0266"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgridsearch.html#a6b341eb8cc966066a31e109e984c0266">receive_trial_results</a> (int param_id, <a class="el" href="namespaceinst.html#a8a739cafbd67eef1072544b9673a4bb9">inst::set</a> params, double value)</td></tr>
@@ -116,6 +120,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a06415ea74b8d705bf4eb9d842a1f2cc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76bd7b32ebdd84fd8b1c8510f3e15568"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgridsearch.html#a76bd7b32ebdd84fd8b1c8510f3e15568">fst_gen</a></td></tr>
 <tr class="separator:a76bd7b32ebdd84fd8b1c8510f3e15568"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e283f286907e319513de6c5a25f02bb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgridsearch.html#a8e283f286907e319513de6c5a25f02bb">m_syn_spaces</a></td></tr>
+<tr class="separator:a8e283f286907e319513de6c5a25f02bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad9fb05487e1326b918dcd5f61b6a5fe6"></a>
@@ -195,6 +201,42 @@ Private Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a79186d84c0d13fd2ee6f5e8320b0a8c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79186d84c0d13fd2ee6f5e8320b0a8c1">&#9670;&nbsp;</a></span>convert_synthetic_ss()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> * gridsearch::convert_synthetic_ss </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *&#160;</td>
+          <td class="paramname"><em>ss</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>q</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Converts the search space for synthetic benchmarks (defined as uniformly distributed variables) into <a class="el" href="classsspace_1_1quniform.html">sspace::quniform</a> parameters. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ss</td><td>The original search space. </td></tr>
+    <tr><td class="paramname">q</td><td>The quantisation for uniform parameters. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A search space made up of quniform parameters. </dd></dl>
 
 </div>
 </div>
@@ -320,6 +362,41 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a20e7f6f4de6648c4fbce2559393652c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20e7f6f4de6648c4fbce2559393652c7">&#9670;&nbsp;</a></span>update_search_space_s()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void gridsearch::update_search_space_s </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *&#160;</td>
+          <td class="paramname"><em>space</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>q</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A convenience method for accepting a search space from a synthetic benchmark. This is equivalent to calling </p><div class="fragment"><div class="line"><a class="code" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *ss =</div><div class="line">     <a class="code" href="classgridsearch.html">gridsearch</a>.<a class="code" href="classgridsearch.html#a79186d84c0d13fd2ee6f5e8320b0a8c1">convert_synthetic_ss</a> (</div><div class="line">         benchmark.get_search_space(), q</div><div class="line">     );</div></div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">space</td><td>The search space returned from synthetic::get_search_space. </td></tr>
+    <tr><td class="paramname">q</td><td>The quantisation for uniform parameters. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a76bd7b32ebdd84fd8b1c8510f3e15568"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a76bd7b32ebdd84fd8b1c8510f3e15568">&#9670;&nbsp;</a></span>fst_gen</h2>
@@ -364,6 +441,29 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>This is a reference to the 'root' of the 'unpacked' (internal) representation of the search space. </p>
+
+</div>
+</div>
+<a id="a8e283f286907e319513de6c5a25f02bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e283f286907e319513de6c5a25f02bb">&#9670;&nbsp;</a></span>m_syn_spaces</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *&gt; gridsearch::m_syn_spaces</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>A list of pointers to converted synthetic benchmark search spaces allocated through convert_synthetic_ss; used in destructor to avoid memory leaks. </p>
 
 </div>
 </div>

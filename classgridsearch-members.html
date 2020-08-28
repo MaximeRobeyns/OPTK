@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">OPTK
-   &#160;<span id="projectnumber">0.0.1</span>
+   &#160;<span id="projectnumber">0.1.2</span>
    </div>
    <div id="projectbrief">Toolkit for global optimisation algorithms</div>
   </td>
@@ -75,15 +75,18 @@ $(function() {
 <table class="directory">
   <tr class="even"><td class="entry"><a class="el" href="classoptk_1_1optimiser.html#afb9869bd5c49fa322ec43951fbf97c4e">accept</a>(optimisers *o)</td><td class="entry"><a class="el" href="classoptk_1_1optimiser.html">optk::optimiser</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classgridsearch.html#a48d817e65a2adb43d45f4949b5a7a195">add_to_trials</a>(int param_id, inst::node *n)</td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classgridsearch.html#a76bd7b32ebdd84fd8b1c8510f3e15568">fst_gen</a></td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classgridsearch.html#aead0d0d7ed89f78564ffd3398adabfcb">generate_parameters</a>(int param_id)</td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classgridsearch.html#ad9fb05487e1326b918dcd5f61b6a5fe6">gridsearch</a>()</td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classgridsearch.html#a836479973aa4457d2e1f400889591ae1">m_root</a></td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classgridsearch.html#a79186d84c0d13fd2ee6f5e8320b0a8c1">convert_synthetic_ss</a>(sspace::sspace_t *ss, double q)</td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classgridsearch.html#a76bd7b32ebdd84fd8b1c8510f3e15568">fst_gen</a></td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classgridsearch.html#aead0d0d7ed89f78564ffd3398adabfcb">generate_parameters</a>(int param_id)</td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classgridsearch.html#ad9fb05487e1326b918dcd5f61b6a5fe6">gridsearch</a>()</td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classgridsearch.html#a836479973aa4457d2e1f400889591ae1">m_root</a></td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classgridsearch.html#a8e283f286907e319513de6c5a25f02bb">m_syn_spaces</a></td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classoptk_1_1optimiser.html#a8518f917835ddc5515de35994b55090f">optimiser</a>(std::string name)</td><td class="entry"><a class="el" href="classoptk_1_1optimiser.html">optk::optimiser</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classgridsearch.html#a6b341eb8cc966066a31e109e984c0266">receive_trial_results</a>(int param_id, inst::set params, double value)</td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classgridsearch.html#a06415ea74b8d705bf4eb9d842a1f2cc2">trials</a></td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr><td class="entry"><a class="el" href="classgridsearch.html#ac4d55b9a943b871caf89c9becfe2b74f">update_search_space</a>(sspace::sspace_t *space)</td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classgridsearch.html#a24040cd21bd1a2da211d74b2b72beaa2">~gridsearch</a>()</td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classgridsearch.html#a20e7f6f4de6648c4fbce2559393652c7">update_search_space_s</a>(sspace::sspace_t *space, double q)</td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classgridsearch.html#a24040cd21bd1a2da211d74b2b72beaa2">~gridsearch</a>()</td><td class="entry"><a class="el" href="classgridsearch.html">gridsearch</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

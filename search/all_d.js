@@ -5,6 +5,7 @@ var searchData=
   ['m_5fmu',['m_mu',['../classsspace_1_1normal.html#a77929288ba372be8fce734c3a2c1feed',1,'sspace::normal']]],
   ['m_5foptions',['m_options',['../classsspace_1_1choice.html#a2b60e85e12b325012a5ffbea1072f41e',1,'sspace::choice']]],
   ['m_5froot',['m_root',['../classgridsearch.html#a836479973aa4457d2e1f400889591ae1',1,'gridsearch']]],
+  ['m_5fsyn_5fspaces',['m_syn_spaces',['../classgridsearch.html#a8e283f286907e319513de6c5a25f02bb',1,'gridsearch']]],
   ['main',['main',['../optk_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'optk.cpp']]],
   ['matyas',['matyas',['../classsyn_1_1matyas.html',1,'syn']]],
   ['mccormick',['mccormick',['../classsyn_1_1mccormick.html',1,'syn']]],

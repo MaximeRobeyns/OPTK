@@ -5,7 +5,6 @@ var searchData=
   ['get',['get',['../classsspace_1_1categorical.html#adc6863cf4296dce8eef66f5b5b35db0e',1,'sspace::categorical::get()'],['../classsspace_1_1choice.html#a86d5b76d9b6db68cc5edeb513f43c798',1,'sspace::choice::get()'],['../namespaceinst.html#ab0635314e39fd7aa08b3d29dca1affe0',1,'inst::get()']]],
   ['get_5fcount',['get_count',['../class____gs_1_1value.html#a45fb081f21c012b5a11c4456d17de5a8',1,'__gs::value']]],
   ['get_5fdims',['get_dims',['../classsyn_1_1synthetic.html#a32dfee3394cb0a97d2ca32845dd7de86',1,'syn::synthetic']]],
-  ['get_5fgridsearch_5fss',['get_gridsearch_ss',['../classsyn_1_1synthetic.html#a78e8bca06d05b54ba451e387bccb33f0',1,'syn::synthetic']]],
   ['get_5fitem',['get_item',['../classinst_1_1node.html#a2042cfd667e6d232ec72066c6097dc2c',1,'inst::node']]],
   ['get_5fname',['get_name',['../classoptk_1_1benchmark.html#aed0329727f9949770a0711bedb3f32cd',1,'optk::benchmark::get_name()'],['../classsspace_1_1param__t.html#ab587a41043d9d77070cda0d95ed4468f',1,'sspace::param_t::get_name()']]],
   ['get_5fopt',['get_opt',['../classsyn_1_1synthetic.html#ac3fe863b66a736b13aeed7e13b997a44',1,'syn::synthetic']]],
