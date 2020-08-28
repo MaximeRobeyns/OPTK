@@ -1,4 +1,12 @@
-#+TITLE: Optimisation Toolkit (OPTK)
+#+TITLE: Optimisation Toolkit, /OPTK/
+
+[[Tests][https://github.com/MaximeRobeyns/OPTK/workflows/Project%20build%20and%20test/badge.svg] [[Documentation
+Build][https://github.com/MaximeRobeyns/OPTK/workflows/Compile%20and%20re-deploy%20documentation/badge.svg]
+
+/Warning/: This library is not yet finished. Please only expect useful output
+when this warning message has been removed and replaced with a usage guide.
+
+Developer documentation can be found at https://maximerobeyns.github.io/OPTK.
 
 ** What is OPTK?
 
@@ -31,20 +39,30 @@ the corresponding result.
 
 *** What are the benchmarks?
 
-OPTK provides C implementations of common derivative-free global optimisation
+OPTK provides C++ implementations of derivative-free global optimisation
 benchmarks, notably the test functions in [[https://arxiv.org/abs/1308.4008][this literature survey]] (Jamil et
-al. 2013), as well as the [[https://github.com/google-research/nasbench][neural architecture search benchmarks]] (Ying et al. 2019).
+al. 2013), as well as implementations of the [[https://github.com/sigopt/evalset][evalset]] functions from Dewancker
+et al. 2016.
 
-Optimisation algorithms are ranked using the same methodology as set out in [[https://arxiv.org/abs/1603.09441][A
-stratified Analysis of Bayesian Optimization Methods]] (Dewancker et al. 2016).
-Due to the stochasticity of many optimisation strategies, we handle results
-statistically. To that end algorithms are compared pairwise using a Mann-Whitney
-U test on the best obtained value of the objective function. Where we cannot
-statistically significantly discriminate between two methods using this metric,
-we also consider the /Area Under Curve/ (AUC) metric which takes into account
-the number of evaluations required for an algorithm to reach its best value.
+I further plan to add the [[https://github.com/google-research/nasbench][neural architecture search benchmarks]] (Ying et al.
+2019).
 
+*** Algorithm Comparison
+
+The underlying premise of this repository is to be able to rank and compare
+optimisation algorithms, based on their performance on the same set of
+benchmarks. Performance is measured by taking trajectories and calculating the
+area under the curve. Further, we wish to measure which optimisation algorithms
+perform well on functions with differing characteristics (e.g. functions which
+are scalable, continuous, or separable etc.), so as to offer a practical
+recommendation for practitioners wishing to select an optimisation algorithm for
+their problem.
+
+
+#+BEGIN_COMMENT
 ** Usage Guide
+
+/Warning/ this is purely speculative
 
 Here is the command line interface which is acting as a specification for what
 the program does:
@@ -58,13 +76,15 @@ Options:
 
 Examples:
 ./optk gp_tuner
-./optk -b nas climate -o /results/test1 smac
+./optk -b synthetic nas -o /results/test1 smac
 #+END_SRC
 
 At the simplest level, =optk= works as a benchmarking program, which takes in an
 optimisation algorithm, and will produce a set of traces (iteration, objective
 value) pairs for each benchmark, which it will save in a csv file in the
 =/results= directory in a file with the same name as the provided algorithm:
+
+#+END_COMMENT
 
 * Licence
 
@@ -83,3 +103,11 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+* References
+
+Jamil, M., & Yang, X., A Literature Survey of Benchmark Functions For Global Optimization Problems, International Journal of Mathematical Modelling and Numerical Optimisation, 4(2), 150 (2013).  http://dx.doi.org/10.1504/IJMMNO.2013.055204
+
+Dewancker, I., McCourt, M., Clark, S., Hayes, P., Johnson, A., & Ke, G., A Stratified Analysis of Bayesian Optimization Methods, arXiv:1603.09441 [cs, stat], (),  (2016).
+
+Ying, C., Klein, A., Real, E., Christiansen, E., Murphy, K., & Hutter, F., NAS-Bench-101: Towards Reproducible Neural Architecture Search, arXiv:1902.09635 [cs, stat], (),  (2019).
