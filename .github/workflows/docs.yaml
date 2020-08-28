@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: setup
-      run: apt-get install doxygen
+      run: sudo apt-get install doxygen
     - name: build docs
       run: make docs
     - name: deploy
