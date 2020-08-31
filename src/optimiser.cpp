@@ -24,12 +24,7 @@
 optk::optimiser::optimiser (std::string name)
 {
     m_name = name;
-}
-
-void
-optk::optimiser::accept (optimisers *o)
-{
-    o->register_optimiser (this);
+    stepidx = 0;
 }
 
 optk::optimisers::optimisers ()
@@ -47,4 +42,21 @@ std::vector <optk::optimiser *> *
 optk::optimisers::collection ()
 {
     return &m_arr;
+}
+
+void
+optk::optimiser::accept (optimisers *o)
+{
+    o->register_optimiser (this);
+}
+
+bool
+optk::optimiser::step (optk::benchmark *b)
+{
+    inst::set params = this->generate_parameters (stepidx++);
+    if (params == NULL)
+        return false;
+    double result = b->evaluate (params);
+    this->receive_trial_results (stepidx-1, params, result);
+    return true;
 }

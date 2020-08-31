@@ -56,8 +56,8 @@ TEST_SUBDIRS    = $(shell find ${TESTSRC} -type d | cut -d'/' -f2-)
 INCLUDES		= -I${INCDIR} -I/usr/local/include
 LIBS			=
 INCDEP			= -I${INCDIR}
-CFLAGS			= -O2 -Wall -std=c++17
-TESTFLAGS		= -D__OPTK_TESTING -g -Wall -std=c++17 -fsanitize=address
+CFLAGS			= -O2 -Wall -std=c++17 -pthread
+TESTFLAGS		= -D__OPTK_TESTING -g -Wall -std=c++17 -fsanitize=address -pthread
 TESTLDFLAGS		= -fsanitize=address
 CC				= g++
 

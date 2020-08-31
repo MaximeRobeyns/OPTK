@@ -23,6 +23,7 @@
 #define __OPTIMISER_H_
 
 #include <optk/types.hpp>
+#include <optk/benchmark.hpp>
 
 namespace optk {
 
@@ -41,13 +42,7 @@ class optimiser {
          */
         optimiser (std::string name);
 
-        /**
-         * Uses the visitor pattern to register an optimiser with the optimisers
-         * class.
-         * @param o A pointer to the optimisers class with which to register
-         * this optimiser.
-         */
-        void accept (optimisers *o);
+        // required methods ---------------------------------------------------
 
         /**
          * This updates the search space  the search space defined by the optimiser
@@ -83,8 +78,41 @@ class optimiser {
             double value
         ) {}
 
+        // optional, convenience methods --------------------------------------
+
+        /**
+         * Uses the visitor pattern to register an optimiser with the optimisers
+         * class.
+         * @param o A pointer to the optimisers class with which to register
+         * this optimiser.
+         */
+        void accept (optimisers *o);
+
+        /**
+         * The step function is a convenience method which performs one
+         * optimisation iteration.
+         * Not thread safe; blocking.
+         * @param b An instance of a benchmark that we are optimising over
+         * @returns True if the optimisation algorithm has 'finished' and false
+         * otherwise. Note that in many instances the optimisation algorithm
+         * will not detect when it has converged; hence the returned value is
+         * intended rather to indicate cases when the optimisation algorithm
+         * cannot proceed any further (e.g. after exhausting all search
+         * combinations in gridsearch).
+         * @todo make thread safe by placing a mutex on stepidx.
+         */
+        bool step (benchmark *b);
+
     private:
+        /** The optimisation algorithm's name                                */
         std::string m_name;
+        /** stepidx is used to generate sequential parameter IDs during step */
+        uint stepidx;
+
+        /** The best found value of the function                             */
+        double best_val;
+        /** The parameters which gave rise to the best_val                   */
+        inst::set *best_params;
 };
 
 /**

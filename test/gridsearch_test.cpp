@@ -22,6 +22,7 @@
 #include <optimisers/gridsearch.hpp>
 
 #include <tests/optimiser_test.hpp>
+#include <tests/testutils.hpp>
 #include <benchmarks/synthetic.hpp>
 
 void
@@ -34,21 +35,22 @@ test_gridsearch_functionality ()
     gridsearch test = gridsearch ();
 
     // setup the search space
-    test.update_search_space_s(a1.get_search_space(), 0.1);
+    test.update_search_space_s(a1.get_search_space (), 0.5);
 
-    // bool end = false;
-    // while (!end)
-    //     test.step();
+    inst::set params = NULL;
+    uint idx = 0;
+    double best = std::numeric_limits<double>::max ();
 
-    // test.get_best();
+    do {
+        params = test.generate_parameters (idx++);
+        if (!params) break;
+        double tmp = a1.evaluate (params);
+        if (best > tmp) best = tmp;
+        test.receive_trial_results (idx-1, params, tmp);
+    } while (params != NULL);
 
-    // uint idx = 0;
-    // inst::set params = test.generate_parameters(idx++)
-
-    // while there are still parameters to be generated, evaluate them
+    assert (tutils::dbleq (best, 0.));
 }
-// TODO run general functionality-, rather than implementation-focused, tests
-// here.
 
 void
 run_gridsearch_tests()

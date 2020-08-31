@@ -2908,6 +2908,7 @@ class mishra11: public synthetic {
 
 // pick up from f85. in jamil et al
 // from l.3035 in evalset:test_funcs
+// https://al-roomi.org/ for reference
 
 } // end namespace syn
 
