@@ -19,12 +19,22 @@
  * @brief This file implements the base class for optimisers.
  */
 
+#include "optk/types.hpp"
 #include <optk/optimiser.hpp>
 
 optk::optimiser::optimiser (std::string name)
 {
     m_name = name;
     stepidx = 0;
+}
+
+optk::optimiser::~optimiser ()
+{
+    // delete any parameter instances which were not deleted by calls to
+    // receive_trials_results.
+    std::unordered_map<int, inst::set>::iterator it;
+    for (it = trials.begin (); it != trials.end (); it++)
+        inst::free_node (std::get<1>(*it));
 }
 
 optk::optimisers::optimisers ()
@@ -59,4 +69,12 @@ optk::optimiser::step (optk::benchmark *b)
     double result = b->evaluate (params);
     this->receive_trial_results (stepidx-1, params, result);
     return true;
+}
+
+void
+optk::optimiser::add_to_trials (int param_id, inst::set n)
+{
+    if (trials.count (param_id))
+        inst::free_node (trials.at (param_id));
+    trials.emplace (param_id, n);
 }

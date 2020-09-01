@@ -22,24 +22,39 @@
 #include <optk/optimiser.hpp>
 #include <optk/types.hpp>
 
-// class random_search: public optk::optimiser {
-//
-//     void update_search_space (sspace::sspace_t *space) override;
-//
-//     /**
-//      * The random search optimiser will simply generate the relevant parameters
-//      * by calling the \c sample method of parameters in the search space.
-//      * @param param_id A largely disregarded parameter; save for internal
-//      * memory management.
-//      * @returns A randomly generated set of valid parameters, with no
-//      * guarantees of uniqueness.
-//      */
-//     inst::set generate_parameters (int param_id) override;
-//
-//     void receive_trial_results (
-//             int param_id,
-//             inst::set params,
-//             double value
-//         ) override;
-//
-// };
+class random_search: public optk::optimiser {
+
+    public:
+        void update_search_space (sspace::sspace_t *space) override;
+
+        /**
+         * The random search optimiser will simply generate the relevant parameters
+         * by calling the \c sample method of parameters in the search space.
+         * @param param_id A largely disregarded parameter; save for internal
+         * memory management.
+         * @returns A randomly generated set of valid parameters, with no
+         * guarantees of uniqueness.
+         */
+        inst::set generate_parameters (int param_id) override;
+
+        void receive_trial_results (
+                int param_id,
+                inst::set params,
+                double value
+            ) override;
+
+    private:
+
+        /**
+         * This function recursively traverses the search space, sampling a value at
+         * random from each of the parameters.
+         * @param parent A pointer to the parent instance node to which to store the
+         * results.
+         */
+        void sample_ss (inst::node *parent);
+
+        /** A copy of the problem search space */
+        sspace::sspace_t *m_space;
+
+
+};

@@ -42,6 +42,12 @@ class optimiser {
          */
         optimiser (std::string name);
 
+        /**
+         * The destructor will free any generated parameter instances not freed
+         * by explicit calls to receive_trial_results.
+         */
+        ~optimiser ();
+
         // required methods ---------------------------------------------------
 
         /**
@@ -102,6 +108,26 @@ class optimiser {
          * @todo make thread safe by placing a mutex on stepidx.
          */
         bool step (benchmark *b);
+
+    protected:
+
+        /**
+         * This will add a parameter configuration allocated on the heap to the
+         * optimiser::trials map, so that it may be freed later by the optimiser's
+         * destructor. If a trial configuration already exists with the same param_id,
+         * those values will be freed, and the value in the map will be replaced.
+         * @param param_id The identifier for this trial.
+         * @param n The root node of the concrete parameter settings.
+         */
+        void add_to_trials (int param_id, inst::node *n);
+
+        /**
+         * This is used to keep track of previously generated instances or
+         * settings of the parameters, identified by the parameter id passed to
+         * the generate_parameters method.
+         * Contains elements stored on the heap.
+         */
+        std::unordered_map<int, inst::set> trials;
 
     private:
         /** The optimisation algorithm's name                                */

@@ -524,12 +524,14 @@ gridsearch::~gridsearch ()
     __gs::node *tmp_root = static_cast<__gs::node *>(m_root);
     delete tmp_root;
 
+    // TODO begin delete
     // delete any remaining parameter instances which were not deleted through
     // receive_trial_results
-    std::unordered_map<int, inst::set>::iterator it;
-    for (it = trials.begin (); it != trials.end (); it++) {
-        inst::free_node(std::get<1>(*it));
-    }
+    // std::unordered_map<int, inst::set>::iterator it;
+    // for (it = trials.begin (); it != trials.end (); it++) {
+    //     inst::free_node(std::get<1>(*it));
+    // }
+    // TODO end delete
 
     // delete converted search spaces
     std::vector<sspace::sspace_t *>::iterator sit;
@@ -587,14 +589,6 @@ gridsearch::update_search_space_s (sspace::sspace_t *space, double q)
         );
 }
 
-void
-gridsearch::add_to_trials (int param_id, inst::set n)
-{
-    if (trials.count(param_id))
-        inst::free_node(trials.at(param_id));
-    trials.emplace(param_id, n);
-}
-
 inst::set
 gridsearch::generate_parameters (int param_id)
 {
@@ -618,7 +612,8 @@ gridsearch::generate_parameters (int param_id)
     return root;
 }
 
-void gridsearch::receive_trial_results (int pid, inst::set params, double value)
+void
+gridsearch::receive_trial_results (int pid, inst::set params, double value)
 {
     free_node (params);
     trials.erase(pid);
