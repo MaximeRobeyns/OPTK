@@ -25,6 +25,9 @@
 class random_search: public optk::optimiser {
 
     public:
+
+        random_search();
+
         void update_search_space (sspace::sspace_t *space) override;
 
         /**
@@ -55,6 +58,4 @@ class random_search: public optk::optimiser {
 
         /** A copy of the problem search space */
         sspace::sspace_t *m_space;
-
-
 };

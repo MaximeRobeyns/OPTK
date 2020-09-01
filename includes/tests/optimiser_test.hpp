@@ -29,11 +29,10 @@
 
 #include <optk/types.hpp>
 
-extern void run_static_gridsearch_tests();
+extern void run_static_gridsearch_tests ();
 
-/**
- * Runs tests for the gridsearch optimisation algorithm.
- */
-void run_gridsearch_tests();
+void run_gridsearch_tests ();
+void run_random_search_tests ();
 
 #endif // __OPTIMISER_TEST_H_
+

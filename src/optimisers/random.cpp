@@ -21,6 +21,10 @@
 
 #include <optimisers/random.hpp>
 
+random_search::random_search ():
+    optk::optimiser ("random search optimiser")
+{ }
+
 void
 random_search::update_search_space (sspace::sspace_t *space)
 {
@@ -113,11 +117,13 @@ random_search::sample_ss (inst::node *parent)
             case pt::qloguniform:
             {
                 sample_double (parent, *it);
+                break;
             }
             case pt::categorical_int:
             case pt::randint:
             {
                 sample_int (parent, *it);
+                break;
             }
             case pt::categorical_str:
             {

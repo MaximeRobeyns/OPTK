@@ -16,32 +16,38 @@
  * limitations under the License.
  *
  * @file
+ * @brief Implements tests for the random search baseline algorithm.
  */
 
-#include <tests/tests.hpp>
-#include <tests/types_test.hpp>
+#include <optimisers/random.hpp>
+
 #include <tests/optimiser_test.hpp>
-#include <tests/benchmark_test.hpp>
+#include <tests/testutils.hpp>
+#include <benchmarks/synthetic.hpp>
 
-static void
-run_optimiser_tests ()
+void
+test_random_search_functionality ()
 {
-    run_gridsearch_tests();
-    run_static_gridsearch_tests ();
+    // instantiate an example benchmark (alpine1)
+    syn::alpine1 a1(10);
 
-    run_random_search_tests ();
+    random_search test = random_search ();
+
+    test.update_search_space (a1.get_search_space());
+
+    int i = 0;
+    while (i++ < 100) {
+        inst::set ss = test.generate_parameters (i);
+        a1.validate_param_set(ss);
+        double res = a1.evaluate(ss);
+        test.receive_trial_results(i, ss, res);
+    }
 }
 
 void
-OPTKtest::testmain ()
+run_random_search_tests()
 {
-    run_type_tests ();
-
-    run_optimiser_tests ();
-
-    run_benchmark_tests ();
-
-    std::cout << "All tests pass." << std::endl;
+    test_random_search_functionality ();
+    std::cout << "All random search tests pass" << std::endl;
 }
-
 
