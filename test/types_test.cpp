@@ -19,7 +19,6 @@
  * @brief Implements tests for optk types.
  */
 
-#include "optk/types.hpp"
 #include <tests/types_test.hpp>
 
 // test types for concrete values ---------------------------------------------
@@ -176,15 +175,18 @@ test_categorical()
     std::vector<int> *ret = test.values ();
     assert (ret->size () == myopts.size ());
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 5; i++)
         assert (test.get (i) == i);
+    for (int i = 0; i < 10; i++) {
+        int tmp = test.sample ();
+        assert (tmp >= 0 && tmp < 5);
     }
 
     // doubles
 
     std::vector<double> myopts_dbl;
     for (double i = 0.0; i <= 10.0; i+=2.5) {
-        myopts.push_back (i);
+        myopts_dbl.push_back (i);
     }
 
     sspace::categorical<double> test_dbl ("double categorical", &myopts_dbl);
@@ -199,6 +201,11 @@ test_categorical()
     int ctr = 0;
     for (double i = 0.0; tutils::dbleq (i, 10.0); i+=2.5)
         tutils::dbleq (test_dbl.get (ctr++), i);
+    ctr = 0;
+    while (ctr++ < 10) {
+        double tmp = std::fmod (test_dbl.sample (), 2.5);
+        assert (tutils::dbleq (tmp, 0));
+    }
 
     // strings
 

@@ -22,15 +22,12 @@
 #ifndef __GRIDSEARCH_H_
 #define __GRIDSEARCH_H_
 
-#include <assert.h>
-#include <iostream>
 #include <unordered_map>
 #include <vector>
 #include <tuple>
 
 #include <optk/optimiser.hpp>
 #include <optk/types.hpp>
-#include <tests/testutils.hpp>
 
 namespace __gs {
 
@@ -72,7 +69,7 @@ class gridsearch: public optk::optimiser {
         ~gridsearch ();
 
         /**
-         * Expands the lists of parameters into a format from whcih it is easier
+         * Expands the lists of parameters into a format from which it is easier
          * to generate all possible configurations sequentially.
          *
          * @param space The search space to unpack. The gridsearch optimiser
@@ -165,6 +162,7 @@ class gridsearch: public optk::optimiser {
 
 #ifdef __OPTK_TESTING
 #include <assert.h>
+#include <tests/testutils.hpp>
 
 void test_update_search_space();
 #endif // __OPTK_TESTING

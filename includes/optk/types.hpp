@@ -40,6 +40,9 @@
 
 #include <sys/types.h>
 
+// TODO get rid of this
+#include <iostream>
+
 // Parameter values -----------------------------------------------------------
 
 /** Entries in the inst namespace represent concrete instances or settings of a
@@ -325,7 +328,10 @@ class categorical: public param_t
         categorical (std::string n, std::vector<int> *options):
             param_t (n, pt::categorical_int)
         {
+            if (options->size() == 0)
+                throw std::invalid_argument("Empty value list is invalid");
             m_options = *options;
+            init_rand ();
         }
 
         /**
@@ -336,7 +342,10 @@ class categorical: public param_t
         categorical (std::string n, std::vector<double> *options):
             param_t (n, pt::categorical_dbl)
         {
+            if (options->size() == 0)
+                throw std::invalid_argument("Empty value list is invalid");
             m_options = *options;
+            init_rand ();
         }
 
         /**
@@ -347,7 +356,10 @@ class categorical: public param_t
         categorical (std::string n, std::vector<std::string> *options):
             param_t (n, pt::categorical_str)
         {
+            if (options->size() == 0)
+                throw std::invalid_argument("Empty value list is invalid");
             m_options = *options;
+            init_rand ();
         }
 
         /** values */
@@ -379,8 +391,35 @@ class categorical: public param_t
             return m_options[i];
         }
 
+        /**
+         * Sample a random value uniformly at random from the list of values.
+         */
+        T
+        sample ()
+        {
+            return get(dist(generator));
+        }
+
     private:
+
+        /**
+         * Called from constructors; initialises the random number generator.
+         */
+        void
+        init_rand ()
+        {
+            generator = std::mt19937 (rd ());
+            uint u = m_options.size() - 1;
+            if (u < 0) u = 0;
+            dist = std::uniform_int_distribution<int> (0, u);
+        }
+
         std::vector<T> m_options;
+
+        // used to implement random sampling
+        std::random_device rd;
+        std::mt19937 generator;
+        std::uniform_int_distribution<int> dist;
 };
 
 /**
