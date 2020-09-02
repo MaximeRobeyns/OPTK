@@ -7,6 +7,8 @@ var searchData=
   ['benchmark_2ehpp',['benchmark.hpp',['../benchmark_8hpp.html',1,'']]],
   ['benchmark_5ftest_2ehpp',['benchmark_test.hpp',['../benchmark__test_8hpp.html',1,'']]],
   ['benchmarks',['benchmarks',['../classoptk_1_1benchmarks.html',1,'optk::benchmarks'],['../classoptk_1_1benchmarks.html#adbfdda3bd4adbec7bfd95f4268b99779',1,'optk::benchmarks::benchmarks()']]],
+  ['best_5fparams',['best_params',['../classoptk_1_1optimiser.html#ac9085b3adf5d22bff390b3853d73c416',1,'optk::optimiser']]],
+  ['best_5fval',['best_val',['../classoptk_1_1optimiser.html#aba2dcea673a4c88970b2b1c0310a7933',1,'optk::optimiser']]],
   ['biggs_5fexp2',['biggs_exp2',['../classsyn_1_1biggs__exp2.html',1,'syn']]],
   ['biggs_5fexp3',['biggs_exp3',['../classsyn_1_1biggs__exp3.html',1,'syn']]],
   ['biggs_5fexp4',['biggs_exp4',['../classsyn_1_1biggs__exp4.html',1,'syn']]],

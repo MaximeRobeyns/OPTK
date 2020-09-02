@@ -1,7 +1,7 @@
 var searchData=
 [
   ['gear',['gear',['../classsyn_1_1gear.html',1,'syn']]],
-  ['generate_5fparameters',['generate_parameters',['../classgridsearch.html#aead0d0d7ed89f78564ffd3398adabfcb',1,'gridsearch::generate_parameters()'],['../classoptk_1_1optimiser.html#a37a8e8724dbbeed7ab8c79695fbe4b62',1,'optk::optimiser::generate_parameters()']]],
+  ['generate_5fparameters',['generate_parameters',['../classgridsearch.html#aead0d0d7ed89f78564ffd3398adabfcb',1,'gridsearch::generate_parameters()'],['../classrandom__search.html#a8f92c5642c6541dd5bfc3d8fbc026222',1,'random_search::generate_parameters()'],['../classoptk_1_1optimiser.html#a37a8e8724dbbeed7ab8c79695fbe4b62',1,'optk::optimiser::generate_parameters()']]],
   ['get',['get',['../classsspace_1_1categorical.html#adc6863cf4296dce8eef66f5b5b35db0e',1,'sspace::categorical::get()'],['../classsspace_1_1choice.html#a86d5b76d9b6db68cc5edeb513f43c798',1,'sspace::choice::get()'],['../namespaceinst.html#ab0635314e39fd7aa08b3d29dca1affe0',1,'inst::get()']]],
   ['get_5fcount',['get_count',['../class____gs_1_1value.html#a45fb081f21c012b5a11c4456d17de5a8',1,'__gs::value']]],
   ['get_5fdims',['get_dims',['../classsyn_1_1synthetic.html#a32dfee3394cb0a97d2ca32845dd7de86',1,'syn::synthetic']]],

@@ -1,6 +1,7 @@
 var searchData=
 [
   ['inf',['inf',['../classsyn_1_1regression.html#afaa2295ac083e4677770fed7fbdfd89daee7b630995e7a36b6420696989441e2d',1,'syn::regression']]],
+  ['init_5frand',['init_rand',['../classsspace_1_1categorical.html#a63195b40cb5ebde50b3ef9c765d4d8da',1,'sspace::categorical']]],
   ['inst',['inst',['../namespaceinst.html',1,'']]],
   ['inst_5ft',['inst_t',['../namespaceinst.html#a5c1a4df393b9c4d699deb3273d98e6d2',1,'inst']]],
   ['int_5fval',['int_val',['../classinst_1_1int__val.html',1,'inst::int_val'],['../namespaceinst.html#a5c1a4df393b9c4d699deb3273d98e6d2a20b161be2bd88aa071881a01b3197aeb',1,'inst::int_val()']]],

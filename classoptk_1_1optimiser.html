@@ -72,6 +72,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classoptk_1_1optimiser-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -86,7 +88,8 @@ Inheritance diagram for optk::optimiser:</div>
  <div class="center">
   <img src="classoptk_1_1optimiser.png" usemap="#optk::optimiser_map" alt=""/>
   <map id="optk::optimiser_map" name="optk::optimiser_map">
-<area href="classgridsearch.html" alt="gridsearch" shape="rect" coords="0,56,91,80"/>
+<area href="classgridsearch.html" alt="gridsearch" shape="rect" coords="0,56,100,80"/>
+<area href="classrandom__search.html" alt="random_search" shape="rect" coords="110,56,210,80"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -94,20 +97,39 @@ Inheritance diagram for optk::optimiser:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8518f917835ddc5515de35994b55090f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a8518f917835ddc5515de35994b55090f">optimiser</a> (std::string name)</td></tr>
 <tr class="separator:a8518f917835ddc5515de35994b55090f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb9869bd5c49fa322ec43951fbf97c4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#afb9869bd5c49fa322ec43951fbf97c4e">accept</a> (<a class="el" href="classoptk_1_1optimisers.html">optimisers</a> *o)</td></tr>
-<tr class="separator:afb9869bd5c49fa322ec43951fbf97c4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cd7dac5f14aba44e263db324c2c8fd1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a8cd7dac5f14aba44e263db324c2c8fd1">~optimiser</a> ()</td></tr>
+<tr class="separator:a8cd7dac5f14aba44e263db324c2c8fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a572cc3d8829180ce4c506d72124fd2c3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a572cc3d8829180ce4c506d72124fd2c3">update_search_space</a> (<a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *space)</td></tr>
 <tr class="separator:a572cc3d8829180ce4c506d72124fd2c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37a8e8724dbbeed7ab8c79695fbe4b62"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceinst.html#a8a739cafbd67eef1072544b9673a4bb9">inst::set</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a37a8e8724dbbeed7ab8c79695fbe4b62">generate_parameters</a> (int param_id)</td></tr>
 <tr class="separator:a37a8e8724dbbeed7ab8c79695fbe4b62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62441799e78ee4f8f3b764ac9da210af"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a62441799e78ee4f8f3b764ac9da210af">receive_trial_results</a> (int param_id, <a class="el" href="namespaceinst.html#a8a739cafbd67eef1072544b9673a4bb9">inst::set</a> params, double value)</td></tr>
 <tr class="separator:a62441799e78ee4f8f3b764ac9da210af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb9869bd5c49fa322ec43951fbf97c4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#afb9869bd5c49fa322ec43951fbf97c4e">accept</a> (<a class="el" href="classoptk_1_1optimisers.html">optimisers</a> *o)</td></tr>
+<tr class="separator:afb9869bd5c49fa322ec43951fbf97c4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdebf5b5691aede62f6559cfd70e07c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#abdebf5b5691aede62f6559cfd70e07c6">step</a> (<a class="el" href="classoptk_1_1benchmark.html">benchmark</a> *b)</td></tr>
+<tr class="separator:abdebf5b5691aede62f6559cfd70e07c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a3e52bd6580ea90b8a13cd9fbaa3159cf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a3e52bd6580ea90b8a13cd9fbaa3159cf">add_to_trials</a> (int param_id, <a class="el" href="classinst_1_1node.html">inst::node</a> *n)</td></tr>
+<tr class="separator:a3e52bd6580ea90b8a13cd9fbaa3159cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a6775691258025db902b9934be0aad473"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; int, <a class="el" href="namespaceinst.html#a8a739cafbd67eef1072544b9673a4bb9">inst::set</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a6775691258025db902b9934be0aad473">trials</a></td></tr>
+<tr class="separator:a6775691258025db902b9934be0aad473"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a1fe2315ed2548dc438b8984e3f1ac9e2"><td class="memItemLeft" align="right" valign="top"><a id="a1fe2315ed2548dc438b8984e3f1ac9e2"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>m_name</b></td></tr>
+<tr class="memitem:a1fe2315ed2548dc438b8984e3f1ac9e2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a1fe2315ed2548dc438b8984e3f1ac9e2">m_name</a></td></tr>
 <tr class="separator:a1fe2315ed2548dc438b8984e3f1ac9e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81d1dc291c290edce38a04242f5ca8d1"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a81d1dc291c290edce38a04242f5ca8d1">stepidx</a></td></tr>
+<tr class="separator:a81d1dc291c290edce38a04242f5ca8d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba2dcea673a4c88970b2b1c0310a7933"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#aba2dcea673a4c88970b2b1c0310a7933">best_val</a></td></tr>
+<tr class="separator:aba2dcea673a4c88970b2b1c0310a7933"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9085b3adf5d22bff390b3853d73c416"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceinst.html#a8a739cafbd67eef1072544b9673a4bb9">inst::set</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#ac9085b3adf5d22bff390b3853d73c416">best_params</a></td></tr>
+<tr class="separator:ac9085b3adf5d22bff390b3853d73c416"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is the base class that every optimisation algorithm will inherit. </p>
@@ -136,6 +158,24 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>m_name</b></td
 
 </div>
 </div>
+<a id="a8cd7dac5f14aba44e263db324c2c8fd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cd7dac5f14aba44e263db324c2c8fd1">&#9670;&nbsp;</a></span>~optimiser()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">optk::optimiser::~optimiser </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The destructor will free any generated parameter instances not freed by explicit calls to receive_trial_results. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="afb9869bd5c49fa322ec43951fbf97c4e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afb9869bd5c49fa322ec43951fbf97c4e">&#9670;&nbsp;</a></span>accept()</h2>
@@ -155,6 +195,49 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>m_name</b></td
 <p>Uses the visitor pattern to register an optimiser with the optimisers class. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">o</td><td>A pointer to the optimisers class with which to register this optimiser. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3e52bd6580ea90b8a13cd9fbaa3159cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e52bd6580ea90b8a13cd9fbaa3159cf">&#9670;&nbsp;</a></span>add_to_trials()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void optk::optimiser::add_to_trials </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>param_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classinst_1_1node.html">inst::node</a> *&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This will add a parameter configuration allocated on the heap to the <a class="el" href="classoptk_1_1optimiser.html#a6775691258025db902b9934be0aad473">optimiser::trials</a> map, so that it may be freed later by the optimiser's destructor. If a trial configuration already exists with the same param_id, those values will be freed, and the value in the map will be replaced. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">param_id</td><td>The identifier for this trial. </td></tr>
+    <tr><td class="paramname">n</td><td>The root node of the concrete parameter settings. </td></tr>
   </table>
   </dd>
 </dl>
@@ -192,7 +275,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>m_name</b></td
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to an <a class="el" href="classinst_1_1node.html">inst::node</a>, or a NULL pointer if there are no more parameters to return. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classgridsearch.html#aead0d0d7ed89f78564ffd3398adabfcb">gridsearch</a>.</p>
+<p>Reimplemented in <a class="el" href="classgridsearch.html#aead0d0d7ed89f78564ffd3398adabfcb">gridsearch</a>, and <a class="el" href="classrandom__search.html#a8f92c5642c6541dd5bfc3d8fbc026222">random_search</a>.</p>
 
 </div>
 </div>
@@ -245,7 +328,33 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>m_name</b></td
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classgridsearch.html#a6b341eb8cc966066a31e109e984c0266">gridsearch</a>.</p>
+<p>Reimplemented in <a class="el" href="classgridsearch.html#a6b341eb8cc966066a31e109e984c0266">gridsearch</a>, and <a class="el" href="classrandom__search.html#a95ae56cb073961d25974714ff622ebde">random_search</a>.</p>
+
+</div>
+</div>
+<a id="abdebf5b5691aede62f6559cfd70e07c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdebf5b5691aede62f6559cfd70e07c6">&#9670;&nbsp;</a></span>step()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool optk::optimiser::step </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classoptk_1_1benchmark.html">optk::benchmark</a> *&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The step function is a convenience method which performs one optimisation iteration. Not thread safe; blocking. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">b</td><td>An instance of a benchmark that we are optimising over </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the optimisation algorithm has 'finished' and false otherwise. Note that in many instances the optimisation algorithm will not detect when it has converged; hence the returned value is intended rather to indicate cases when the optimisation algorithm cannot proceed any further (e.g. after exhausting all search combinations in gridsearch). </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>make thread safe by placing a mutex on stepidx. </dd></dl>
 
 </div>
 </div>
@@ -279,7 +388,123 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>m_name</b></td
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classgridsearch.html#ac4d55b9a943b871caf89c9becfe2b74f">gridsearch</a>.</p>
+<p>Reimplemented in <a class="el" href="classgridsearch.html#ac4d55b9a943b871caf89c9becfe2b74f">gridsearch</a>, and <a class="el" href="classrandom__search.html#a92080c6700acdd4a3b096f56d3b2d993">random_search</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ac9085b3adf5d22bff390b3853d73c416"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9085b3adf5d22bff390b3853d73c416">&#9670;&nbsp;</a></span>best_params</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceinst.html#a8a739cafbd67eef1072544b9673a4bb9">inst::set</a>* optk::optimiser::best_params</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The parameters which gave rise to the best_val </p>
+
+</div>
+</div>
+<a id="aba2dcea673a4c88970b2b1c0310a7933"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba2dcea673a4c88970b2b1c0310a7933">&#9670;&nbsp;</a></span>best_val</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double optk::optimiser::best_val</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The best found value of the function </p>
+
+</div>
+</div>
+<a id="a1fe2315ed2548dc438b8984e3f1ac9e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fe2315ed2548dc438b8984e3f1ac9e2">&#9670;&nbsp;</a></span>m_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string optk::optimiser::m_name</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The optimisation algorithm's name </p>
+
+</div>
+</div>
+<a id="a81d1dc291c290edce38a04242f5ca8d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81d1dc291c290edce38a04242f5ca8d1">&#9670;&nbsp;</a></span>stepidx</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint optk::optimiser::stepidx</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>stepidx is used to generate sequential parameter IDs during step </p>
+
+</div>
+</div>
+<a id="a6775691258025db902b9934be0aad473"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6775691258025db902b9934be0aad473">&#9670;&nbsp;</a></span>trials</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;int, <a class="el" href="namespaceinst.html#a8a739cafbd67eef1072544b9673a4bb9">inst::set</a>&gt; optk::optimiser::trials</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is used to keep track of previously generated instances or settings of the parameters, identified by the parameter id passed to the generate_parameters method. Contains elements stored on the heap. </p>
 
 </div>
 </div>
