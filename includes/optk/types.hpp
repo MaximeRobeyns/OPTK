@@ -40,9 +40,6 @@
 
 #include <sys/types.h>
 
-// TODO get rid of this
-#include <iostream>
-
 // Parameter values -----------------------------------------------------------
 
 /** Entries in the inst namespace represent concrete instances or settings of a

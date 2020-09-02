@@ -20,6 +20,7 @@
  */
 
 #include <optimisers/gridsearch.hpp>
+#include <assert.h>
 
 /** This namespace contains types which are specific to the gridsearch
  * algorithm */
@@ -523,15 +524,6 @@ gridsearch::~gridsearch ()
 {
     __gs::node *tmp_root = static_cast<__gs::node *>(m_root);
     delete tmp_root;
-
-    // TODO begin delete
-    // delete any remaining parameter instances which were not deleted through
-    // receive_trial_results
-    // std::unordered_map<int, inst::set>::iterator it;
-    // for (it = trials.begin (); it != trials.end (); it++) {
-    //     inst::free_node(std::get<1>(*it));
-    // }
-    // TODO end delete
 
     // delete converted search spaces
     std::vector<sspace::sspace_t *>::iterator sit;

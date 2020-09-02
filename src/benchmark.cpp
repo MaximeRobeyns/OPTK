@@ -32,19 +32,6 @@ optk::benchmark::get_name ()
     return m_name;
 }
 
-/* TODO delete these commended lines
-sspace::sspace_t *
-optk::benchmark::get_search_space ()
-{
-    return &m_params;
-}
-
-double
-optk::benchmark::evaluate (inst::set x)
-{
-    return x;
-} */
-
 optk::benchmarks::benchmarks ()
 {
     m_arr = std::vector<benchmark *>();

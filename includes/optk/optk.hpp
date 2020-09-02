@@ -22,7 +22,9 @@
 #ifndef __OPTK_H_
 #define __OPTK_H_
 
+#include <argp.h>
 #include <iostream>
+#include <cstdlib>
 
 #include <optk/types.hpp>
 
@@ -31,6 +33,18 @@
  * optk is the main namespace for this program.
  */
 namespace optk {
+
+// program arguments
+typedef struct {
+    /** The number of threads to run the program with                        */
+    int threads;
+    /** The directory into which the output file(s) should go                */
+    const char *output;
+    /** The benchmarks to run                                                */
+    const char *benchmark;
+    /** The optimisation algorithm to evaluate                               */
+    const char *algorithm;
+} arguments;
 
 }
 

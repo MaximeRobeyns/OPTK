@@ -28,9 +28,6 @@
 #include <stdexcept>
 #include <bits/stdint-intn.h>
 
-// TODO get rid of this
-#include <iostream>
-
 #include <optk/benchmark.hpp>
 #include <optk/types.hpp>
 #include <sys/types.h>

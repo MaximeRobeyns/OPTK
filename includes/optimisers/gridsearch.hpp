@@ -131,26 +131,6 @@ class gridsearch: public optk::optimiser {
          * representation of the search space. */
         __gs::param *m_root;
 
-        // TODO begin delete
-        /**
-         * This will add a parameter configuration allocated on the heap to the
-         * gridsearch::trials map, so that it may be freed later by gridsearch's
-         * destructor. If a trial configuration already exists with the same param_id,
-         * those values will be freed, and the value in the map will be replaced.
-         * @param param_id The identifier for this trial.
-         * @param n The root node of the concrete parameter settings.
-         */
-        // void add_to_trials (int param_id, inst::node *n);
-
-        /**
-         * This is used to keep track of previously generated instances or
-         * settings of the parameters, identified by the parameter id passed to
-         * the generate_parameters method.
-         * Contains elements stored on the heap.
-         */
-        // std::unordered_map<int, inst::set> trials;
-        // TODO end delete
-
         /** Indicates whether this is the first call to generate_parameters */
         bool fst_gen;
 
