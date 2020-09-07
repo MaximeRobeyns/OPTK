@@ -10,3 +10,4 @@ testbuild
 bin/optk*
 .gdb_history
 .vim
+outputs/*

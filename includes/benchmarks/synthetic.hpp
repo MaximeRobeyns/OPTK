@@ -25,12 +25,15 @@
 
 #include <cmath>
 #include <cstring>
+#include <iostream>
+#include <fstream>
 #include <stdexcept>
+#include <sys/types.h>
 #include <bits/stdint-intn.h>
 
-#include <optk/benchmark.hpp>
+#include <optk/core.hpp>
 #include <optk/types.hpp>
-#include <sys/types.h>
+#include <optk/benchmark.hpp>
 
 namespace syn {
 
@@ -157,15 +160,22 @@ class synthetic: public optk::benchmark {
 };
 
 /**
- * TODO return to this;
- * provided with an optimisation algorithm, this will run
- * through all the synthetic benchmarks (perhaps in parallel) and evaluate the
- * performance of the optimisation algorithm on this (e.g. calculating traces,
- * AUC etc.)
+ * This unifies the synthetic benchmarks, and makes them all callable under one
+ * method.
  */
-class synthetic_benchmark {
+class synthetic_benchmark: public optk::benchmark_set {
     public:
-    private:
+        synthetic_benchmark ();
+
+        ~synthetic_benchmark () {}
+
+        /**
+         * provided with an optimisation algorithm, this will run
+         * through all the synthetic benchmarks (perhaps in parallel) and evaluate the
+         * performance of the optimisation algorithm on this (e.g. calculating traces,
+         * AUC etc.)
+         */
+        void run (optk::optimisers *opts, optk::ctx_t *ctx) override;
 };
 
 /**

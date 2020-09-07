@@ -4168,8 +4168,7 @@ mishra11::evaluate (inst::set x)
 
     double sx = 0., px = 1.;
     for (uint i = 0; i < m_dims; i++) {
-        double xi = std::fabs (x->getdbl(i));
-        sx += xi;
+        double xi = std::fabs (x->getdbl(i)); sx += xi;
         px *= xi;
     }
 
@@ -4179,4 +4178,40 @@ mishra11::evaluate (inst::set x)
             , 2.);
 }
 
+synthetic_benchmark::synthetic_benchmark ():
+    benchmark_set ("synthetic")
+{ }
+
+//* @todo parallelise this function - embarrassing! */
+void
+synthetic_benchmark::run (optk::optimisers *opts, optk::ctx_t *ctx)
+{
+    double trace[ctx->max_iters];
+
+    std::ofstream of;
+    of.open(ctx->outfile, std::ios::app);
+
+    // for all the optimisers in the set
+    std::vector<optk::optimiser*> *optc = opts->collection();
+    for (uint i = 0; i < optc->size(); i++) {
+        optk::optimiser *opt = optc->at(i);
+
+        // write the benchmark and optimiser names to the CSV file:
+        of << this->get_name() << "," << opt->get_name();
+
+        // for all the synthetic benchmarks
+        syn::ackley1 a1(10);
+        optk::core_loop (&a1, opt, trace);
+
+        // write the values to the CSV file:
+        for (uint i = 0; i < ctx->max_iters; i++) {
+            of << ", " << trace[i];
+        }
+        of << std::endl;
+    }
+
+    of.close();
+}
+
 } // end namespace syn
+

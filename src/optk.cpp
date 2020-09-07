@@ -29,23 +29,8 @@
  */
 
 #include <optk/optk.hpp>
-#include <optk/optimiser.hpp>
-#include <optk/benchmark.hpp>
-
-// optimisers
-#include <optimisers/gridsearch.hpp>
-#include <optimisers/random.hpp>
-
-// benchmarks
-#include <benchmarks/synthetic.hpp>
-
-#ifdef __OPTK_TESTING
-#include <tests/tests.hpp>
-#endif
 
 /* Argument Parsing --------------------------------------------------------- */
-
-// optk::arguments args;
 
 const char *argp_program_version = "OPTK v0.1.2";
 const char *argp_program_bug_address = "<maximerobeyns@gmail.com>";
@@ -58,13 +43,16 @@ static char args_doc[] = "";
 // parameter description
 static struct argp_option options[] = {
     { "output",    'o', "OUTDIR",     0,
-        "Store the benchmark results in this directory", 0 },
+        "Store the benchmark results in this directory",        0 },
 
     { "benchmark", 'b', "BENCHMARKS", 0,
-        "Only run the specified <benchmark>",            0 },
+        "Only run the specified <benchmark>",                   0 },
 
     { "threads",   't', "THREADS",    0,
-        "The number of threads to use",                  0 },
+        "The number of threads to use",                         0 },
+
+    { "iterations",   'i', "ITERATIONS",    0,
+        "The maximum number of iterations for each benchmark.", 0 },
 
     { 0 }
 };
@@ -89,6 +77,9 @@ parse_opt (int key, char *arg, struct argp_state *state)
         case 't':
             arguments->threads = atoi(arg);
             break;
+        case 'i':
+            arguments->max_iters = atoi(arg);
+            break;
         case ARGP_KEY_ARG:
             arguments->algorithm = arg;
             break;
@@ -103,30 +94,107 @@ struct argp argp = { options, parse_opt, args_doc, doc };
 
 /* Setup and teardown ------------------------------------------------------- */
 
+static bool
+validate_args (
+        optk::arguments *args,
+        optk::optimisers *opts,
+        optk::benchmarks *bmks
+) {
+    bool error = false;
+
+    if (args->threads <= 0) {
+        std::cerr <<
+            "Error: number of threads must be strictly positive" << std::endl;
+        error = true;
+    }
+
+    if (args->max_iters <= 0) {
+        std::cerr <<
+            "Error: number of iterations must be strictly positive" << std::endl;
+        error = true;
+    }
+
+    // TODO validate output file directory
+
+    return error;
+}
+
 /**
  * In this setup function we 'register' all the optimisation algorithms, as
  * well as the bechmarks.
  */
-static void
-do_setup (optk::optimisers *opts, optk::benchmarks *bmks)
-{
-    gridsearch *gs = new gridsearch();
-    opts->register_optimiser(gs);
-    random_search *rs = new random_search();
-    opts->register_optimiser(rs);
+static optk::ctx_t *
+do_setup (
+        optk::arguments *args,
+        optk::optimisers *opts,
+        optk::benchmarks *bmks
+) {
+    // Program context
+    optk::ctx_t *ctx = new optk::ctx_t;
 
-    syn::synthetic_benchmark *syn = new syn::synthetic_benchmark();
-    bmks->register_benchmark (syn);
+    // initialise the relevant benchmarks
+    if (std::string(args->benchmark) == "synthetic") {
+        syn::synthetic_benchmark *sbm = new syn::synthetic_benchmark;
+        bmks->register_benchmark (sbm);
+    }
+
+    // no matching benchmarks were added
+    if (!bmks->collection()->size()) {
+        ctx->error = true;
+        return ctx;
+    }
+
+    // initialise only the relevant optimisers
+    if (std::string(args->algorithm) == "gridsearch") {
+        gridsearch *gs = new gridsearch();
+        opts->register_optimiser(gs);
+    }
+    if (std::string(args->algorithm) == "random_search") {
+        random_search *rs = new random_search();
+        opts->register_optimiser(rs);
+    }
+
+    // no matching optimisation algorithms were added
+    if (!opts->collection()->size()) {
+        ctx->error = true;
+        return ctx;
+    }
+
+    // must be called after initialising opts and bmks
+    ctx->error = validate_args (args, opts, bmks);
+    if (ctx->error)
+        return ctx;
+
+    // other arguments:
+    ctx->threads = args->threads;
+    ctx->max_iters = args->max_iters;
+
+    ctx->outfile =
+        std::string(args->output) + "/" + std::string(args->benchmark) +
+        "-" + std::to_string(std::time(0)) + ".csv";
+
+    // Write the header of the csv output file.
+    std::ofstream f;
+    f.open(ctx->outfile);
+    f << "Benchmark, Optimiser";
+    for (int i = 0; i < args->max_iters; i++) {
+        f << "," << std::to_string(i);
+    }
+    f << std::endl;
+    f.close();
+
+    return ctx;
 }
 
 /**
  * In this teardown function we free all memory allocated by the setup and
  * during the program.
- * TODO remove if unnecessary...
  */
 static void
-do_teardown (optk::optimisers *opts, optk::benchmarks *bmks)
-{ }
+do_teardown (optk::ctx_t *ctx)
+{
+    delete ctx;
+}
 
 /* Main --------------------------------------------------------------------- */
 
@@ -146,40 +214,35 @@ main (int argc, char **argv)
     optk::optimisers opts;
     optk::benchmarks bmks;
 
-    do_setup (&opts, &bmks);
 
 #ifdef __OPTK_TESTING
     OPTKtest::testmain();
     return 0;
 #else
 
-    do_teardown ();
-
     optk::arguments args{
         .threads = 1,
-        .output = "",
+        .max_iters = 20,
+        .output = "outputs",
         .benchmark = "synthetic",
         .algorithm = "random_search"
     };
 
     argp_parse (&argp, argc, argv, 0, 0, &args);
 
-    if (args.threads <= 0) {
-        std::cerr <<
-            "Error: number of threads must be strictly positive" << std::endl;
-        return 1;
+    optk::ctx_t *ctx = do_setup (&args, &opts, &bmks);
+
+    if (ctx->error) {
+        do_teardown(ctx);
+        return 0;
     }
-    // ensure that the algorithm name is valid, and that the optimisation
-    // algorithm selection is also valid.
 
-    // print dummy output
-    std::cout << "output: " << args.output << std::endl;
-    std::cout << "benchmarks: " << args.benchmark << std::endl;
-    std::cout << "optimisers: " << args.algorithm << std::endl;
-    std::cout << "threads: " << args.threads << std::endl;
+    std::vector<optk::benchmark_set *> * bms = bmks.collection();
+    std::vector<optk::benchmark_set *>::iterator it;
+    for (it = bms->begin (); it != bms->end(); it++)
+        (*it)->run(&opts, ctx);
 
-    // first parse arguments, including the name of the optimiser to use
-    std::cout << "OPTK" << std::endl;
+    do_teardown (ctx);
 
     return 0;
 #endif

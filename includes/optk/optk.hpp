@@ -23,10 +23,26 @@
 #define __OPTK_H_
 
 #include <argp.h>
-#include <iostream>
 #include <cstdlib>
+#include <ctime>
+#include <fstream>
+#include <iostream>
+#include <string>
 
 #include <optk/types.hpp>
+#include <optk/benchmark.hpp>
+#include <optk/optimiser.hpp>
+
+// optimisers
+#include <optimisers/gridsearch.hpp>
+#include <optimisers/random.hpp>
+
+// benchmarks
+#include <benchmarks/synthetic.hpp>
+
+#ifdef __OPTK_TESTING
+#include <tests/tests.hpp>
+#endif
 
 /**
  * @namespace
@@ -38,6 +54,8 @@ namespace optk {
 typedef struct {
     /** The number of threads to run the program with                        */
     int threads;
+    /** The number of iterations to run per benchmark                        */
+    int max_iters;
     /** The directory into which the output file(s) should go                */
     const char *output;
     /** The benchmarks to run                                                */

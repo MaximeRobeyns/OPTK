@@ -25,11 +25,15 @@
 #include <string>
 
 #include <optk/types.hpp>
+#include <optk/optimiser.hpp>
+
+// TODO delete
+// #include <iostream>
 
 namespace optk {
 
 /**
- * This is base class which every benchmark inherits.
+ * This is base class which every individual benchmark inherits.
  */
 class benchmark {
     public:
@@ -69,16 +73,55 @@ class benchmark {
 };
 
 /**
+ * A benchmark set contains a collection of one or more optk::benckmark and a
+ * single evaluation function (run), which runs the entire benchmark set. This
+ * captures the idea that different benchmarks need to be run in different ways
+ * or with different configurations.
+ */
+class benchmark_set {
+    public:
+        /**
+         * The constructor for a benchmark set
+         * @param n The name should capture the commonalities between the
+         * benchmarks in this set.
+         */
+        benchmark_set (const std::string &n) {
+            m_name = n;
+        };
+
+        /**
+         * Virtual destructor allows derived classes to be deleted correctly.
+         */
+        virtual ~benchmark_set ();
+
+        /**
+         * This is used to run all the optimisers in the set on the benchmarks.
+         * @param The optimiser(s) to run on each benchmark.
+         * @todo should this simply be a vector of optk::optimiser?
+         */
+        virtual void run (optk::optimisers *opts, optk::ctx_t *ctx) = 0;
+
+        std::string get_name () { return m_name; }
+
+    private:
+        std::string m_name;
+};
+
+/**
  * This represents a collection of benchmarks; either all those known to OPTK,
  * or a subset of those such as those selected by a user from command line
  * arguments.
+ * A benchmark
  */
 class benchmarks {
     public:
-        /**
-         * The constructor
-         */
         benchmarks ();
+
+        /**
+         * This destructor will free the memory for any registered benchmark
+         * sets.
+         */
+        ~benchmarks ();
 
         /**
          * The reigster function allows you to tell the main runner about the
@@ -86,21 +129,23 @@ class benchmarks {
          *
          * @param b The benchmark to register
          */
-        void register_benchmark (benchmark *b);
+        void register_benchmark (benchmark_set *b);
 
         /**
          * @returns The collection of benchmarks held by this class
          */
-        std::vector <benchmark *> * collection();
+        std::vector <benchmark_set *> * collection();
 
         /**
          * @todo include an iterator method such as 'map' or a wrapper around a
          * for loop to allow the runner to 'apply' an optimisation algorithm to
          * each benchmark in the collection.
+         * TODO remove the 'core' module if this function is implemented.
          */
 
     private:
-        std::vector <benchmark *> m_arr; /** The array of benchmarks in this collection */
+        /** The array of benchmarks in this collection */
+        std::vector <benchmark_set *> m_arr;
 };
 
 } // namespace optk

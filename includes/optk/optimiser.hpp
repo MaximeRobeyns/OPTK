@@ -23,7 +23,8 @@
 #define __OPTIMISER_H_
 
 #include <optk/types.hpp>
-#include <optk/benchmark.hpp>
+// remvoe when step function is also removed
+// #include <optk/benchmark.hpp>
 
 namespace optk {
 
@@ -47,6 +48,11 @@ class optimiser {
          * by explicit calls to receive_trial_results.
          */
         ~optimiser ();
+
+        /**
+         * @returns the optimiser's name
+         */
+        std::string get_name () { return m_name; }
 
         // required methods ---------------------------------------------------
 
@@ -91,6 +97,7 @@ class optimiser {
          * class.
          * @param o A pointer to the optimisers class with which to register
          * this optimiser.
+         * @todo is this method necessary?
          */
         void accept (optimisers *o);
 
@@ -107,7 +114,8 @@ class optimiser {
          * combinations in gridsearch).
          * @todo make thread safe by placing a mutex on stepidx.
          */
-        bool step (benchmark *b);
+        // TODO review this; is it necessary?
+        // bool step (benchmark *b);
 
     protected:
 

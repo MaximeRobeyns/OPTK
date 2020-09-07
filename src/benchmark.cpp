@@ -21,6 +21,8 @@
 
 #include <optk/benchmark.hpp>
 
+// benchmark ------------------------------------------------------------------
+
 optk::benchmark::benchmark (const std::string &name)
 {
     m_name = name;
@@ -32,18 +34,33 @@ optk::benchmark::get_name ()
     return m_name;
 }
 
+// benchmark set --------------------------------------------------------------
+
+optk::benchmark_set::~benchmark_set()
+{ }
+
+// benchmarks -----------------------------------------------------------------
+
 optk::benchmarks::benchmarks ()
 {
-    m_arr = std::vector<benchmark *>();
+    m_arr = std::vector<benchmark_set *>();
+}
+
+optk::benchmarks::~benchmarks ()
+{
+    std::vector<benchmark_set *>::iterator it;
+    for (it = m_arr.begin (); it != m_arr.end(); it++) {
+        delete *it;
+    }
 }
 
 void
-optk::benchmarks::register_benchmark (optk::benchmark *b)
+optk::benchmarks::register_benchmark (optk::benchmark_set *b)
 {
     m_arr.push_back(b);
 }
 
-std::vector <optk::benchmark *> *
+std::vector <optk::benchmark_set *> *
 optk::benchmarks::collection ()
 {
     return &m_arr;

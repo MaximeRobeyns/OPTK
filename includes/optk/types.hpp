@@ -40,6 +40,19 @@
 
 #include <sys/types.h>
 
+// Program context ------------------------------------------------------------
+
+namespace optk {
+
+typedef struct {
+    std::string outfile;    /// The name of the output file
+    uint max_iters;         /// Max number of iterations to run per benchmark
+    int threads;            /// The number of threads to use
+    bool error;             /// Flags whether an error has occurred
+} ctx_t;
+
+} // namespace optk
+
 // Parameter values -----------------------------------------------------------
 
 /** Entries in the inst namespace represent concrete instances or settings of a
