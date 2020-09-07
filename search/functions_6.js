@@ -5,7 +5,7 @@ var searchData=
   ['get_5fcount',['get_count',['../class____gs_1_1value.html#a45fb081f21c012b5a11c4456d17de5a8',1,'__gs::value']]],
   ['get_5fdims',['get_dims',['../classsyn_1_1synthetic.html#a32dfee3394cb0a97d2ca32845dd7de86',1,'syn::synthetic']]],
   ['get_5fitem',['get_item',['../classinst_1_1node.html#a2042cfd667e6d232ec72066c6097dc2c',1,'inst::node']]],
-  ['get_5fname',['get_name',['../classoptk_1_1benchmark.html#aed0329727f9949770a0711bedb3f32cd',1,'optk::benchmark::get_name()'],['../classsspace_1_1param__t.html#ab587a41043d9d77070cda0d95ed4468f',1,'sspace::param_t::get_name()']]],
+  ['get_5fname',['get_name',['../classoptk_1_1benchmark.html#aed0329727f9949770a0711bedb3f32cd',1,'optk::benchmark::get_name()'],['../classoptk_1_1optimiser.html#aa2feaf657c2c19fecffd963a903cf392',1,'optk::optimiser::get_name()'],['../classsspace_1_1param__t.html#ab587a41043d9d77070cda0d95ed4468f',1,'sspace::param_t::get_name()']]],
   ['get_5fopt',['get_opt',['../classsyn_1_1synthetic.html#ac3fe863b66a736b13aeed7e13b997a44',1,'syn::synthetic']]],
   ['get_5fopt_5fparam',['get_opt_param',['../classsyn_1_1synthetic.html#aeb85ecde38b8813b4452782af752aa42',1,'syn::synthetic']]],
   ['get_5fsearch_5fspace',['get_search_space',['../classsyn_1_1synthetic.html#aa7b3172df1480f46eb66a8b4af80c957',1,'syn::synthetic::get_search_space()'],['../classoptk_1_1benchmark.html#a72ad124af35f075f2d52d71efc57ef74',1,'optk::benchmark::get_search_space()']]],

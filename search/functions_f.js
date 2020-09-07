@@ -6,6 +6,6 @@ var searchData=
   ['sample_5fss',['sample_ss',['../classrandom__search.html#aabf7d669290dfa670f37a802d0627dcc',1,'random_search']]],
   ['set_5fopt_5fparam',['set_opt_param',['../classsyn_1_1synthetic.html#ae09ecb8824206e96d7c733beca04b209',1,'syn::synthetic']]],
   ['set_5fproperties',['set_properties',['../classsyn_1_1synthetic.html#a976e6f781f8fba4fde3cef7b35daecc0',1,'syn::synthetic']]],
-  ['step',['step',['../class____gs_1_1node.html#a7c4cdadb2a8fd47af442e822c1ab56c4',1,'__gs::node::step()'],['../classoptk_1_1optimiser.html#abdebf5b5691aede62f6559cfd70e07c6',1,'optk::optimiser::step()']]],
+  ['step',['step',['../class____gs_1_1node.html#a7c4cdadb2a8fd47af442e822c1ab56c4',1,'__gs::node']]],
   ['synthetic',['synthetic',['../classsyn_1_1synthetic.html#af6ca132b0936fbc51904c225c3510a7f',1,'syn::synthetic::synthetic(const std::string &amp;n, u_int dims, double lb, double ub, double opt)'],['../classsyn_1_1synthetic.html#a74eac4319f48e71bf255b9f61bf49450',1,'syn::synthetic::synthetic(const std::string &amp;n, u_int dims, double opt)']]]
 ];

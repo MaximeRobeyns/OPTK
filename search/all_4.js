@@ -12,6 +12,8 @@ var searchData=
   ['dist_5fsq_5finf',['dist_sq_inf',['../classsyn_1_1regression.html#a496ef823e1d71da178fb2f97030b3594',1,'syn::regression']]],
   ['dist_5ftype',['dist_type',['../classsyn_1_1regression.html#afaa2295ac083e4677770fed7fbdfd89d',1,'syn::regression']]],
   ['dixon_5fprice',['dixon_price',['../classsyn_1_1dixon__price.html',1,'syn']]],
+  ['do_5fsetup',['do_setup',['../optk_8cpp.html#a36eb91541ba69b60bf85032bfc085c9e',1,'optk.cpp']]],
+  ['do_5fteardown',['do_teardown',['../optk_8cpp.html#a84739df646dc2218c03c2ccae522bbda',1,'optk.cpp']]],
   ['dolan',['dolan',['../classsyn_1_1dolan.html',1,'syn']]],
   ['drop_5fwave',['drop_wave',['../classsyn_1_1drop__wave.html',1,'syn']]]
 ];

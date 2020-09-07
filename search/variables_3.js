@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['local_5fparams',['local_params',['../class____gs_1_1node.html#a86b36fa51b4ee43a84fbb1ec1b6f7473',1,'__gs::node']]]
+  ['error',['error',['../structoptk_1_1ctx__t.html#aa7e9bd5a8e268a0ca633fcd4382e3547',1,'optk::ctx_t']]]
 ];

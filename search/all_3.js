@@ -9,10 +9,13 @@ var searchData=
   ['clone',['clone',['../class____gs_1_1node.html#af3bd9c1693d8884dbc8c72546832d9db',1,'__gs::node']]],
   ['coef',['coef',['../structsyn_1_1rdims.html#a478d444197995d082d5abbdaacbcfb0f',1,'syn::rdims']]],
   ['cola',['cola',['../classsyn_1_1cola.html',1,'syn']]],
-  ['collection',['collection',['../classoptk_1_1benchmarks.html#a3a9dd1ed6120d0aab3a0258b482b86e4',1,'optk::benchmarks::collection()'],['../classoptk_1_1optimisers.html#a99200a4823f3fc7e5e0ba278d9598241',1,'optk::optimisers::collection()']]],
+  ['collection',['collection',['../classoptk_1_1benchmarks.html#ab5c2de22760980ea16b4128aa8f9cb6c',1,'optk::benchmarks::collection()'],['../classoptk_1_1optimisers.html#a99200a4823f3fc7e5e0ba278d9598241',1,'optk::optimisers::collection()']]],
   ['colville',['colville',['../classsyn_1_1colville.html',1,'syn']]],
   ['convert_5fsynthetic_5fss',['convert_synthetic_ss',['../classgridsearch.html#a79186d84c0d13fd2ee6f5e8320b0a8c1',1,'gridsearch']]],
   ['corana',['corana',['../classsyn_1_1corana.html',1,'syn']]],
+  ['core_2ecpp',['core.cpp',['../core_8cpp.html',1,'']]],
+  ['core_2ehpp',['core.hpp',['../core_8hpp.html',1,'']]],
+  ['core_5floop',['core_loop',['../core_8cpp.html#a15c0e23a9eb465a83f7ebf4b3343fd6a',1,'optk']]],
   ['cosine_5fmixture',['cosine_mixture',['../classsyn_1_1cosine__mixture.html',1,'syn']]],
   ['cosine_5fmixture2',['cosine_mixture2',['../classsyn_1_1cosine__mixture2.html',1,'syn']]],
   ['count',['count',['../classsspace_1_1categorical.html#ac347c32beddb473ffa401266fd432e15',1,'sspace::categorical::count()'],['../classsspace_1_1choice.html#ac471e6d15cb48748b5732902b408b85a',1,'sspace::choice::count()']]],
@@ -44,5 +47,6 @@ var searchData=
   ['court28',['court28',['../classsyn_1_1court28.html',1,'syn']]],
   ['cross_5fin_5ftray',['cross_in_tray',['../classsyn_1_1cross__in__tray.html',1,'syn']]],
   ['csendes',['csendes',['../classsyn_1_1csendes.html',1,'syn']]],
+  ['ctx_5ft',['ctx_t',['../structoptk_1_1ctx__t.html',1,'optk']]],
   ['cube',['cube',['../classsyn_1_1cube.html',1,'syn']]]
 ];

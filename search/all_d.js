@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['m_5farr',['m_arr',['../classoptk_1_1benchmarks.html#a1593e738c6c370fd5bd6ce704443088c',1,'optk::benchmarks']]],
+  ['m_5farr',['m_arr',['../classoptk_1_1benchmarks.html#a456128eb6204a460b2a7874c087bfaad',1,'optk::benchmarks']]],
   ['m_5flower',['m_lower',['../classsspace_1_1randint.html#a8d8114a665db72df8c66514aa66e15a6',1,'sspace::randint::m_lower()'],['../classsspace_1_1uniform.html#a990c8f73a108fe25f68d9b1432dcf82c',1,'sspace::uniform::m_lower()']]],
   ['m_5fmu',['m_mu',['../classsspace_1_1normal.html#a77929288ba372be8fce734c3a2c1feed',1,'sspace::normal']]],
   ['m_5fname',['m_name',['../classoptk_1_1optimiser.html#a1fe2315ed2548dc438b8984e3f1ac9e2',1,'optk::optimiser']]],
@@ -10,6 +10,7 @@ var searchData=
   ['m_5fsyn_5fspaces',['m_syn_spaces',['../classgridsearch.html#a8e283f286907e319513de6c5a25f02bb',1,'gridsearch']]],
   ['main',['main',['../optk_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'optk.cpp']]],
   ['matyas',['matyas',['../classsyn_1_1matyas.html',1,'syn']]],
+  ['max_5fiters',['max_iters',['../structoptk_1_1arguments.html#ad8cd9882554a941ccd47059d000d62c4',1,'optk::arguments::max_iters()'],['../structoptk_1_1ctx__t.html#a924adc4cc7fe24dd5bc82b0145ba600c',1,'optk::ctx_t::max_iters()']]],
   ['mccormick',['mccormick',['../classsyn_1_1mccormick.html',1,'syn']]],
   ['michalewicz02',['michalewicz02',['../classsyn_1_1michalewicz02.html',1,'syn']]],
   ['michalewicz06',['michalewicz06',['../classsyn_1_1michalewicz06.html',1,'syn']]],

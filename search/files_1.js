@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['gridsearch_2ecpp',['gridsearch.cpp',['../gridsearch_8cpp.html',1,'']]],
-  ['gridsearch_2ehpp',['gridsearch.hpp',['../gridsearch_8hpp.html',1,'']]]
+  ['core_2ecpp',['core.cpp',['../core_8cpp.html',1,'']]],
+  ['core_2ehpp',['core.hpp',['../core_8hpp.html',1,'']]]
 ];

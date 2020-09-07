@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['trials',['trials',['../classoptk_1_1optimiser.html#a6775691258025db902b9934be0aad473',1,'optk::optimiser']]]
+  ['output',['output',['../structoptk_1_1arguments.html#a63d3cbca08e88f63a1a366ab717f9f3c',1,'optk::arguments']]]
 ];

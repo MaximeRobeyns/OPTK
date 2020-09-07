@@ -6,5 +6,7 @@ var searchData=
   ['ackley3',['ackley3',['../classsyn_1_1ackley3.html',1,'syn']]],
   ['add_5fitem',['add_item',['../class____gs_1_1node.html#abccbb24e8fb054f179bb4e62c1ea770c',1,'__gs::node::add_item()'],['../classinst_1_1node.html#a5e17916d92af93a76b632cc0fa57d989',1,'inst::node::add_item()']]],
   ['add_5fitems',['add_items',['../classinst_1_1node.html#ab6c1b9f5786ec9027c95a77981438d75',1,'inst::node']]],
-  ['add_5fto_5ftrials',['add_to_trials',['../classoptk_1_1optimiser.html#a3e52bd6580ea90b8a13cd9fbaa3159cf',1,'optk::optimiser']]]
+  ['add_5fto_5ftrials',['add_to_trials',['../classoptk_1_1optimiser.html#a3e52bd6580ea90b8a13cd9fbaa3159cf',1,'optk::optimiser']]],
+  ['algorithm',['algorithm',['../structoptk_1_1arguments.html#a1ba889f89ae838f41d6ae867d1b7f7ac',1,'optk::arguments']]],
+  ['arguments',['arguments',['../structoptk_1_1arguments.html',1,'optk']]]
 ];

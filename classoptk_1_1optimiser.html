@@ -99,6 +99,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8518f917835ddc5515de35994b55090f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cd7dac5f14aba44e263db324c2c8fd1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a8cd7dac5f14aba44e263db324c2c8fd1">~optimiser</a> ()</td></tr>
 <tr class="separator:a8cd7dac5f14aba44e263db324c2c8fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2feaf657c2c19fecffd963a903cf392"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#aa2feaf657c2c19fecffd963a903cf392">get_name</a> ()</td></tr>
+<tr class="separator:aa2feaf657c2c19fecffd963a903cf392"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a572cc3d8829180ce4c506d72124fd2c3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a572cc3d8829180ce4c506d72124fd2c3">update_search_space</a> (<a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *space)</td></tr>
 <tr class="separator:a572cc3d8829180ce4c506d72124fd2c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37a8e8724dbbeed7ab8c79695fbe4b62"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceinst.html#a8a739cafbd67eef1072544b9673a4bb9">inst::set</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a37a8e8724dbbeed7ab8c79695fbe4b62">generate_parameters</a> (int param_id)</td></tr>
@@ -107,8 +109,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a62441799e78ee4f8f3b764ac9da210af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb9869bd5c49fa322ec43951fbf97c4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#afb9869bd5c49fa322ec43951fbf97c4e">accept</a> (<a class="el" href="classoptk_1_1optimisers.html">optimisers</a> *o)</td></tr>
 <tr class="separator:afb9869bd5c49fa322ec43951fbf97c4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdebf5b5691aede62f6559cfd70e07c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#abdebf5b5691aede62f6559cfd70e07c6">step</a> (<a class="el" href="classoptk_1_1benchmark.html">benchmark</a> *b)</td></tr>
-<tr class="separator:abdebf5b5691aede62f6559cfd70e07c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -198,6 +198,7 @@ Private Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>is this method necessary? </dd></dl>
 
 </div>
 </div>
@@ -234,13 +235,22 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This will add a parameter configuration allocated on the heap to the <a class="el" href="classoptk_1_1optimiser.html#a6775691258025db902b9934be0aad473">optimiser::trials</a> map, so that it may be freed later by the optimiser's destructor. If a trial configuration already exists with the same param_id, those values will be freed, and the value in the map will be replaced. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>The step function is a convenience method which performs one optimisation iteration. Not thread safe; blocking. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">param_id</td><td>The identifier for this trial. </td></tr>
-    <tr><td class="paramname">n</td><td>The root node of the concrete parameter settings. </td></tr>
+    <tr><td class="paramname">b</td><td>An instance of a benchmark that we are optimising over </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the optimisation algorithm has 'finished' and false otherwise. Note that in many instances the optimisation algorithm will not detect when it has converged; hence the returned value is intended rather to indicate cases when the optimisation algorithm cannot proceed any further (e.g. after exhausting all search combinations in gridsearch). </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>make thread safe by placing a mutex on stepidx. </dd></dl>
+<p>This will add a parameter configuration allocated on the heap to the <a class="el" href="classoptk_1_1optimiser.html#a6775691258025db902b9934be0aad473">optimiser::trials</a> map, so that it may be freed later by the optimiser's destructor. If a trial configuration already exists with the same param_id, those values will be freed, and the value in the map will be replaced. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">param_id</td><td>The identifier for this trial. </td></tr>
+    <tr><td class="paramname">n</td><td>The root node of the concrete parameter settings.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Delete this </dd></dl>
 
 </div>
 </div>
@@ -276,6 +286,32 @@ Private Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to an <a class="el" href="classinst_1_1node.html">inst::node</a>, or a NULL pointer if there are no more parameters to return. </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classgridsearch.html#aead0d0d7ed89f78564ffd3398adabfcb">gridsearch</a>, and <a class="el" href="classrandom__search.html#a8f92c5642c6541dd5bfc3d8fbc026222">random_search</a>.</p>
+
+</div>
+</div>
+<a id="aa2feaf657c2c19fecffd963a903cf392"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2feaf657c2c19fecffd963a903cf392">&#9670;&nbsp;</a></span>get_name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string optk::optimiser::get_name </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the optimiser's name </dd></dl>
 
 </div>
 </div>
@@ -329,32 +365,6 @@ Private Attributes</h2></td></tr>
 </dl>
 
 <p>Reimplemented in <a class="el" href="classgridsearch.html#a6b341eb8cc966066a31e109e984c0266">gridsearch</a>, and <a class="el" href="classrandom__search.html#a95ae56cb073961d25974714ff622ebde">random_search</a>.</p>
-
-</div>
-</div>
-<a id="abdebf5b5691aede62f6559cfd70e07c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abdebf5b5691aede62f6559cfd70e07c6">&#9670;&nbsp;</a></span>step()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool optk::optimiser::step </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classoptk_1_1benchmark.html">optk::benchmark</a> *&#160;</td>
-          <td class="paramname"><em>b</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>The step function is a convenience method which performs one optimisation iteration. Not thread safe; blocking. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">b</td><td>An instance of a benchmark that we are optimising over </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the optimisation algorithm has 'finished' and false otherwise. Note that in many instances the optimisation algorithm will not detect when it has converged; hence the returned value is intended rather to indicate cases when the optimisation algorithm cannot proceed any further (e.g. after exhausting all search combinations in gridsearch). </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>make thread safe by placing a mutex on stepidx. </dd></dl>
 
 </div>
 </div>

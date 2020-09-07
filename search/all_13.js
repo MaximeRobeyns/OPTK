@@ -9,7 +9,7 @@ var searchData=
   ['set_5fproperties',['set_properties',['../classsyn_1_1synthetic.html#a976e6f781f8fba4fde3cef7b35daecc0',1,'syn::synthetic']]],
   ['squared',['squared',['../classsyn_1_1regression.html#afaa2295ac083e4677770fed7fbdfd89daeaed38e30899686cdf33620471effd41',1,'syn::regression']]],
   ['sspace_5ft',['sspace_t',['../types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b',1,'sspace']]],
-  ['step',['step',['../class____gs_1_1node.html#a7c4cdadb2a8fd47af442e822c1ab56c4',1,'__gs::node::step()'],['../classoptk_1_1optimiser.html#abdebf5b5691aede62f6559cfd70e07c6',1,'optk::optimiser::step()']]],
+  ['step',['step',['../class____gs_1_1node.html#a7c4cdadb2a8fd47af442e822c1ab56c4',1,'__gs::node']]],
   ['stepidx',['stepidx',['../classoptk_1_1optimiser.html#a81d1dc291c290edce38a04242f5ca8d1',1,'optk::optimiser']]],
   ['str_5fval',['str_val',['../classinst_1_1str__val.html',1,'inst::str_val'],['../namespaceinst.html#a5c1a4df393b9c4d699deb3273d98e6d2a4f01cb844930b619e45cf3c3b5d34c16',1,'inst::str_val()']]],
   ['subspaces',['subspaces',['../namespace____gs.html#a3f47b80b46d5831ffaf31f33b58b5704',1,'__gs']]],

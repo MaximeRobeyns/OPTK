@@ -105,10 +105,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8518f917835ddc5515de35994b55090f inherit pub_methods_classoptk_1_1optimiser"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cd7dac5f14aba44e263db324c2c8fd1 inherit pub_methods_classoptk_1_1optimiser"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a8cd7dac5f14aba44e263db324c2c8fd1">~optimiser</a> ()</td></tr>
 <tr class="separator:a8cd7dac5f14aba44e263db324c2c8fd1 inherit pub_methods_classoptk_1_1optimiser"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2feaf657c2c19fecffd963a903cf392 inherit pub_methods_classoptk_1_1optimiser"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#aa2feaf657c2c19fecffd963a903cf392">get_name</a> ()</td></tr>
+<tr class="separator:aa2feaf657c2c19fecffd963a903cf392 inherit pub_methods_classoptk_1_1optimiser"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb9869bd5c49fa322ec43951fbf97c4e inherit pub_methods_classoptk_1_1optimiser"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#afb9869bd5c49fa322ec43951fbf97c4e">accept</a> (<a class="el" href="classoptk_1_1optimisers.html">optimisers</a> *o)</td></tr>
 <tr class="separator:afb9869bd5c49fa322ec43951fbf97c4e inherit pub_methods_classoptk_1_1optimiser"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdebf5b5691aede62f6559cfd70e07c6 inherit pub_methods_classoptk_1_1optimiser"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#abdebf5b5691aede62f6559cfd70e07c6">step</a> (<a class="el" href="classoptk_1_1benchmark.html">benchmark</a> *b)</td></tr>
-<tr class="separator:abdebf5b5691aede62f6559cfd70e07c6 inherit pub_methods_classoptk_1_1optimiser"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -379,13 +379,7 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This will add a parameter configuration allocated on the heap to the <a class="el" href="classoptk_1_1optimiser.html#a6775691258025db902b9934be0aad473">gridsearch::trials</a> map, so that it may be freed later by gridsearch's destructor. If a trial configuration already exists with the same param_id, those values will be freed, and the value in the map will be replaced. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">param_id</td><td>The identifier for this trial. </td></tr>
-    <tr><td class="paramname">n</td><td>The root node of the concrete parameter settings. This is used to keep track of previously generated instances or settings of the parameters, identified by the parameter id passed to the generate_parameters method. Contains elements stored on the heap.Indicates whether this is the first call to generate_parameters </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Indicates whether this is the first call to generate_parameters </p>
 
 </div>
 </div>

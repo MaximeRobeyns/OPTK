@@ -8,5 +8,6 @@ var searchData=
   ['options',['options',['../classsspace_1_1choice.html#a9564c06f9abb00be9fb11e14fd21baea',1,'sspace::choice']]],
   ['optk_2ecpp',['optk.cpp',['../optk_8cpp.html',1,'']]],
   ['optk_2ehpp',['optk.hpp',['../optk_8hpp.html',1,'']]],
-  ['optktest',['OPTKtest',['../namespaceOPTKtest.html',1,'']]]
+  ['optktest',['OPTKtest',['../namespaceOPTKtest.html',1,'']]],
+  ['output',['output',['../structoptk_1_1arguments.html#a63d3cbca08e88f63a1a366ab717f9f3c',1,'optk::arguments']]]
 ];

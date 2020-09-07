@@ -3,6 +3,7 @@ var searchData=
   ['bartels_5fconn',['bartels_conn',['../classsyn_1_1bartels__conn.html',1,'syn']]],
   ['beale',['beale',['../classsyn_1_1beale.html',1,'syn']]],
   ['benchmark',['benchmark',['../classoptk_1_1benchmark.html',1,'optk']]],
+  ['benchmark_5fset',['benchmark_set',['../classoptk_1_1benchmark__set.html',1,'optk']]],
   ['benchmarks',['benchmarks',['../classoptk_1_1benchmarks.html',1,'optk']]],
   ['biggs_5fexp2',['biggs_exp2',['../classsyn_1_1biggs__exp2.html',1,'syn']]],
   ['biggs_5fexp3',['biggs_exp3',['../classsyn_1_1biggs__exp3.html',1,'syn']]],
