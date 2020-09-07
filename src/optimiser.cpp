@@ -28,13 +28,25 @@ optk::optimiser::optimiser (std::string name)
     stepidx = 0;
 }
 
-optk::optimiser::~optimiser ()
+static void
+do_destruct (std::unordered_map<int, inst::set> *trials)
 {
     // delete any parameter instances which were not deleted by calls to
     // receive_trials_results.
     std::unordered_map<int, inst::set>::iterator it;
-    for (it = trials.begin (); it != trials.end (); it++)
+    for (it = trials->begin (); it != trials->end (); it++)
         inst::free_node (std::get<1>(*it));
+}
+
+optk::optimiser::~optimiser ()
+{
+    do_destruct (&trials);
+}
+
+void
+optk::optimiser::clear ()
+{
+    do_destruct (&trials);
 }
 
 optk::optimisers::optimisers ()

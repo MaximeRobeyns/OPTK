@@ -50,6 +50,12 @@ class optimiser {
         ~optimiser ();
 
         /**
+         * Clears / resets this optimiser. This should be the same as calling
+         * the destructor and then the constructor.
+         */
+        virtual void clear ();
+
+        /**
          * @returns the optimiser's name
          */
         std::string get_name () { return m_name; }

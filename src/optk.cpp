@@ -141,6 +141,8 @@ do_setup (
     // no matching benchmarks were added
     if (!bmks->collection()->size()) {
         ctx->error = true;
+        std::cerr << "Error: benchmark '" << args->benchmark <<
+            "' did not match any known benchmarks." << std::endl;
         return ctx;
     }
 
@@ -157,6 +159,8 @@ do_setup (
     // no matching optimisation algorithms were added
     if (!opts->collection()->size()) {
         ctx->error = true;
+        std::cerr << "Error: optimiser '" << args->algorithm <<
+            "' did not match any known optimisers." << std::endl;
         return ctx;
     }
 
@@ -222,10 +226,10 @@ main (int argc, char **argv)
 
     optk::arguments args{
         .threads = 1,
-        .max_iters = 20,
+        .max_iters = 20000,
         .output = "outputs",
         .benchmark = "synthetic",
-        .algorithm = "random_search"
+        .algorithm = "gridsearch"
     };
 
     argp_parse (&argp, argc, argv, 0, 0, &args);

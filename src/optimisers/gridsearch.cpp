@@ -525,7 +525,7 @@ gridsearch::~gridsearch ()
     __gs::node *tmp_root = static_cast<__gs::node *>(m_root);
     delete tmp_root;
 
-    // delete converted search spaces
+    // delete any converted search spaces
     std::vector<sspace::sspace_t *>::iterator sit;
     for (sit = m_syn_spaces.begin (); sit != m_syn_spaces.end (); sit++) {
         sspace::free_ss (*sit);
@@ -533,6 +533,36 @@ gridsearch::~gridsearch ()
     }
 }
 
+void
+gridsearch::clear ()
+{
+    __gs::node *tmp_root = static_cast<__gs::node *>(m_root);
+    delete tmp_root;
+
+    optk::optimiser::clear();
+
+    m_root = NULL;
+    fst_gen = true;
+}
+
+static bool
+validate_space (sspace::sspace_t *space)
+{
+    sspace::sspace_t::iterator it;
+    bool valid = true;
+    for (it = space->begin (); it != space->end (); it++) {
+        pt t = (*it)->get_type ();
+        if (
+            t != pt::randint &&
+            t != pt::quniform &&
+            t != pt::categorical_int &&
+            t != pt::categorical_dbl &&
+            t != pt::categorical_str &&
+            t != pt::choice)
+            valid = false;
+    }
+    return valid;
+}
 
 void
 gridsearch::update_search_space (sspace::sspace_t *space)
@@ -545,8 +575,22 @@ gridsearch::update_search_space (sspace::sspace_t *space)
     __gs::node *new_root = new __gs::node("root");
 
     sspace::sspace_t::iterator it;
-    for (it = space->begin (); it != space->end (); it++)
-        unpack_param (*it, new_root);
+
+    if (!validate_space (space)) {
+        // attempt to unpack search space for compatability with gridsearch
+        // (usually occurs with synthetic benchmark)
+        sspace::sspace_t *newspace = convert_synthetic_ss(space, 0.05);
+
+        if (!validate_space (newspace))
+            throw std::invalid_argument ("search space not compatible with gridsearch");
+
+        for (it = newspace->begin (); it != newspace->end (); it++)
+            unpack_param (*it, new_root);
+    } else {
+        // normal case
+        for (it = space->begin (); it != space->end (); it++)
+            unpack_param (*it, new_root);
+    }
 
     m_root = new_root;
 }
@@ -574,7 +618,7 @@ gridsearch::convert_synthetic_ss (sspace::sspace_t *ss, double q)
 }
 
 void
-gridsearch::update_search_space_s (sspace::sspace_t *space, double q)
+gridsearch::update_search_space_s (sspace::sspace_t *space, double q=0.2)
 {
     this->update_search_space(
             convert_synthetic_ss(space, q)

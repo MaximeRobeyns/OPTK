@@ -27,9 +27,6 @@
 #include <optk/types.hpp>
 #include <optk/optimiser.hpp>
 
-// TODO delete
-// #include <iostream>
-
 namespace optk {
 
 /**
@@ -135,13 +132,6 @@ class benchmarks {
          * @returns The collection of benchmarks held by this class
          */
         std::vector <benchmark_set *> * collection();
-
-        /**
-         * @todo include an iterator method such as 'map' or a wrapper around a
-         * for loop to allow the runner to 'apply' an optimisation algorithm to
-         * each benchmark in the collection.
-         * TODO remove the 'core' module if this function is implemented.
-         */
 
     private:
         /** The array of benchmarks in this collection */

@@ -29,6 +29,9 @@
 #include <optk/optimiser.hpp>
 #include <optk/types.hpp>
 
+// TODO get rid of this
+#include <iostream>
+
 namespace __gs {
 
 enum class pspace_t: char {
@@ -69,6 +72,11 @@ class gridsearch: public optk::optimiser {
         ~gridsearch ();
 
         /**
+         * The overidden clear function for resetting the benchmark.
+         */
+        void clear () override;
+
+        /**
          * Expands the lists of parameters into a format from which it is easier
          * to generate all possible configurations sequentially.
          *
@@ -76,7 +84,7 @@ class gridsearch: public optk::optimiser {
          * only accepts parameters of type param::choice, param::categorical,
          * param::randint as well as param::quniform.
          */
-        void update_search_space (sspace::sspace_t *space);
+        void update_search_space (sspace::sspace_t *space) override;
 
         /**
          * Converts the search space for synthetic benchmarks (defined as
@@ -106,7 +114,7 @@ class gridsearch: public optk::optimiser {
          * @param param_id The identifier which will be matched with the
          * selected parameter combination.
          */
-        inst::set generate_parameters (int param_id);
+        inst::set generate_parameters (int param_id) override;
 
         /**
          * Stores \c params if \c value is greater than previous best.
@@ -118,7 +126,7 @@ class gridsearch: public optk::optimiser {
          */
         void receive_trial_results (
             int param_id, inst::set params, double value
-        );
+        ) override;
 
 #ifdef __OPTK_TESTING
         __gs::param *get_root () {

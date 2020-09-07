@@ -4182,6 +4182,22 @@ synthetic_benchmark::synthetic_benchmark ():
     benchmark_set ("synthetic")
 { }
 
+#define bench(benchmark, b) \
+    benchmark b; \
+    of << b.get_name() << "," << opt->get_name(); \
+    optk::core_loop (&b, opt, trace); \
+    for (uint i = 0; i < ctx->max_iters; i++) \
+        of << "," << trace[i]; \
+    of << std::endl;
+
+#define bench_scalable(benchmark, b, dims) \
+    benchmark b(dims); \
+    of << b.get_name() << "," << opt->get_name(); \
+    optk::core_loop (&b, opt, trace); \
+    for (uint i = 0; i < ctx->max_iters; i++) \
+        of << "," << trace[i]; \
+    of << std::endl;
+
 //* @todo parallelise this function - embarrassing! */
 void
 synthetic_benchmark::run (optk::optimisers *opts, optk::ctx_t *ctx)
@@ -4192,22 +4208,133 @@ synthetic_benchmark::run (optk::optimisers *opts, optk::ctx_t *ctx)
     of.open(ctx->outfile, std::ios::app);
 
     // for all the optimisers in the set
-    std::vector<optk::optimiser*> *optc = opts->collection();
+    std::vector<optk::optimiser *> *optc = opts->collection();
     for (uint i = 0; i < optc->size(); i++) {
         optk::optimiser *opt = optc->at(i);
 
-        // write the benchmark and optimiser names to the CSV file:
-        of << this->get_name() << "," << opt->get_name();
-
         // for all the synthetic benchmarks
-        syn::ackley1 a1(10);
-        optk::core_loop (&a1, opt, trace);
+        bench_scalable(syn::ackley1, a1, 10);
+        bench(syn::ackley2, a2);
+        bench(syn::ackley3, a3);
+        bench(syn::adjiman, am);
+        bench_scalable(syn::alpine1, al1, 10);
+        bench_scalable(syn::alpine2, al2, 10);
+        bench(syn::brad, bd);
+        bench(syn::bartels_conn, bc);
+        bench(syn::beale, be);
+        bench(syn::biggs_exp2, bx2);
+        bench(syn::biggs_exp3, bx3);
+        bench(syn::biggs_exp4, bx4);
+        bench(syn::biggs_exp5, bx5);
+        bench(syn::biggs_exp6, bx6);
+        bench(syn::bird, brd);
+        bench(syn::bohachevsky1, bchy1);
+        bench(syn::bohachevsky2, bchy2);
+        bench(syn::bohachevsky3, bchy3);
+        bench(syn::booth, booth);
+        bench(syn::box_betts, bb);
+        bench(syn::branin1, br1);
+        bench(syn::branin2, br2);
+        bench(syn::brent, br);
+        bench_scalable(syn::brown, brn, 10);
+        bench(syn::bukin2, bk2);
+        bench(syn::bukin4, bk4);
+        bench(syn::bukin6, bk6);
+        bench(syn::camel3, c3);
+        bench(syn::camel6, c6);
+        bench(syn::chichinadze, cz);
+        bench_scalable(syn::chung_reynolds, cr, 10);
+        bench(syn::cola, cla);
+        bench(syn::colville, cv);
+        bench_scalable(syn::cosine_mixture, cm4, 4);
+        bench_scalable(syn::cosine_mixture, cm15, 15);
+        bench(syn::cross_in_tray, cit);
+        bench_scalable(syn::csendes, cs, 10);
+        bench(syn::cube, cbe);
+        bench(syn::damavandi, dam);
+        bench_scalable(syn::deb1, deb1, 10);
+        bench_scalable(syn::deb2, deb2, 10);
+        bench(syn::deckkers_aarts, da);
+        bench(syn::devillers_glasser1, dvg1);
+        bench(syn::devillers_glasser2, dvg2);
+        bench_scalable(syn::dixon_price, dxp, 10);
+        bench(syn::dolan, dln);
+        bench_scalable(syn::deceptive, dec, 10);
+        bench_scalable(syn::deceptive, dcs, 10);
+        bench(syn::drop_wave, dw);
+        bench(syn::easom, esm);
+        bench(syn::egg_crate, egc);
+        bench(syn::egg_holder, egh);
+        bench(syn::el_attar_vidyasagar_dutta, elatt);
+        bench_scalable(syn::exponential, exp, 10);
+        bench(syn::exp2, exp2);
+        bench(syn::franke, fnk);
+        bench(syn::freudenstein_roth, frr);
+        bench(syn::gear, gear);
+        bench(syn::giunta, gta);
+        bench(syn::goldstein_price, gsp);
+        bench_scalable(syn::griewank, gwk, 10);
+        bench(syn::gulf, gulf);
+        bench(syn::hansen, hsn);
+        bench(syn::hartman3, hrt3);
+        bench(syn::hartman6, hrt6);
+        bench(syn::helical_valley, hv);
+        bench(syn::himmelblau, hb);
+        bench(syn::holder_table, ht);
+        bench(syn::hosaki, hki);
+        bench(syn::jennrich_sampson, js);
+        bench(syn::judge, jd);
+        bench(syn::langermann2, l2);
+        bench(syn::lennard_jones, lj);
+        bench(syn::keane, kn);
+        bench(syn::keane, ln);
+        bench_scalable(syn::levy3, lv3, 10);
+        bench(syn::levy5, lv5);
+        bench(syn::levy13, lv13);
+        bench(syn::matyas, mts);
+        bench(syn::mccormick, mck);
+        bench(syn::michalewicz02, mcz02);
+        bench(syn::michalewicz06, mcz06);
+        bench(syn::michalewicz12, mcz12);
+        bench(syn::miele_cantrell, mcll);
+        bench_scalable(syn::mishra01, mish01,10);
+        bench_scalable(syn::mishra02, mish02, 10);
+        bench(syn::mishra03, mish03);
+        bench(syn::mishra04, mish04);
+        bench(syn::mishra05, mish05);
+        bench(syn::mishra06, mish06);
+        // TODO fix this one - output seems wrong
+        // bench(syn::mishra08, mish08);
+        bench(syn::mishra09, mish09);
+        bench(syn::mishra10, mish10);
+        bench_scalable(syn::mishra11, mish11, 10);
 
-        // write the values to the CSV file:
-        for (uint i = 0; i < ctx->max_iters; i++) {
-            of << ", " << trace[i];
-        }
-        of << std::endl;
+        bench(syn::court01, crt1);
+        bench(syn::court02, crt2);
+        bench(syn::court03, crt3);
+        bench(syn::court04, crt4);
+        bench(syn::court05, crt5);
+        bench(syn::court06, crt6);
+        bench(syn::court07, crt7);
+        bench(syn::court08, crt8);
+        bench(syn::court09, crt9);
+        bench(syn::court10, crt10);
+        bench(syn::court11, crt11);
+        bench(syn::court13, crt13);
+        bench(syn::court14, crt14);
+        bench(syn::court15, crt15);
+        bench(syn::court16, crt16);
+        bench(syn::court17, crt17);
+        bench(syn::court18, crt18);
+        bench(syn::court19, crt19);
+        bench(syn::court20, crt20);
+        bench(syn::court21, crt21);
+        bench(syn::court22, crt22);
+        bench(syn::court24, crt24);
+        bench(syn::court25, crt25);
+        bench(syn::court26, crt26);
+        bench(syn::court27, crt27);
+        bench(syn::court28, crt28);
     }
 
     of.close();

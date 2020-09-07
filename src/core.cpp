@@ -21,6 +21,8 @@
 
 #include <optk/core.hpp>
 
+#include <iostream>
+
 namespace optk {
 
 void
@@ -42,12 +44,15 @@ core_loop(
 
     do {
         params = opt->generate_parameters (idx);
-        if (!params) break;
+        if (params == NULL)
+            break;
         double res = bench->evaluate (params);
         if (best > res) best = res;
         opt->receive_trial_results (idx, params, res);
         trace[idx++] = res;
     } while (params != NULL && idx < max_iter);
+
+    opt->clear();
 
     return;
 }
