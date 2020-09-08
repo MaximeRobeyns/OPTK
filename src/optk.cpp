@@ -233,7 +233,7 @@ main (int argc, char **argv)
         .max_iters = 20,
         .output = "outputs",
         .benchmark = "synthetic",
-        .algorithm = "gp_optimiser"
+        .algorithm = "random_search"
     };
 
     argp_parse (&argp, argc, argv, 0, 0, &args);

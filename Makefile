@@ -53,7 +53,8 @@ TEST_OBJECTS_ii	= $(patsubst ${SOURCES}/%,${TESTBUILDDIR}/src/%,${PROJECT_SOURCE
 TEST_OBJECTS	= ${TEST_OBJECTS_i} ${TEST_OBJECTS_ii}
 TEST_SUBDIRS    = $(shell find ${TESTSRC} -type d | cut -d'/' -f2-)
 
-INCLUDES		= -I${INCDIR} -I/usr/local/include -I/usr/include/python3.8
+INCLUDES		= -I${INCDIR} -I/usr/local/include -I$(shell dirname $(shell locate Python.h | tail -1))
+# /usr/include/python3.8
 LIBS			= $(shell python3-config --embed --ldflags)
 INCDEP			= -I${INCDIR}
 CFLAGS			= -O2 -Wall -std=c++17 -pthread
