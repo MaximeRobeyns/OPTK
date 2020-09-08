@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>OPTK: includes/optk/optimiser.hpp File Reference</title>
+<title>OPTK: includes/optimisers/gp.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,33 +66,34 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_09e761304027c904456130627fd4dcf5.html">includes</a></li><li class="navelem"><a class="el" href="dir_c601bad0786debae67a3d01ec03f9711.html">optk</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_09e761304027c904456130627fd4dcf5.html">includes</a></li><li class="navelem"><a class="el" href="dir_b012dc796029eda1de4d4688776f9dda.html">optimisers</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle">
-<div class="title">optimiser.hpp File Reference</div>  </div>
+<div class="title">gp.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This file defines the base class for optimisers.  
+<p>Header file for the Gaussian process-based optimiser.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;<a class="el" href="types_8hpp_source.html">optk/types.hpp</a>&gt;</code><br />
-<code>#include &lt;iostream&gt;</code><br />
+<div class="textblock"><code>#include &lt;Python.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="optimiser_8hpp_source.html">optk/optimiser.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="types_8hpp_source.html">optk/types.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="benchmark_8hpp_source.html">optk/benchmark.hpp</a>&gt;</code><br />
 </div>
-<p><a href="optimiser_8hpp_source.html">Go to the source code of this file.</a></p>
+<p><a href="gp_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html">optk::optimiser</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimisers.html">optk::optimisers</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgp__opt.html">gp_opt</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This file defines the base class for optimisers. </p>
+<div class="textblock"><p>Header file for the Gaussian process-based optimiser. </p>
 <p>Copyright (C) 2020 Maxime Robeyns <a href="#" onclick="location.href='mai'+'lto:'+'max'+'im'+'ero'+'be'+'yns'+'@g'+'mai'+'l.'+'com'; return false;">maxim<span style="display: none;">.nosp@m.</span>erob<span style="display: none;">.nosp@m.</span>eyns@<span style="display: none;">.nosp@m.</span>gmai<span style="display: none;">.nosp@m.</span>l.com</a></p>
 <p>Written for the ACRC, University of Bristol</p>
 <p>Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['gear',['gear',['../classsyn_1_1gear.html',1,'syn']]],
-  ['generate_5fparameters',['generate_parameters',['../classgridsearch.html#aead0d0d7ed89f78564ffd3398adabfcb',1,'gridsearch::generate_parameters()'],['../classrandom__search.html#a8f92c5642c6541dd5bfc3d8fbc026222',1,'random_search::generate_parameters()'],['../classoptk_1_1optimiser.html#a37a8e8724dbbeed7ab8c79695fbe4b62',1,'optk::optimiser::generate_parameters()']]],
+  ['generate_5fparameters',['generate_parameters',['../classgp__opt.html#a4f050cad325bb62e48ab32d5486f5db5',1,'gp_opt::generate_parameters()'],['../classgridsearch.html#a3e0faaeef671586f9da0ba2f6324a8bd',1,'gridsearch::generate_parameters()'],['../classrandom__search.html#a8f92c5642c6541dd5bfc3d8fbc026222',1,'random_search::generate_parameters()'],['../classoptk_1_1optimiser.html#a37a8e8724dbbeed7ab8c79695fbe4b62',1,'optk::optimiser::generate_parameters()']]],
   ['get',['get',['../classsspace_1_1categorical.html#adc6863cf4296dce8eef66f5b5b35db0e',1,'sspace::categorical::get()'],['../classsspace_1_1choice.html#a86d5b76d9b6db68cc5edeb513f43c798',1,'sspace::choice::get()'],['../namespaceinst.html#ab0635314e39fd7aa08b3d29dca1affe0',1,'inst::get()']]],
   ['get_5fcount',['get_count',['../class____gs_1_1value.html#a45fb081f21c012b5a11c4456d17de5a8',1,'__gs::value']]],
   ['get_5fdims',['get_dims',['../classsyn_1_1synthetic.html#a32dfee3394cb0a97d2ca32845dd7de86',1,'syn::synthetic']]],
@@ -15,6 +15,10 @@ var searchData=
   ['get_5fvalues',['get_values',['../class____gs_1_1node.html#ac1e56730a6c90935bc4a566961fafa83',1,'__gs::node::get_values()'],['../classinst_1_1node.html#a4853904f03fd88c92dbf9b10339beae0',1,'inst::node::get_values()']]],
   ['giunta',['giunta',['../classsyn_1_1giunta.html',1,'syn']]],
   ['goldstein_5fprice',['goldstein_price',['../classsyn_1_1goldstein__price.html',1,'syn']]],
+  ['gp',['gp',['../namespacegp.html',1,'']]],
+  ['gp_2ecpp',['gp.cpp',['../gp_8cpp.html',1,'']]],
+  ['gp_2ehpp',['gp.hpp',['../gp_8hpp.html',1,'']]],
+  ['gp_5fopt',['gp_opt',['../classgp__opt.html',1,'gp_opt'],['../classgp__opt.html#a5e10d6b03d99e1021d9c62b55db7c02f',1,'gp_opt::gp_opt()']]],
   ['gridsearch',['gridsearch',['../classgridsearch.html',1,'gridsearch'],['../classgridsearch.html#ad9fb05487e1326b918dcd5f61b6a5fe6',1,'gridsearch::gridsearch()']]],
   ['gridsearch_2ecpp',['gridsearch.cpp',['../gridsearch_8cpp.html',1,'']]],
   ['gridsearch_2ehpp',['gridsearch.hpp',['../gridsearch_8hpp.html',1,'']]],

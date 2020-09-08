@@ -72,6 +72,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">synthetic.cpp File Reference</div>  </div>
@@ -87,6 +88,13 @@ $(function() {
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacesyn"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesyn.html">syn</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a8d0cfa3d408b22f14d79947a69db9a67"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>bench</b>(benchmark,  b)</td></tr>
+<tr class="separator:a8d0cfa3d408b22f14d79947a69db9a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80cec5fea0c631c9822ec0c9db0f09a9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>bench_scalable</b>(benchmark,  b,  dims)</td></tr>
+<tr class="separator:a80cec5fea0c631c9822ec0c9db0f09a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -104,7 +112,70 @@ static double&#160;</td><td class="memItemRight" valign="bottom"><b>syn::levy3_w
 <p>Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
 <p><a href="http://www.osedu.org/licenses/ECL-2.0">http://www.osedu.org/licenses/ECL-2.0</a></p>
 <p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the LIcense For The Specific Language Governing permissions and limitations under the License. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a8d0cfa3d408b22f14d79947a69db9a67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d0cfa3d408b22f14d79947a69db9a67">&#9670;&nbsp;</a></span>bench</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define bench</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">benchmark, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">b&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">benchmark b; \</div><div class="line">    of &lt;&lt; b.get_name() &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; opt-&gt;get_name(); \</div><div class="line">    optk::core_loop (&amp;b, opt, trace); \</div><div class="line">    for (uint i = 0; i &lt; ctx-&gt;max_iters; i++) \</div><div class="line">        of &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; trace[i]; \</div><div class="line">    of &lt;&lt; std::endl;</div></div><!-- fragment -->
+</div>
+</div>
+<a id="a80cec5fea0c631c9822ec0c9db0f09a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80cec5fea0c631c9822ec0c9db0f09a9">&#9670;&nbsp;</a></span>bench_scalable</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define bench_scalable</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">benchmark, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">b, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">dims&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">benchmark b(dims); \</div><div class="line">    of &lt;&lt; b.get_name() &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; opt-&gt;get_name(); \</div><div class="line">    optk::core_loop (&amp;b, opt, trace); \</div><div class="line">    for (uint i = 0; i &lt; ctx-&gt;max_iters; i++) \</div><div class="line">        of &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; trace[i]; \</div><div class="line">    of &lt;&lt; std::endl;</div></div><!-- fragment -->
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

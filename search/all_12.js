@@ -5,7 +5,7 @@ var searchData=
   ['random_2ehpp',['random.hpp',['../random_8hpp.html',1,'']]],
   ['random_5fsearch',['random_search',['../classrandom__search.html',1,'']]],
   ['rdims',['rdims',['../structsyn_1_1rdims.html',1,'syn']]],
-  ['receive_5ftrial_5fresults',['receive_trial_results',['../classgridsearch.html#a6b341eb8cc966066a31e109e984c0266',1,'gridsearch::receive_trial_results()'],['../classrandom__search.html#a95ae56cb073961d25974714ff622ebde',1,'random_search::receive_trial_results()'],['../classoptk_1_1optimiser.html#a62441799e78ee4f8f3b764ac9da210af',1,'optk::optimiser::receive_trial_results()']]],
+  ['receive_5ftrial_5fresults',['receive_trial_results',['../classgp__opt.html#a1ebf8c28c600df097632aec6d6a69bd6',1,'gp_opt::receive_trial_results()'],['../classgridsearch.html#a2fc9612a2b4c5541eb386769d12a943d',1,'gridsearch::receive_trial_results()'],['../classrandom__search.html#a95ae56cb073961d25974714ff622ebde',1,'random_search::receive_trial_results()'],['../classoptk_1_1optimiser.html#a62441799e78ee4f8f3b764ac9da210af',1,'optk::optimiser::receive_trial_results()']]],
   ['register_5fbenchmark',['register_benchmark',['../classoptk_1_1benchmarks.html#a680ef0f19e152e5c85bb943fc381fc9d',1,'optk::benchmarks']]],
   ['register_5foptimiser',['register_optimiser',['../classoptk_1_1optimisers.html#a30dde5d416d190bc8483a1d4f85e6de7',1,'optk::optimisers']]],
   ['regression',['regression',['../classsyn_1_1regression.html',1,'syn::regression'],['../classsyn_1_1regression.html#a00c339cb4edc44ded2c2f756921d17db',1,'syn::regression::regression()']]],

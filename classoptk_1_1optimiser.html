@@ -88,8 +88,9 @@ Inheritance diagram for optk::optimiser:</div>
  <div class="center">
   <img src="classoptk_1_1optimiser.png" usemap="#optk::optimiser_map" alt=""/>
   <map id="optk::optimiser_map" name="optk::optimiser_map">
-<area href="classgridsearch.html" alt="gridsearch" shape="rect" coords="0,56,100,80"/>
-<area href="classrandom__search.html" alt="random_search" shape="rect" coords="110,56,210,80"/>
+<area href="classgp__opt.html" alt="gp_opt" shape="rect" coords="0,56,100,80"/>
+<area href="classgridsearch.html" alt="gridsearch" shape="rect" coords="110,56,210,80"/>
+<area href="classrandom__search.html" alt="random_search" shape="rect" coords="220,56,320,80"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -99,6 +100,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8518f917835ddc5515de35994b55090f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cd7dac5f14aba44e263db324c2c8fd1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a8cd7dac5f14aba44e263db324c2c8fd1">~optimiser</a> ()</td></tr>
 <tr class="separator:a8cd7dac5f14aba44e263db324c2c8fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33707505bb3c6eef2e99a47fe8f1082a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a33707505bb3c6eef2e99a47fe8f1082a">clear</a> ()</td></tr>
+<tr class="separator:a33707505bb3c6eef2e99a47fe8f1082a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2feaf657c2c19fecffd963a903cf392"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#aa2feaf657c2c19fecffd963a903cf392">get_name</a> ()</td></tr>
 <tr class="separator:aa2feaf657c2c19fecffd963a903cf392"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a572cc3d8829180ce4c506d72124fd2c3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a572cc3d8829180ce4c506d72124fd2c3">update_search_space</a> (<a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *space)</td></tr>
@@ -198,7 +201,7 @@ Private Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>is this method necessary? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>is this method necessary? </dd></dl>
 
 </div>
 </div>
@@ -242,15 +245,42 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if the optimisation algorithm has 'finished' and false otherwise. Note that in many instances the optimisation algorithm will not detect when it has converged; hence the returned value is intended rather to indicate cases when the optimisation algorithm cannot proceed any further (e.g. after exhausting all search combinations in gridsearch). </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>make thread safe by placing a mutex on stepidx. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>make thread safe by placing a mutex on stepidx. </dd></dl>
 <p>This will add a parameter configuration allocated on the heap to the <a class="el" href="classoptk_1_1optimiser.html#a6775691258025db902b9934be0aad473">optimiser::trials</a> map, so that it may be freed later by the optimiser's destructor. If a trial configuration already exists with the same param_id, those values will be freed, and the value in the map will be replaced. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">param_id</td><td>The identifier for this trial. </td></tr>
-    <tr><td class="paramname">n</td><td>The root node of the concrete parameter settings.</td></tr>
+    <tr><td class="paramname">n</td><td>The root node of the concrete parameter settings. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Delete this </dd></dl>
+
+</div>
+</div>
+<a id="a33707505bb3c6eef2e99a47fe8f1082a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33707505bb3c6eef2e99a47fe8f1082a">&#9670;&nbsp;</a></span>clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void optk::optimiser::clear </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Clears / resets this optimiser. This should be the same as calling the destructor and then the constructor. </p>
+
+<p>Reimplemented in <a class="el" href="classgridsearch.html#a1b010e3ca27bb47342aa2603559cbc8b">gridsearch</a>, and <a class="el" href="classgp__opt.html#a347b556a47c41a8ac3f748e12434f312">gp_opt</a>.</p>
 
 </div>
 </div>
@@ -285,7 +315,7 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to an <a class="el" href="classinst_1_1node.html">inst::node</a>, or a NULL pointer if there are no more parameters to return. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classgridsearch.html#aead0d0d7ed89f78564ffd3398adabfcb">gridsearch</a>, and <a class="el" href="classrandom__search.html#a8f92c5642c6541dd5bfc3d8fbc026222">random_search</a>.</p>
+<p>Reimplemented in <a class="el" href="classgridsearch.html#a3e0faaeef671586f9da0ba2f6324a8bd">gridsearch</a>, <a class="el" href="classgp__opt.html#a4f050cad325bb62e48ab32d5486f5db5">gp_opt</a>, and <a class="el" href="classrandom__search.html#a8f92c5642c6541dd5bfc3d8fbc026222">random_search</a>.</p>
 
 </div>
 </div>
@@ -364,7 +394,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classgridsearch.html#a6b341eb8cc966066a31e109e984c0266">gridsearch</a>, and <a class="el" href="classrandom__search.html#a95ae56cb073961d25974714ff622ebde">random_search</a>.</p>
+<p>Reimplemented in <a class="el" href="classgridsearch.html#a2fc9612a2b4c5541eb386769d12a943d">gridsearch</a>, <a class="el" href="classgp__opt.html#a1ebf8c28c600df097632aec6d6a69bd6">gp_opt</a>, and <a class="el" href="classrandom__search.html#a95ae56cb073961d25974714ff622ebde">random_search</a>.</p>
 
 </div>
 </div>
@@ -398,7 +428,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classgridsearch.html#ac4d55b9a943b871caf89c9becfe2b74f">gridsearch</a>, and <a class="el" href="classrandom__search.html#a92080c6700acdd4a3b096f56d3b2d993">random_search</a>.</p>
+<p>Reimplemented in <a class="el" href="classgridsearch.html#ae3bcee42831bde65d2aac32a41fbca2f">gridsearch</a>, <a class="el" href="classgp__opt.html#aef9d78aa4c6a337482192e818feb9a1f">gp_opt</a>, and <a class="el" href="classrandom__search.html#a92080c6700acdd4a3b096f56d3b2d993">random_search</a>.</p>
 
 </div>
 </div>

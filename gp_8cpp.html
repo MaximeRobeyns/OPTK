@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>OPTK: includes/optk/optimiser.hpp File Reference</title>
+<title>OPTK: src/optimisers/gp.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,39 +66,64 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_09e761304027c904456130627fd4dcf5.html">includes</a></li><li class="navelem"><a class="el" href="dir_c601bad0786debae67a3d01ec03f9711.html">optk</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_7c52459c81e604b791cd39d1844bd2c0.html">optimisers</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">optimiser.hpp File Reference</div>  </div>
+<div class="title">gp.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This file defines the base class for optimisers.  
+<p>Implementes a gp-based minimiser, using skopt.gp_minimize.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;<a class="el" href="types_8hpp_source.html">optk/types.hpp</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="gp_8hpp_source.html">optimisers/gp.hpp</a>&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
-</div>
-<p><a href="optimiser_8hpp_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html">optk::optimiser</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimisers.html">optk::optimisers</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a66ec49861ab789170298bfa861d9a91e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gp_8cpp.html#a66ec49861ab789170298bfa861d9a91e">validate_space</a> (<a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *space)</td></tr>
+<tr class="separator:a66ec49861ab789170298bfa861d9a91e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This file defines the base class for optimisers. </p>
+<div class="textblock"><p>Implementes a gp-based minimiser, using skopt.gp_minimize. </p>
 <p>Copyright (C) 2020 Maxime Robeyns <a href="#" onclick="location.href='mai'+'lto:'+'max'+'im'+'ero'+'be'+'yns'+'@g'+'mai'+'l.'+'com'; return false;">maxim<span style="display: none;">.nosp@m.</span>erob<span style="display: none;">.nosp@m.</span>eyns@<span style="display: none;">.nosp@m.</span>gmai<span style="display: none;">.nosp@m.</span>l.com</a></p>
 <p>Written for the ACRC, University of Bristol</p>
 <p>Licensed under the Educational Community License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
 <p><a href="http://www.osedu.org/licenses/ECL-2.0">http://www.osedu.org/licenses/ECL-2.0</a></p>
 <p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the LIcense For The Specific Language Governing permissions and limitations under the License. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="a66ec49861ab789170298bfa861d9a91e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66ec49861ab789170298bfa861d9a91e">&#9670;&nbsp;</a></span>validate_space()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool validate_space </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *&#160;</td>
+          <td class="paramname"><em>space</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function validates whether the search space provided is supported by the gp optimiser. Specifically only <a class="el" href="types_8hpp.html#a39483c7a7f53b82f5391dc12445ec570aa489ffed938ef1b9e86889bc413501ee">pt::uniform</a>, and <a class="el" href="types_8hpp.html#a39483c7a7f53b82f5391dc12445ec570ab2c94d84ad2466c5b27070e27ece4673">pt::loguniform</a> are compatible and hence allowed.</p>
+<p>Also note that since the gaussian process optimiser doesn't support nested search spaces, we disallow the <a class="el" href="types_8hpp.html#a39483c7a7f53b82f5391dc12445ec570a0162cefc4952304026cb1f5dab2419d2">pt::choice</a> parameter type. </p>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
