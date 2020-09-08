@@ -29,9 +29,6 @@
 #include <optk/optimiser.hpp>
 #include <optk/types.hpp>
 
-// TODO get rid of this
-#include <iostream>
-
 namespace __gs {
 
 enum class pspace_t: char {

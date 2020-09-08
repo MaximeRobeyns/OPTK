@@ -11,3 +11,4 @@ bin/optk*
 .gdb_history
 .vim
 outputs/*
+*/__pycache__

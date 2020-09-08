@@ -552,14 +552,13 @@ validate_space (sspace::sspace_t *space)
     bool valid = true;
     for (it = space->begin (); it != space->end (); it++) {
         pt t = (*it)->get_type ();
-        if (
-            t != pt::randint &&
-            t != pt::quniform &&
-            t != pt::categorical_int &&
-            t != pt::categorical_dbl &&
-            t != pt::categorical_str &&
-            t != pt::choice)
-            valid = false;
+        valid &= (
+            t == pt::randint         ||
+            t == pt::quniform        ||
+            t == pt::categorical_int ||
+            t == pt::categorical_dbl ||
+            t == pt::categorical_str ||
+            t == pt::choice);
     }
     return valid;
 }

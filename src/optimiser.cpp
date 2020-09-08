@@ -25,7 +25,6 @@
 optk::optimiser::optimiser (std::string name)
 {
     m_name = name;
-    stepidx = 0;
 }
 
 static void
@@ -71,18 +70,6 @@ optk::optimiser::accept (optimisers *o)
 {
     o->register_optimiser (this);
 }
-
-/// @todo Delete this
-// bool
-// optk::optimiser::step (optk::benchmark *b)
-// {
-//     inst::set params = this->generate_parameters (stepidx++);
-//     if (params == NULL)
-//         return false;
-//     double result = b->evaluate (params);
-//     this->receive_trial_results (stepidx-1, params, result);
-//     return true;
-// }
 
 void
 optk::optimiser::add_to_trials (int param_id, inst::set n)

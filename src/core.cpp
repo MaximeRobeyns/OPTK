@@ -36,18 +36,18 @@ core_loop(
     memset(trace, 0, sizeof (double) * max_iter);
 
     sspace::sspace_t *ss = bench->get_search_space();
+
     opt->update_search_space(ss);
 
     inst::set params = NULL;
     uint idx = 0;
-    double best = std::numeric_limits<double>::max ();
 
     do {
         params = opt->generate_parameters (idx);
+        // std::cout << "after genp" << std::endl;
         if (params == NULL)
             break;
         double res = bench->evaluate (params);
-        if (best > res) best = res;
         opt->receive_trial_results (idx, params, res);
         trace[idx++] = res;
     } while (params != NULL && idx < max_iter);

@@ -23,8 +23,9 @@
 #define __OPTIMISER_H_
 
 #include <optk/types.hpp>
-// remvoe when step function is also removed
-// #include <optk/benchmark.hpp>
+
+// TODO remove this!
+#include <iostream>
 
 namespace optk {
 

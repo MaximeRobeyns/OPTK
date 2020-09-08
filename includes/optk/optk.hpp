@@ -34,8 +34,9 @@
 #include <optk/optimiser.hpp>
 
 // optimisers
-#include <optimisers/gridsearch.hpp>
+#include <optimisers/gp.hpp>
 #include <optimisers/random.hpp>
+#include <optimisers/gridsearch.hpp>
 
 // benchmarks
 #include <benchmarks/synthetic.hpp>

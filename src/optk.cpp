@@ -147,13 +147,17 @@ do_setup (
     }
 
     // initialise only the relevant optimisers
-    if (std::string(args->algorithm) == "gridsearch") {
-        gridsearch *gs = new gridsearch();
-        opts->register_optimiser(gs);
+    if (std::string (args->algorithm) == "gridsearch") {
+        gridsearch *gs = new gridsearch ();
+        opts->register_optimiser (gs);
     }
-    if (std::string(args->algorithm) == "random_search") {
-        random_search *rs = new random_search();
-        opts->register_optimiser(rs);
+    if (std::string (args->algorithm) == "random_search") {
+        random_search *rs = new random_search ();
+        opts->register_optimiser (rs);
+    }
+    if (std::string (args->algorithm) == "gp_optimiser") {
+        gp_opt *gp = new gp_opt ("expected_improvement");
+        opts->register_optimiser (gp);
     }
 
     // no matching optimisation algorithms were added
@@ -226,10 +230,10 @@ main (int argc, char **argv)
 
     optk::arguments args{
         .threads = 1,
-        .max_iters = 20000,
+        .max_iters = 20,
         .output = "outputs",
         .benchmark = "synthetic",
-        .algorithm = "gridsearch"
+        .algorithm = "gp_optimiser"
     };
 
     argp_parse (&argp, argc, argv, 0, 0, &args);

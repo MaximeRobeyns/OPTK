@@ -19,6 +19,9 @@
  * @brief Header file for the random search built-in optimiser.
  */
 
+#ifndef __RANDOM_H_
+#define __RANDOM_H_
+
 #include <optk/optimiser.hpp>
 #include <optk/types.hpp>
 
@@ -59,3 +62,5 @@ class random_search: public optk::optimiser {
         /** A copy of the problem search space */
         sspace::sspace_t *m_space;
 };
+
+#endif // __RANDOM_H_
