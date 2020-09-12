@@ -12,3 +12,4 @@ bin/optk*
 .vim
 outputs/*
 */__pycache__
+src/python/__pycache__

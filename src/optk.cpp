@@ -168,7 +168,7 @@ do_setup (
         return ctx;
     }
 
-    // must be called after initialising opts and bmks
+    // must be called after initialising opts and bmks:
     ctx->error = validate_args (args, opts, bmks);
     if (ctx->error)
         return ctx;
@@ -185,9 +185,8 @@ do_setup (
     std::ofstream f;
     f.open(ctx->outfile);
     f << "Benchmark, Optimiser";
-    for (int i = 0; i < args->max_iters; i++) {
+    for (int i = 0; i < args->max_iters; i++)
         f << "," << std::to_string(i);
-    }
     f << std::endl;
     f.close();
 
@@ -208,10 +207,6 @@ do_teardown (optk::ctx_t *ctx)
 
 /**
  * The main function.
- *
- * For now we don't use the parameters, however in the future we shall have to
- * parse arguments specifying the optimisation algorithms to benchmark, as well
- * as the benchmark tasks to run.
  *
  * @param argc The number of arguments
  * @param argv The argument vector

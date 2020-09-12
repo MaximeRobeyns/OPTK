@@ -80,8 +80,7 @@ gp_opt::clear ()
  * Also note that since the gaussian process optimiser doesn't support nested
  * search spaces, we disallow the pt::choice parameter type.
  */
-static bool
-validate_space (sspace::sspace_t *space)
+static bool validate_space (sspace::sspace_t *space)
 {
     sspace::sspace_t::iterator it;
     bool valid = true;
