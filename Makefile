@@ -53,8 +53,8 @@ TEST_OBJECTS_ii	= $(patsubst ${SOURCES}/%,${TESTBUILDDIR}/src/%,${PROJECT_SOURCE
 TEST_OBJECTS	= ${TEST_OBJECTS_i} ${TEST_OBJECTS_ii}
 TEST_SUBDIRS    = $(shell find ${TESTSRC} -type d | cut -d'/' -f2-)
 
-INCLUDES		= -I${INCDIR} -I/usr/local/include $(shell python3-config --embed --includes)
-LIBS			= $(shell python3-config --embed --ldflags)
+INCLUDES		= -I${INCDIR} -I/usr/local/include #$(shell python3-config --embed --includes)
+LIBS			= #$(shell python3-config --embed --ldflags)
 INCDEP			= -I${INCDIR}
 CFLAGS			= -O2 -Wall -std=c++17 -pthread
 TESTFLAGS		= -D__OPTK_TESTING -g -Wall -std=c++17 -fsanitize=address -pthread

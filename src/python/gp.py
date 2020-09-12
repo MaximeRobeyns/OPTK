@@ -16,6 +16,10 @@ See the LIcense For The Specific Language Governing permissions and
 limitations under the License.
 """
 
+"""
+Warning: the contents of this file are deprecated and it is kept for reference.
+"""
+
 import numpy as np
 import sys
 from typing import Callable, List

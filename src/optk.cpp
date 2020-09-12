@@ -156,7 +156,7 @@ do_setup (
         opts->register_optimiser (rs);
     }
     if (std::string (args->algorithm) == "gp_optimiser") {
-        gp_opt *gp = new gp_opt ("expected_improvement");
+        gp_opt *gp = new gp_opt ();
         opts->register_optimiser (gp);
     }
 

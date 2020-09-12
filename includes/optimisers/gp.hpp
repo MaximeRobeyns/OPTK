@@ -16,74 +16,45 @@
  * limitations under the License.
  *
  * @file
- * @brief Header file for the Gaussian process-based optimiser
+ * @brief Header file for the Gaussian process built-in optimiser.
  */
 
 #ifndef __GP_H_
 #define __GP_H_
 
-#define PY_SSIZE_T_CLEAN
-#include <Python.h>
-
 #include <optk/optimiser.hpp>
 #include <optk/types.hpp>
-#include <optk/benchmark.hpp>
 
 class gp_opt: public optk::optimiser {
 
     public:
 
-        /**
-         * Initialises the Python interpreter, and skopt.gp_minimize. Also
-         * prepares python arguments.
-         */
-        gp_opt (const char *aq_func);
+        gp_opt();
 
         /**
-         * The destructor terminates the Python interpreter and frees heap
-         * allocations.
-         */
-        ~gp_opt ();
-
-        /**
-         * Clears references to python objects and re-starts interpreter
-         * between runs to avoid bugs.
-         */
-        void clear () override;
-
-        /**
-         * This function will covert the C++ search space into a python list of
-         * tuples describing as required by skopt.gp_minimize.
+         * The GP optimiser is only compatible with continuous valued inputs
+         * (for the moment); conceretely an error will be raised if the input
+         * is not pt::uniform, pt::loguniform, pt::normal, pt::lognormal.
+         * Currently all parameter types are treated as pt::uniform, although
+         * in the future information about parameters' distributions may be
+         * taken into account.
+         * @param space The new search space.
          */
         void update_search_space (sspace::sspace_t *space) override;
 
-        /**
-         * Generate parameters will call skopt's gaussian process minimisation
-         * function (skopt.gp_minimize) to generate new parameter instances.
-         * @warning This should not be used while the temporary python-based GP
-         * optimiser is being used.
-         * @todo implement a c-based GP optimiser
-         */
         inst::set generate_parameters (int param_id) override;
 
         void receive_trial_results (
                 int param_id,
                 inst::set params,
                 double value
-            ) override;
+                ) override;
 
     private:
-        // the number of dimensions (parameters) for the current problem
-        uint m_dims;
 
-        // Python objects for arguments for generate_parameters
-        PyObject *gp_aq_func, *X_obs, *Y_obs, *gp_bounds;
+        /** A copy of the problem search space */
+        sspace::sspace_t *m_space;
 
-        // References to auxiliary python objects
-        PyObject *sys, *path, *name, *module, *module_dict;
-
-        // The python version of the generate params method
-        PyObject *py_generate_params;
 };
 
-#endif // __GP_H_
+#endif // _GP_H__

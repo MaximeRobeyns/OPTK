@@ -24,9 +24,6 @@
 
 #include <optk/types.hpp>
 
-// TODO remove this!
-#include <iostream>
-
 namespace optk {
 
 // forward declaration of optimisers class
@@ -108,22 +105,6 @@ class optimiser {
          */
         void accept (optimisers *o);
 
-        /**
-         * The step function is a convenience method which performs one
-         * optimisation iteration.
-         * Not thread safe; blocking.
-         * @param b An instance of a benchmark that we are optimising over
-         * @returns True if the optimisation algorithm has 'finished' and false
-         * otherwise. Note that in many instances the optimisation algorithm
-         * will not detect when it has converged; hence the returned value is
-         * intended rather to indicate cases when the optimisation algorithm
-         * cannot proceed any further (e.g. after exhausting all search
-         * combinations in gridsearch).
-         * @todo make thread safe by placing a mutex on stepidx.
-         */
-        // TODO review this; is it necessary?
-        // bool step (benchmark *b);
-
     protected:
 
         /**
@@ -180,7 +161,6 @@ class optimisers {
     private:
         std::vector <optimiser *> m_arr;
 };
-
 
 } // namespace optk
 
