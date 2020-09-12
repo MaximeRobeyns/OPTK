@@ -18,7 +18,7 @@ var searchData=
   ['gp',['gp',['../namespacegp.html',1,'']]],
   ['gp_2ecpp',['gp.cpp',['../gp_8cpp.html',1,'']]],
   ['gp_2ehpp',['gp.hpp',['../gp_8hpp.html',1,'']]],
-  ['gp_5fopt',['gp_opt',['../classgp__opt.html',1,'gp_opt'],['../classgp__opt.html#a5e10d6b03d99e1021d9c62b55db7c02f',1,'gp_opt::gp_opt()']]],
+  ['gp_5fopt',['gp_opt',['../classgp__opt.html',1,'']]],
   ['gridsearch',['gridsearch',['../classgridsearch.html',1,'gridsearch'],['../classgridsearch.html#ad9fb05487e1326b918dcd5f61b6a5fe6',1,'gridsearch::gridsearch()']]],
   ['gridsearch_2ecpp',['gridsearch.cpp',['../gridsearch_8cpp.html',1,'']]],
   ['gridsearch_2ehpp',['gridsearch.hpp',['../gridsearch_8hpp.html',1,'']]],

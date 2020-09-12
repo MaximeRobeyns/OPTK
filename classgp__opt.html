@@ -86,12 +86,6 @@ Inheritance diagram for gp_opt:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5e10d6b03d99e1021d9c62b55db7c02f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgp__opt.html#a5e10d6b03d99e1021d9c62b55db7c02f">gp_opt</a> (const char *aq_func)</td></tr>
-<tr class="separator:a5e10d6b03d99e1021d9c62b55db7c02f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a993b334355efdfdbdb4f69cc6c64be8f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgp__opt.html#a993b334355efdfdbdb4f69cc6c64be8f">~gp_opt</a> ()</td></tr>
-<tr class="separator:a993b334355efdfdbdb4f69cc6c64be8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a347b556a47c41a8ac3f748e12434f312"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgp__opt.html#a347b556a47c41a8ac3f748e12434f312">clear</a> () override</td></tr>
-<tr class="separator:a347b556a47c41a8ac3f748e12434f312"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef9d78aa4c6a337482192e818feb9a1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgp__opt.html#aef9d78aa4c6a337482192e818feb9a1f">update_search_space</a> (<a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *space) override</td></tr>
 <tr class="separator:aef9d78aa4c6a337482192e818feb9a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f050cad325bb62e48ab32d5486f5db5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceinst.html#a8a739cafbd67eef1072544b9673a4bb9">inst::set</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgp__opt.html#a4f050cad325bb62e48ab32d5486f5db5">generate_parameters</a> (int param_id) override</td></tr>
@@ -103,6 +97,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8518f917835ddc5515de35994b55090f inherit pub_methods_classoptk_1_1optimiser"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cd7dac5f14aba44e263db324c2c8fd1 inherit pub_methods_classoptk_1_1optimiser"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a8cd7dac5f14aba44e263db324c2c8fd1">~optimiser</a> ()</td></tr>
 <tr class="separator:a8cd7dac5f14aba44e263db324c2c8fd1 inherit pub_methods_classoptk_1_1optimiser"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33707505bb3c6eef2e99a47fe8f1082a inherit pub_methods_classoptk_1_1optimiser"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a33707505bb3c6eef2e99a47fe8f1082a">clear</a> ()</td></tr>
+<tr class="separator:a33707505bb3c6eef2e99a47fe8f1082a inherit pub_methods_classoptk_1_1optimiser"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2feaf657c2c19fecffd963a903cf392 inherit pub_methods_classoptk_1_1optimiser"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#aa2feaf657c2c19fecffd963a903cf392">get_name</a> ()</td></tr>
 <tr class="separator:aa2feaf657c2c19fecffd963a903cf392 inherit pub_methods_classoptk_1_1optimiser"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb9869bd5c49fa322ec43951fbf97c4e inherit pub_methods_classoptk_1_1optimiser"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#afb9869bd5c49fa322ec43951fbf97c4e">accept</a> (<a class="el" href="classoptk_1_1optimisers.html">optimisers</a> *o)</td></tr>
@@ -110,39 +106,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a2e0d6ac72d04fb589829f2ce752c6c94"><td class="memItemLeft" align="right" valign="top"><a id="a2e0d6ac72d04fb589829f2ce752c6c94"></a>
-uint&#160;</td><td class="memItemRight" valign="bottom"><b>m_dims</b></td></tr>
-<tr class="separator:a2e0d6ac72d04fb589829f2ce752c6c94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a802293f806db140343e4659f43443a"><td class="memItemLeft" align="right" valign="top"><a id="a8a802293f806db140343e4659f43443a"></a>
-PyObject *&#160;</td><td class="memItemRight" valign="bottom"><b>gp_aq_func</b></td></tr>
-<tr class="separator:a8a802293f806db140343e4659f43443a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abacfda9d7d4a85529583fdd297f9b435"><td class="memItemLeft" align="right" valign="top"><a id="abacfda9d7d4a85529583fdd297f9b435"></a>
-PyObject *&#160;</td><td class="memItemRight" valign="bottom"><b>X_obs</b></td></tr>
-<tr class="separator:abacfda9d7d4a85529583fdd297f9b435"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9842f611d6ec77604170b1c9bd943f59"><td class="memItemLeft" align="right" valign="top"><a id="a9842f611d6ec77604170b1c9bd943f59"></a>
-PyObject *&#160;</td><td class="memItemRight" valign="bottom"><b>Y_obs</b></td></tr>
-<tr class="separator:a9842f611d6ec77604170b1c9bd943f59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca63a778393ae1a6d48cbbe723c11b74"><td class="memItemLeft" align="right" valign="top"><a id="aca63a778393ae1a6d48cbbe723c11b74"></a>
-PyObject *&#160;</td><td class="memItemRight" valign="bottom"><b>gp_bounds</b></td></tr>
-<tr class="separator:aca63a778393ae1a6d48cbbe723c11b74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2199a2d0a75f2687205e595cbdacc4bc"><td class="memItemLeft" align="right" valign="top"><a id="a2199a2d0a75f2687205e595cbdacc4bc"></a>
-PyObject *&#160;</td><td class="memItemRight" valign="bottom"><b>sys</b></td></tr>
-<tr class="separator:a2199a2d0a75f2687205e595cbdacc4bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d51b8f99b8b8de146ca87fb9b11da08"><td class="memItemLeft" align="right" valign="top"><a id="a2d51b8f99b8b8de146ca87fb9b11da08"></a>
-PyObject *&#160;</td><td class="memItemRight" valign="bottom"><b>path</b></td></tr>
-<tr class="separator:a2d51b8f99b8b8de146ca87fb9b11da08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4f7df34f288cc62f27097899b5c32fa"><td class="memItemLeft" align="right" valign="top"><a id="ab4f7df34f288cc62f27097899b5c32fa"></a>
-PyObject *&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
-<tr class="separator:ab4f7df34f288cc62f27097899b5c32fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2566620cc443bb1ecc8fa7eda86a440"><td class="memItemLeft" align="right" valign="top"><a id="af2566620cc443bb1ecc8fa7eda86a440"></a>
-PyObject *&#160;</td><td class="memItemRight" valign="bottom"><b>module</b></td></tr>
-<tr class="separator:af2566620cc443bb1ecc8fa7eda86a440"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab424bc82696a1011c7f5cd47319b9622"><td class="memItemLeft" align="right" valign="top"><a id="ab424bc82696a1011c7f5cd47319b9622"></a>
-PyObject *&#160;</td><td class="memItemRight" valign="bottom"><b>module_dict</b></td></tr>
-<tr class="separator:ab424bc82696a1011c7f5cd47319b9622"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae751cf60ed585332af8e188dd947b118"><td class="memItemLeft" align="right" valign="top"><a id="ae751cf60ed585332af8e188dd947b118"></a>
-PyObject *&#160;</td><td class="memItemRight" valign="bottom"><b>py_generate_params</b></td></tr>
-<tr class="separator:ae751cf60ed585332af8e188dd947b118"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a014a8a619ca397c265fff1f31157f693"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgp__opt.html#a014a8a619ca397c265fff1f31157f693">m_space</a></td></tr>
+<tr class="separator:a014a8a619ca397c265fff1f31157f693"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -153,73 +118,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a6775691258025db902b9934be0aad473 inherit pro_attribs_classoptk_1_1optimiser"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; int, <a class="el" href="namespaceinst.html#a8a739cafbd67eef1072544b9673a4bb9">inst::set</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1optimiser.html#a6775691258025db902b9934be0aad473">trials</a></td></tr>
 <tr class="separator:a6775691258025db902b9934be0aad473 inherit pro_attribs_classoptk_1_1optimiser"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a5e10d6b03d99e1021d9c62b55db7c02f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e10d6b03d99e1021d9c62b55db7c02f">&#9670;&nbsp;</a></span>gp_opt()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">gp_opt::gp_opt </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>aq_func</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Initialises the Python interpreter, and skopt.gp_minimize. Also prepares python arguments. </p>
-
-</div>
-</div>
-<a id="a993b334355efdfdbdb4f69cc6c64be8f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a993b334355efdfdbdb4f69cc6c64be8f">&#9670;&nbsp;</a></span>~gp_opt()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">gp_opt::~gp_opt </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>The destructor terminates the Python interpreter and frees heap allocations. </p>
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a347b556a47c41a8ac3f748e12434f312"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a347b556a47c41a8ac3f748e12434f312">&#9670;&nbsp;</a></span>clear()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void gp_opt::clear </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Clears references to python objects and re-starts interpreter between runs to avoid bugs. </p>
-
-<p>Reimplemented from <a class="el" href="classoptk_1_1optimiser.html#a33707505bb3c6eef2e99a47fe8f1082a">optk::optimiser</a>.</p>
-
-</div>
-</div>
 <a id="a4f050cad325bb62e48ab32d5486f5db5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4f050cad325bb62e48ab32d5486f5db5">&#9670;&nbsp;</a></span>generate_parameters()</h2>
 
@@ -243,8 +142,13 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Generate parameters will call skopt's gaussian process minimisation function (skopt.gp_minimize) to generate new parameter instances. </p><dl class="section warning"><dt>Warning</dt><dd>This should not be used while the temporary python-based GP optimiser is being used. </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>implement a c-based GP optimiser </dd></dl>
+<p>This is the method invoked to generate the next trial's parameters for the benchmark or program being optimised. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">param_id</td><td>An identifier for this parameter trial; this may or may not be used by the optimistaion algorithm. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to an <a class="el" href="classinst_1_1node.html">inst::node</a>, or a NULL pointer if there are no more parameters to return. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classoptk_1_1optimiser.html#a37a8e8724dbbeed7ab8c79695fbe4b62">optk::optimiser</a>.</p>
 
@@ -326,9 +230,38 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function will covert the C++ search space into a python list of tuples describing as required by skopt.gp_minimize. </p>
+<p>The GP optimiser is only compatible with continuous valued inputs (for the moment); conceretely an error will be raised if the input is not <a class="el" href="types_8hpp.html#a39483c7a7f53b82f5391dc12445ec570aa489ffed938ef1b9e86889bc413501ee">pt::uniform</a>, <a class="el" href="types_8hpp.html#a39483c7a7f53b82f5391dc12445ec570ab2c94d84ad2466c5b27070e27ece4673">pt::loguniform</a>, <a class="el" href="types_8hpp.html#a39483c7a7f53b82f5391dc12445ec570afea087517c26fadd409bd4b9dc642555">pt::normal</a>, <a class="el" href="types_8hpp.html#a39483c7a7f53b82f5391dc12445ec570a755025229ae92770a8fdb6bb55975c88">pt::lognormal</a>. Currently all parameter types are treated as <a class="el" href="types_8hpp.html#a39483c7a7f53b82f5391dc12445ec570aa489ffed938ef1b9e86889bc413501ee">pt::uniform</a>, although in the future information about parameters' distributions may be taken into account. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">space</td><td>The new search space. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Reimplemented from <a class="el" href="classoptk_1_1optimiser.html#a572cc3d8829180ce4c506d72124fd2c3">optk::optimiser</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a014a8a619ca397c265fff1f31157f693"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a014a8a619ca397c265fff1f31157f693">&#9670;&nbsp;</a></span>m_space</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="types_8hpp.html#aa6f4e358eb0e1698b3af730b2e9a710b">sspace::sspace_t</a>* gp_opt::m_space</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>A copy of the problem search space </p>
 
 </div>
 </div>

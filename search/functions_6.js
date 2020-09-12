@@ -12,6 +12,5 @@ var searchData=
   ['get_5fsubspaces',['get_subspaces',['../class____gs_1_1node.html#a89008ec19d6d655b176d9d96dc10d526',1,'__gs::node']]],
   ['get_5ftype',['get_type',['../classsspace_1_1param__t.html#a1b6f25461975fe2a6576326a5702d82f',1,'sspace::param_t']]],
   ['get_5fvalues',['get_values',['../class____gs_1_1node.html#ac1e56730a6c90935bc4a566961fafa83',1,'__gs::node::get_values()'],['../classinst_1_1node.html#a4853904f03fd88c92dbf9b10339beae0',1,'inst::node::get_values()']]],
-  ['gp_5fopt',['gp_opt',['../classgp__opt.html#a5e10d6b03d99e1021d9c62b55db7c02f',1,'gp_opt']]],
   ['gridsearch',['gridsearch',['../classgridsearch.html#ad9fb05487e1326b918dcd5f61b6a5fe6',1,'gridsearch']]]
 ];

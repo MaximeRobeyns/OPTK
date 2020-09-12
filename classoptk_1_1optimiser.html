@@ -201,7 +201,7 @@ Private Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>is this method necessary? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>is this method necessary? </dd></dl>
 
 </div>
 </div>
@@ -238,14 +238,6 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The step function is a convenience method which performs one optimisation iteration. Not thread safe; blocking. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">b</td><td>An instance of a benchmark that we are optimising over </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the optimisation algorithm has 'finished' and false otherwise. Note that in many instances the optimisation algorithm will not detect when it has converged; hence the returned value is intended rather to indicate cases when the optimisation algorithm cannot proceed any further (e.g. after exhausting all search combinations in gridsearch). </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>make thread safe by placing a mutex on stepidx. </dd></dl>
 <p>This will add a parameter configuration allocated on the heap to the <a class="el" href="classoptk_1_1optimiser.html#a6775691258025db902b9934be0aad473">optimiser::trials</a> map, so that it may be freed later by the optimiser's destructor. If a trial configuration already exists with the same param_id, those values will be freed, and the value in the map will be replaced. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">param_id</td><td>The identifier for this trial. </td></tr>
@@ -280,7 +272,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Clears / resets this optimiser. This should be the same as calling the destructor and then the constructor. </p>
 
-<p>Reimplemented in <a class="el" href="classgridsearch.html#a1b010e3ca27bb47342aa2603559cbc8b">gridsearch</a>, and <a class="el" href="classgp__opt.html#a347b556a47c41a8ac3f748e12434f312">gp_opt</a>.</p>
+<p>Reimplemented in <a class="el" href="classgridsearch.html#a1b010e3ca27bb47342aa2603559cbc8b">gridsearch</a>.</p>
 
 </div>
 </div>

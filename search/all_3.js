@@ -6,7 +6,7 @@ var searchData=
   ['categorical_5fstr',['categorical_str',['../types_8hpp.html#a39483c7a7f53b82f5391dc12445ec570abeaffdc167c855362387a8be4bc91c59',1,'types.hpp']]],
   ['choice',['choice',['../classsspace_1_1choice.html',1,'sspace::choice'],['../classsspace_1_1choice.html#a5bb07a7bf9e02f126e3ba5d38268d386',1,'sspace::choice::choice()'],['../types_8hpp.html#a39483c7a7f53b82f5391dc12445ec570a0162cefc4952304026cb1f5dab2419d2',1,'choice():&#160;types.hpp']]],
   ['chung_5freynolds',['chung_reynolds',['../classsyn_1_1chung__reynolds.html',1,'syn']]],
-  ['clear',['clear',['../classgp__opt.html#a347b556a47c41a8ac3f748e12434f312',1,'gp_opt::clear()'],['../classgridsearch.html#a1b010e3ca27bb47342aa2603559cbc8b',1,'gridsearch::clear()'],['../classoptk_1_1optimiser.html#a33707505bb3c6eef2e99a47fe8f1082a',1,'optk::optimiser::clear()']]],
+  ['clear',['clear',['../classgridsearch.html#a1b010e3ca27bb47342aa2603559cbc8b',1,'gridsearch::clear()'],['../classoptk_1_1optimiser.html#a33707505bb3c6eef2e99a47fe8f1082a',1,'optk::optimiser::clear()']]],
   ['clone',['clone',['../class____gs_1_1node.html#af3bd9c1693d8884dbc8c72546832d9db',1,'__gs::node']]],
   ['coef',['coef',['../structsyn_1_1rdims.html#a478d444197995d082d5abbdaacbcfb0f',1,'syn::rdims']]],
   ['cola',['cola',['../classsyn_1_1cola.html',1,'syn']]],
