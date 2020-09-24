@@ -9,54 +9,33 @@ Developer documentation can be found at https://maximerobeyns.github.io/OPTK.
 
 ** What is OPTK?
 
-OPTK (read /optic/) is a library for developing, benchmarking and comparing
-*derivative-free* (`black box') optimisation algorithms, with an emphasis on
-both developing novel algorithms and using them in real applications.
+OPTK (read /optic/) is a collection of synthetic optimisation benchmarks, aiming
+to help the development of new Bayesian optimisation methods. This includes
+methods which aim to combine real-valued variables with integer-valued or
+categorical variables.
 
-It is written in C/C++ to encourage and facilitate high-performance
-implementations of optimisation algorithms, while at the same time allowing for
-bindings to other languages such as Python, MATLAB or Octave to be easily
-written. This means that existing implementations of algorithms in other
-languages may be included in rankings, while allowing users to write new
-algorithms in a language that they are comfortable with.
+While it is written in C++, I plan to add Python bindings and perhaps others
+(e.g. MATLAB or Julia) to help include existing implementations in benchmark
+comparisons, as well as allowing folks to write implementations in a language
+they are comfortable with.
 
-OPTK enforces a specification for new optimisation algorithms which is
-designed to be compatible with the 'Tuner' interface from [[https://github.com/microsoft/nni][Microsoft's NNI
-library]]. This means that algorithms developed for OPTK may be re-used directly
-(i.e. without modification) with NNI's feature-rich web dashboard, CLI tools and
-Kubernetes configuration for use in production.
+OPTK uses a definition of a parameter space which is similar to that used by
+[[https://github.com/microsoft/nni][Microsoft's NNI library]] and others. The idea is to make it easy to re-use
+implementations written for OPTK with these libraries with minimal modification
+for use by practitioners.
 
-** Concepts
+The currently implemented benchmarks are an aggregation of those found in [[https://arxiv.org/abs/1308.4008][this
+survey]] (Jamil et al. 2013), as well as C++ implementations of the [[https://github.com/sigopt/evalset][evalset]]
+functions (Dewancker et al. 2016). While these are currently continuous
+functions, I plan to add discrete transformations taking integer-valued
+inputs.
 
-*** What is an optimisation algorithm or 'tuner'?
-
-These both refer to a piece of software which implements certain functions which
-are called by either OPTK during benchmarks, or NNI during production runs. At
-the simplest level, these functions allow it to accept a parameter search space,
-and then generate new parameters for function evaluation, as well as accepting
-the corresponding result.
-
-*** What are the benchmarks?
-
-OPTK provides C++ implementations of derivative-free global optimisation
-benchmarks, notably the test functions in [[https://arxiv.org/abs/1308.4008][this literature survey]] (Jamil et
-al. 2013), as well as implementations of the [[https://github.com/sigopt/evalset][evalset]] functions from Dewancker
-et al. 2016.
-
-I further plan to add the [[https://github.com/google-research/nasbench][neural architecture search benchmarks]] (Ying et al.
-2019).
-
-*** Algorithm Comparison
-
-The underlying premise of this repository is to be able to rank and compare
-optimisation algorithms, based on their performance on the same set of
-benchmarks. Performance is measured by taking trajectories and calculating the
-area under the curve. Further, we wish to measure which optimisation algorithms
-perform well on functions with differing characteristics (e.g. functions which
-are scalable, continuous, or separable etc.), so as to offer a practical
-recommendation for practitioners wishing to select an optimisation algorithm for
-their problem.
-
+I am also working on improving the output; performance of optimisation methods
+will be compared by taking trajectories and calculating the area under the
+curve. In addition to the raw data output, I plan to output pgf plots for easy
+inclusion in reports and papers. The benchmarks are tagged with relevant
+characteristics (e.g. scalable, continuous, separable etc.), which will also be
+provided alongside the output data.
 
 #+BEGIN_COMMENT
 ** Usage Guide
