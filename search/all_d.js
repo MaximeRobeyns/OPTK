@@ -9,6 +9,7 @@ var searchData=
   ['m_5fspace',['m_space',['../classgp__opt.html#a014a8a619ca397c265fff1f31157f693',1,'gp_opt::m_space()'],['../classrandom__search.html#ab78ad7a6645e4ecce3aae0ed4efb98f3',1,'random_search::m_space()']]],
   ['m_5fsyn_5fspaces',['m_syn_spaces',['../classgridsearch.html#a8e283f286907e319513de6c5a25f02bb',1,'gridsearch']]],
   ['main',['main',['../optk_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'optk.cpp']]],
+  ['manifoldmin',['manifoldmin',['../classsyn_1_1manifoldmin.html',1,'syn']]],
   ['matyas',['matyas',['../classsyn_1_1matyas.html',1,'syn']]],
   ['max_5fiters',['max_iters',['../structoptk_1_1arguments.html#ad8cd9882554a941ccd47059d000d62c4',1,'optk::arguments::max_iters()'],['../structoptk_1_1ctx__t.html#a924adc4cc7fe24dd5bc82b0145ba600c',1,'optk::ctx_t::max_iters()']]],
   ['mccormick',['mccormick',['../classsyn_1_1mccormick.html',1,'syn']]],
@@ -24,5 +25,6 @@ var searchData=
   ['mishra06',['mishra06',['../classsyn_1_1mishra06.html',1,'syn']]],
   ['mishra08',['mishra08',['../classsyn_1_1mishra08.html',1,'syn']]],
   ['mishra09',['mishra09',['../classsyn_1_1mishra09.html',1,'syn']]],
-  ['mishra11',['mishra11',['../classsyn_1_1mishra11.html',1,'syn']]]
+  ['mishra11',['mishra11',['../classsyn_1_1mishra11.html',1,'syn']]],
+  ['mog01',['mog01',['../classsyn_1_1mog01.html',1,'syn']]]
 ];

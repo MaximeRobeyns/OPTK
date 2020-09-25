@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['manifoldmin',['manifoldmin',['../classsyn_1_1manifoldmin.html',1,'syn']]],
   ['matyas',['matyas',['../classsyn_1_1matyas.html',1,'syn']]],
   ['mccormick',['mccormick',['../classsyn_1_1mccormick.html',1,'syn']]],
   ['michalewicz02',['michalewicz02',['../classsyn_1_1michalewicz02.html',1,'syn']]],
@@ -14,5 +15,6 @@ var searchData=
   ['mishra06',['mishra06',['../classsyn_1_1mishra06.html',1,'syn']]],
   ['mishra08',['mishra08',['../classsyn_1_1mishra08.html',1,'syn']]],
   ['mishra09',['mishra09',['../classsyn_1_1mishra09.html',1,'syn']]],
-  ['mishra11',['mishra11',['../classsyn_1_1mishra11.html',1,'syn']]]
+  ['mishra11',['mishra11',['../classsyn_1_1mishra11.html',1,'syn']]],
+  ['mog01',['mog01',['../classsyn_1_1mog01.html',1,'syn']]]
 ];
