@@ -25,10 +25,35 @@ gp_opt::gp_opt ():
     optk::optimiser ("gp optimiser")
 { }
 
+/**
+ * Allows uniform, loguniform, normal and lognormal parameters; throws an
+ * std::invalid_argument exception otherwise.
+ * @param param The parameter whose type to verify.
+ */
+static void
+validate_param (sspace::param_t *param)
+{
+    pt t = param->get_type();
+    if (!(
+            t == pt::uniform    ||
+            t == pt::loguniform ||
+            t == pt::normal     ||
+            t == pt::lognormal
+         ))
+        throw std::invalid_argument (
+            "Parameters used with the GP optimiser cannot be discrete-valued."
+            );
+}
+
 void
 gp_opt::update_search_space (sspace::sspace_t *space)
 {
     // validate the search space
+
+    sspace::sspace_t::iterator it;
+    for (it = space->begin (); it != space->end (); it++)
+        validate_param (*it);
+
     m_space = space;
 }
 

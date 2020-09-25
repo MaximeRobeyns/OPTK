@@ -22,6 +22,8 @@
 #ifndef __GP_H_
 #define __GP_H_
 
+#include <stdexcept>
+
 #include <optk/optimiser.hpp>
 #include <optk/types.hpp>
 
@@ -51,6 +53,9 @@ class gp_opt: public optk::optimiser {
                 ) override;
 
     private:
+
+        /** Counts the number of iterations performed */
+        uint n_iters;
 
         /** A copy of the problem search space */
         sspace::sspace_t *m_space;

@@ -558,8 +558,19 @@ test_synthetic_benchmarks ()
 
     // mishra11
     syn::mishra11 mish11(10);
-    double resmish11 = mish11.evaluate(mish11.get_opt_param ());
-    assert (nearly_equal (resmish11, mish11.get_opt()));
+    double resmish11 = mish11.evaluate (mish11.get_opt_param ());
+    assert (nearly_equal (resmish11, mish11.get_opt ()));
+
+    // manifoldmin
+    syn::manifoldmin mm(10);
+    double remm = mm.evaluate (mm.get_opt_param ());
+    assert (nearly_equal (remm, mm.get_opt()));
+
+    syn::mog01 mog01;
+    double resmog01 = mog01.evaluate (mog01.get_opt_param ());
+    assert (nearly_equal (resmog01, mog01.get_opt (), 1e-5));
+
+
     // std::cout << resmish09 - mish09.get_opt() << std::endl;
 }
 

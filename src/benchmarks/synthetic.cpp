@@ -17,7 +17,8 @@
  *
  * @file
  * @brief In this file, we implement the ~175 synthetic test functions given in
- * Jamil et al. 2013 <https://arxiv.org/abs/1308.4008>
+ * Jamil et al. 2013 <https://arxiv.org/abs/1308.4008>, as well as various
+ * others found from disparate publications and online respirces.
  */
 
 #include <benchmarks/synthetic.hpp>
@@ -4144,7 +4145,7 @@ mishra10::evaluate (inst::set x)
             , 2.);
 }
 
-mishra11::mishra11(int dims):
+mishra11::mishra11 (int dims):
     synthetic ("mishra11", dims, 0., 10., 0)
 {
     this->set_properties(std::vector<properties>({
@@ -4176,6 +4177,71 @@ mishra11::evaluate (inst::set x)
             (1./(double) m_dims) * sx -
             std::pow (px, 1./(double) m_dims)
             , 2.);
+}
+
+manifoldmin::manifoldmin (int dims):
+    synthetic ("manifoldmin", dims, -10., 10., 0.)
+{
+    this->set_properties(std::vector<properties>({
+                properties::multimodal,
+                properties::scalable
+                }));
+
+    inst::node *opt = new inst::node ("manifoldmin opt");
+    for (int i = 0; i < dims; i++)
+        opt->add_item (new inst::dbl_val (std::to_string (i), 0));
+    this->set_opt_param (opt);
+}
+
+double
+manifoldmin::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double sum = 0., prod = 1.;
+    for (uint i = 0; i < m_dims; i++) {
+        double xi = std::fabs (x->getdbl(i));
+        sum += xi; prod *= xi;
+    }
+    return sum * prod;
+}
+
+
+mog01::mog01 ():
+    synthetic ("mixtureofgaussians01", 2, -1, 1, -0.50212488514)
+{
+    this->set_properties(std::vector<properties>({
+                properties::non_scalable,
+                properties::continuous,
+                properties::multimodal
+                }));
+
+
+    inst::node *opt = new inst::node ("mixtureofgaussians01 opt");
+    opt->add_item (new inst::dbl_val ("0", -0.19870980807));
+    opt->add_item (new inst::dbl_val ("1", -0.49764469526));
+    this->set_opt_param (opt);
+}
+
+double
+mog01::evaluate (inst::set x)
+{
+    validate_param_set (x);
+
+    double x1 = x->getdbl("0"), x2 = x->getdbl("1");
+
+    return - (
+            0.5 * std::exp ( -10 * (
+                    0.8 * std::pow (x1 + 0.2, 2.) +
+                    .7  * std::pow (x2 + 0.5, 2.)
+                    )
+                ) +
+            0.5 * std::exp ( -8 * (
+                    0.3 * std::pow (x1 - 0.8, 2.) +
+                    0.6 * std::pow (x2 - 0.3, 2.)
+                )
+            )
+        );
 }
 
 synthetic_benchmark::synthetic_benchmark ():

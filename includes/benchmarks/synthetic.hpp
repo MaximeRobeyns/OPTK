@@ -2913,6 +2913,37 @@ class mishra11: public synthetic {
         double evaluate (inst::set x) override;
 };
 
+/**
+ * The ManifoldMin function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = \sum^{n}_{i=1}\vert x_i \vert * \prod^{n}_{i=1} \vert x_i
+ * \vert.
+ * \f]
+ * subject to \f$-10 \le x_i \le 10\f$ for $\f$i = 1, \ldots, n\f$. The global
+ * minimum is found at \f$\mathbf{x} = (0, \ldots, 0)\f$ with value
+ * \f$f(\mathbf{x}) = 0\f$.
+ */
+class manifoldmin: public synthetic {
+    public:
+        manifoldmin(int dims);
+        double evaluate (inst::set x) override;
+};
+
+/**
+ * The MixtureOfGaussians01 function has the following formula:
+ * \f[
+ * f(\mathbf{x}) = -\Bigg(
+ * \frac{1}{2} \exp \Big(-10 \big(0.8 (x_1 + 0.2)^2 + 0.7 (x_2 + 0.5)^2\big)\Big) +
+ * \frac{1}{2} \exp \Big(-8  \big(0.3 (x_1 - 0.8)^2 + 0.6 (x_2 - 0.3)^2\big)\Big)
+ * \Bigg)
+ * \f]
+ */
+class mog01: public synthetic {
+    public:
+        mog01 ();
+        double evaluate (inst::set x) override;
+};
+
 // pick up from f85. in jamil et al
 // from l.3035 in evalset:test_funcs
 // https://al-roomi.org/ for reference
