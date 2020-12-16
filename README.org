@@ -1,4 +1,4 @@
-#+TITLE: Optimisation Toolkit, /OPTK/
+[[./docs/figures/logo.png]]
 
 [[Tests][https://github.com/MaximeRobeyns/OPTK/workflows/Project%20build%20and%20test/badge.svg]] [[Documentation Build][https://github.com/MaximeRobeyns/OPTK/workflows/Compile%20and%20re-deploy%20documentation/badge.svg]]
 
@@ -9,10 +9,8 @@ Developer documentation can be found at https://maximerobeyns.github.io/OPTK.
 
 ** What is OPTK?
 
-OPTK (read /optic/) is a collection of synthetic optimisation benchmarks, aiming
-to help the development of new Bayesian optimisation methods. This includes
-methods which aim to combine real-valued variables with integer-valued or
-categorical variables.
+OPTK (read /optic/) is an `optimisation toolkit' providing a set of synthetic
+benchmarks, intended to evaluate Bayesian optimisation algorithms.
 
 While it is written in C++, I plan to add Python bindings and perhaps others
 (e.g. MATLAB or Julia) to help include existing implementations in benchmark
