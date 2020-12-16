@@ -20,6 +20,8 @@
  *
  * @mainpage
  *
+ * \image html logo.png
+ *
  * Welcome to the OPTK documentation!
  *
  * This is intended to be a reference for developers who want to extend or
@@ -122,6 +124,10 @@ validate_args (
 /**
  * In this setup function we 'register' all the optimisation algorithms, as
  * well as the bechmarks.
+ *
+ * @param args The parsed command line arguments (with defaults set)
+ * @param opts The set of all registered optimisers OPTK knows about
+ * @param bmks The set of all registered benchmarks OPTK knows about
  */
 static optk::ctx_t *
 do_setup (
