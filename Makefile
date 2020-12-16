@@ -56,14 +56,14 @@ TEST_SUBDIRS    = $(shell find ${TESTSRC} -type d | cut -d'/' -f2-)
 INCLUDES		= -I${INCDIR} -I/usr/local/include #$(shell python3-config --embed --includes)
 LIBS			= #$(shell python3-config --embed --ldflags)
 INCDEP			= -I${INCDIR}
-CFLAGS			= -O2 -Wall -std=c++17 -pthread
+CFLAGS			= -O2 -Wall -std=c++17 -pthread -fPIC
 TESTFLAGS		= -D__OPTK_TESTING -g -Wall -std=c++17 -fsanitize=address -pthread
 TESTLDFLAGS		= -fsanitize=address
 CC				= g++
 
 # Targets ----------------------------------------------------------------------
 
-all: directories ${PROG}
+all: directories ${PROG} lib${PROG}.so
 
 test: testdirs ${TESTPROG}
 
@@ -88,6 +88,9 @@ cleaner: clean
 
 # gets dependencies for existing object files
 -include ${TEST_OBJECTS:.o=.d}
+
+lib${PROG}.so: ${PROJECT_OBJECTS}
+	@${CC} -shared -o ${TARGETDIR}/$@ $^ ${LIBS}
 
 # linking
 ${PROG}: ${PROJECT_OBJECTS}
