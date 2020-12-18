@@ -143,6 +143,7 @@ do_setup (
         syn::synthetic_benchmark *sbm = new syn::synthetic_benchmark;
         bmks->register_benchmark (sbm);
     }
+    // TODO add other benchmark sets here.
 
     // no matching benchmarks were added
     if (!bmks->collection()->size()) {
@@ -246,8 +247,8 @@ main (int argc, char **argv)
         return 0;
     }
 
-    std::vector<optk::benchmark_set *> * bms = bmks.collection();
-    std::vector<optk::benchmark_set *>::iterator it;
+    optk::bench_list *bms = bmks.collection();
+    optk::bench_list::iterator it;
     for (it = bms->begin (); it != bms->end(); it++)
         (*it)->run(&opts, ctx);
 

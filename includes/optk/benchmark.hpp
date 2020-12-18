@@ -29,6 +29,9 @@
 
 namespace optk {
 
+class benchmark_set;
+typedef std::vector<benchmark_set *> bench_list;
+
 /**
  * This is base class which every individual benchmark inherits.
  */
@@ -108,7 +111,6 @@ class benchmark_set {
  * This represents a collection of benchmarks; either all those known to OPTK,
  * or a subset of those such as those selected by a user from command line
  * arguments.
- * A benchmark
  */
 class benchmarks {
     public:
@@ -131,11 +133,11 @@ class benchmarks {
         /**
          * @returns The collection of benchmarks held by this class
          */
-        std::vector <benchmark_set *> * collection();
+        optk::bench_list *collection();
 
     private:
         /** The array of benchmarks in this collection */
-        std::vector <benchmark_set *> m_arr;
+        bench_list m_arr;
 };
 
 } // namespace optk

@@ -9,31 +9,30 @@ Developer documentation can be found at https://maximerobeyns.github.io/OPTK.
 
 ** What is OPTK?
 
-OPTK (read /optic/) is an `optimisation toolkit' providing a set of synthetic
-benchmarks, intended to evaluate Bayesian optimisation algorithms.
+OPTK (read /optic/) is an `optimisation toolkit' which provides collections of
+benchmarks on which to evaluate and compare Bayesian optimisation algorithm.
 
-While it is written in C++, I plan to add Python bindings and perhaps others
-(e.g. MATLAB or Julia) to help include existing implementations in benchmark
-comparisons, as well as allowing folks to write implementations in a language
-they are comfortable with.
+You will notice that it is mostly written in C++; this is both for speed and to
+allow bindings to be easily written for a variety of languages, allowing folks
+to use whatever language they're comfortable with, as well as to include
+existing implementations in varied languages. I will first be focusing on the
+Python interface, and then others (such as MATLAB or Julia) as they're required.
 
-OPTK uses a definition of a parameter space which is similar to that used by
-[[https://github.com/microsoft/nni][Microsoft's NNI library]] and others. The idea is to make it easy to re-use
-implementations written for OPTK with these libraries with minimal modification
-for use by practitioners.
+OPTK's parameter space definition and types may seem a little overdone;
+ostensibly all we need are continuous variables, categorical variables and
+ordinal variables (i.e. categorical variables which happen to have an ordering).
+However to ensure compatibility with [[https://automl.github.io/ConfigSpace/master/API-Doc.html#hyperparameters][ConfigSpace]], [[https://docs.ray.io/en/latest/tune/key-concepts.html#search-spaces][Ray Tune]] and [[https://nni.readthedocs.io/en/latest/Tutorial/SearchSpaceSpec.html][NNI's]] search
+space definition (and more importantly, the existing BO algorithms which rely
+on these) the C++ types are somewhat overcooked. Hopefully this complexity will
+not leak out into the Python bindings and bindings for other langauges.
 
-The currently implemented benchmarks are an aggregation of those found in [[https://arxiv.org/abs/1308.4008][this
-survey]] (Jamil et al. 2013), as well as C++ implementations of the [[https://github.com/sigopt/evalset][evalset]]
-functions (Dewancker et al. 2016). While these are currently continuous
-functions, I plan to add discrete transformations taking integer-valued
-inputs.
+One big area of work at the moment is improving the outputs—I am working on
+outputting useful plots (both in =pgf= and rasterised formats) and other metrics
+and traces to help with comparisons, and the results section of a paper or report.
 
-I am also working on improving the output; performance of optimisation methods
-will be compared by taking trajectories and calculating the area under the
-curve. In addition to the raw data output, I plan to output pgf plots for easy
-inclusion in reports and papers. The benchmarks are tagged with relevant
-characteristics (e.g. scalable, continuous, separable etc.), which will also be
-provided alongside the output data.
+The benchmarks are tagged with relevant characteristics (e.g. scalable,
+continuous, separable etc.), which will also be provided alongside the output
+data.
 
 #+BEGIN_COMMENT
 ** Usage Guide

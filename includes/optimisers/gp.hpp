@@ -27,6 +27,10 @@
 #include <optk/optimiser.hpp>
 #include <optk/types.hpp>
 
+/**
+ * gp_opt is a generic Gaussian process-based optimiser which is only
+ * implemented to provide a baseline against other methods.
+ */
 class gp_opt: public optk::optimiser {
 
     public:

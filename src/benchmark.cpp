@@ -43,12 +43,12 @@ optk::benchmark_set::~benchmark_set()
 
 optk::benchmarks::benchmarks ()
 {
-    m_arr = std::vector<benchmark_set *>();
+    m_arr = optk::bench_list();
 }
 
 optk::benchmarks::~benchmarks ()
 {
-    std::vector<benchmark_set *>::iterator it;
+    optk::bench_list::iterator it;
     for (it = m_arr.begin (); it != m_arr.end(); it++) {
         delete *it;
     }
@@ -60,7 +60,7 @@ optk::benchmarks::register_benchmark (optk::benchmark_set *b)
     m_arr.push_back(b);
 }
 
-std::vector <optk::benchmark_set *> *
+optk::bench_list *
 optk::benchmarks::collection ()
 {
     return &m_arr;

@@ -50,7 +50,7 @@ optk::optimiser::clear ()
 
 optk::optimisers::optimisers ()
 {
-    m_arr = std::vector<optimiser *>();
+    m_arr = optk::opt_list();
 }
 
 void
@@ -59,7 +59,7 @@ optk::optimisers::register_optimiser (optimiser *o)
     m_arr.push_back (o);
 }
 
-std::vector <optk::optimiser *> *
+optk::opt_list *
 optk::optimisers::collection ()
 {
     return &m_arr;

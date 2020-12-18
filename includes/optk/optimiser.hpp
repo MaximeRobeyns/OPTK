@@ -26,8 +26,12 @@
 
 namespace optk {
 
-// forward declaration of optimisers class
+// forward declarations
+class optimiser;
 class optimisers;
+
+// optk::opt_list is a list of optimisers.
+typedef std::vector<optimiser *> opt_list;
 
 /**
  * This is the base class that every optimisation algorithm will inherit.
@@ -61,7 +65,7 @@ class optimiser {
         // required methods ---------------------------------------------------
 
         /**
-         * This updates the search space  the search space defined by the optimiser
+         * This updates the search space defined by the optimiser.
          * @param space The new search space to use
          */
         virtual void update_search_space (sspace::sspace_t *space) {}
@@ -156,10 +160,10 @@ class optimisers {
         /**
          * @returns The collection of optimisation algorithms held by this class
          */
-        std::vector <optimiser *> *collection();
+        opt_list *collection();
 
     private:
-        std::vector <optimiser *> m_arr;
+        opt_list m_arr;
 };
 
 } // namespace optk
