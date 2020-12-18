@@ -15,7 +15,6 @@ var searchData=
   ['get_5fvalues',['get_values',['../class____gs_1_1node.html#ac1e56730a6c90935bc4a566961fafa83',1,'__gs::node::get_values()'],['../classinst_1_1node.html#a4853904f03fd88c92dbf9b10339beae0',1,'inst::node::get_values()']]],
   ['giunta',['giunta',['../classsyn_1_1giunta.html',1,'syn']]],
   ['goldstein_5fprice',['goldstein_price',['../classsyn_1_1goldstein__price.html',1,'syn']]],
-  ['gp',['gp',['../namespacegp.html',1,'']]],
   ['gp_2ecpp',['gp.cpp',['../gp_8cpp.html',1,'']]],
   ['gp_2ehpp',['gp.hpp',['../gp_8hpp.html',1,'']]],
   ['gp_5fopt',['gp_opt',['../classgp__opt.html',1,'']]],

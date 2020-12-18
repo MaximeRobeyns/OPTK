@@ -87,16 +87,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6565845ec164fcbdba16a214b31ea21f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a680ef0f19e152e5c85bb943fc381fc9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1benchmarks.html#a680ef0f19e152e5c85bb943fc381fc9d">register_benchmark</a> (<a class="el" href="classoptk_1_1benchmark__set.html">benchmark_set</a> *b)</td></tr>
 <tr class="separator:a680ef0f19e152e5c85bb943fc381fc9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5c2de22760980ea16b4128aa8f9cb6c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classoptk_1_1benchmark__set.html">benchmark_set</a> * &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1benchmarks.html#ab5c2de22760980ea16b4128aa8f9cb6c">collection</a> ()</td></tr>
-<tr class="separator:ab5c2de22760980ea16b4128aa8f9cb6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada66b3e69fdac0b74978761b25c6cc24"><td class="memItemLeft" align="right" valign="top">optk::bench_list *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1benchmarks.html#ada66b3e69fdac0b74978761b25c6cc24">collection</a> ()</td></tr>
+<tr class="separator:ada66b3e69fdac0b74978761b25c6cc24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a456128eb6204a460b2a7874c087bfaad"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classoptk_1_1benchmark__set.html">benchmark_set</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1benchmarks.html#a456128eb6204a460b2a7874c087bfaad">m_arr</a></td></tr>
-<tr class="separator:a456128eb6204a460b2a7874c087bfaad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf3b77009410924b28663925e2b3b7ba"><td class="memItemLeft" align="right" valign="top">bench_list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoptk_1_1benchmarks.html#acf3b77009410924b28663925e2b3b7ba">m_arr</a></td></tr>
+<tr class="separator:acf3b77009410924b28663925e2b3b7ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This represents a collection of benchmarks; either all those known to OPTK, or a subset of those such as those selected by a user from command line arguments. A benchmark </p>
+<div class="textblock"><p>This represents a collection of benchmarks; either all those known to OPTK, or a subset of those such as those selected by a user from command line arguments. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6565845ec164fcbdba16a214b31ea21f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6565845ec164fcbdba16a214b31ea21f">&#9670;&nbsp;</a></span>~benchmarks()</h2>
@@ -117,14 +117,14 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab5c2de22760980ea16b4128aa8f9cb6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5c2de22760980ea16b4128aa8f9cb6c">&#9670;&nbsp;</a></span>collection()</h2>
+<a id="ada66b3e69fdac0b74978761b25c6cc24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada66b3e69fdac0b74978761b25c6cc24">&#9670;&nbsp;</a></span>collection()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="classoptk_1_1benchmark__set.html">optk::benchmark_set</a> * &gt; * optk::benchmarks::collection </td>
+          <td class="memname">optk::bench_list * optk::benchmarks::collection </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -161,8 +161,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a456128eb6204a460b2a7874c087bfaad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a456128eb6204a460b2a7874c087bfaad">&#9670;&nbsp;</a></span>m_arr</h2>
+<a id="acf3b77009410924b28663925e2b3b7ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf3b77009410924b28663925e2b3b7ba">&#9670;&nbsp;</a></span>m_arr</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -171,7 +171,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="classoptk_1_1benchmark__set.html">benchmark_set</a> *&gt; optk::benchmarks::m_arr</td>
+          <td class="memname">bench_list optk::benchmarks::m_arr</td>
         </tr>
       </table>
   </td>

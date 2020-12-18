@@ -10,7 +10,7 @@ var searchData=
   ['clone',['clone',['../class____gs_1_1node.html#af3bd9c1693d8884dbc8c72546832d9db',1,'__gs::node']]],
   ['coef',['coef',['../structsyn_1_1rdims.html#a478d444197995d082d5abbdaacbcfb0f',1,'syn::rdims']]],
   ['cola',['cola',['../classsyn_1_1cola.html',1,'syn']]],
-  ['collection',['collection',['../classoptk_1_1benchmarks.html#ab5c2de22760980ea16b4128aa8f9cb6c',1,'optk::benchmarks::collection()'],['../classoptk_1_1optimisers.html#a99200a4823f3fc7e5e0ba278d9598241',1,'optk::optimisers::collection()']]],
+  ['collection',['collection',['../classoptk_1_1benchmarks.html#ada66b3e69fdac0b74978761b25c6cc24',1,'optk::benchmarks::collection()'],['../classoptk_1_1optimisers.html#a3dacf7a62caf1c04f6acc353995a522b',1,'optk::optimisers::collection()']]],
   ['colville',['colville',['../classsyn_1_1colville.html',1,'syn']]],
   ['convert_5fsynthetic_5fss',['convert_synthetic_ss',['../classgridsearch.html#a79186d84c0d13fd2ee6f5e8320b0a8c1',1,'gridsearch']]],
   ['corana',['corana',['../classsyn_1_1corana.html',1,'syn']]],
