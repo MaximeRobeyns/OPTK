@@ -10,7 +10,7 @@ Developer documentation can be found at https://maximerobeyns.github.io/OPTK.
 ** What is OPTK?
 
 OPTK (read /optic/) is an `optimisation toolkit' which provides collections of
-benchmarks on which to evaluate and compare Bayesian optimisation algorithm.
+benchmarks on which to evaluate and compare Bayesian optimisation algorithms.
 
 You will notice that it is mostly written in C++; this is both for speed and to
 allow bindings to be easily written for a variety of languages, allowing folks
@@ -29,7 +29,6 @@ not leak out into the Python bindings and bindings for other langauges.
 One big area of work at the moment is improving the outputs—I am working on
 outputting useful plots (both in =pgf= and rasterised formats) and other metrics
 and traces to help with comparisons, and the results section of a paper or report.
-
 The benchmarks are tagged with relevant characteristics (e.g. scalable,
 continuous, separable etc.), which will also be provided alongside the output
 data.
